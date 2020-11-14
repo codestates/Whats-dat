@@ -1,6 +1,6 @@
 import React from "react";
-import { Switch, Router } from "react-router-dom";
-import { PrivateRoute as Route } from "../utils/PrivateRoute";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+// import { PrivateRoute as Route } from "../utils/PrivateRoute";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
@@ -12,6 +12,8 @@ import SelectWord from "./SelectWord";
 import Drawing from "./Drawing";
 // import GuessWord from "./GuessWord";
 // import GameResults from "./GameResults";
+
+// FIXME : 여긴 푸시하지 마세요
 
 const App = () => {
   return (
