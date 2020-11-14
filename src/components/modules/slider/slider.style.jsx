@@ -88,7 +88,7 @@ export const StyledSlidesContainer = styled.div`
 `;
 
 export const StyledContentsContainer = styled.div`
-  ${({ slideWidth, theme }) => {
+  ${({ slideWidth }) => {
     return css`
       width: ${slideWidth}rem;
       @media only screen and (max-width: 550px) {
