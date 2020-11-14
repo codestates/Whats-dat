@@ -1,6 +1,6 @@
 import React from "react";
 import LoginTemplate from "../components/templates/Login/Login";
-import { useAuth } from "../contexts";
+import { useAuth } from "../contexts/UserContext";
 
 const Login = () => {
   const { login, currentUser } = useAuth();

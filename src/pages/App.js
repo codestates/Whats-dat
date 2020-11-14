@@ -1,16 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Router } from "react-router-dom";
+import { PrivateRoute as Route } from "../utils/PrivateRoute";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import MyPage from "./MyPage";
 import LeaderBoard from "./LeaderBoard";
 import Lobby from "./Lobby";
-import NewGame from "./NewGame";
+// import NewGame from "./NewGame";
 import SelectWord from "./SelectWord";
 import Drawing from "./Drawing";
-import GuessWord from "./GuessWord";
-import GameResults from "./GameResults";
+// import GuessWord from "./GuessWord";
+// import GameResults from "./GameResults";
 
 const App = () => {
   return (
@@ -23,12 +24,12 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/my-page" component={MyPage} />
         <Route path="/leaderboard" component={LeaderBoard} />
-        <Route path="/new-game" component={NewGame} />
+        {/* <Route path="/new-game" component={NewGame} /> */}
         {/* 방에 속해있어야 접속할 수 있는 경로  */}
         <Route path="/lobby/:id" component={Lobby} />
         <Route path="/game/:id/select-word" component={SelectWord} />
         <Route path="/game/:id/drawing" component={Drawing} />
-        <Route path="/game/:id/guess-word" component={GuessWord} />
+        {/* <Route path="/game/:id/guess-word" component={GuessWord} /> */}
         {/* <Route path="/game:id/game-results" component={GameResults} /> */}
       </Switch>
     </Router>

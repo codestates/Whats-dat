@@ -8,8 +8,6 @@ import {
   NonePaddingAvatar,
 } from "./gameProgress.style";
 
-// completed gameProgress
-
 const GameProgressBar = ({ playersList, currentPlayer }) => {
   const renderAvatarLists = (innerPlayersList, innerCurrentPlayer) => {
     return innerPlayersList.map((player, playerIndex) => {
