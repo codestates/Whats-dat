@@ -26,19 +26,15 @@ const getBoxShadow = ({ theme, boxShadow }) => {
 };
 
 export const DefaultBox = styled.div`
-  ${({ theme }) => {
-    return css`
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: ${(props) => getPadding(props)};
-      background-color: ${(props) => getBgColor(props)};
-      border: ${(props) => getBorder(props)};
-      border-radius: ${(props) => getRadius(props)};
-      box-shadow: ${(props) => getBoxShadow(props)};
-    `;
-  }}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: ${(props) => getPadding(props)};
+  background-color: ${(props) => getBgColor(props)};
+  border: ${(props) => getBorder(props)};
+  border-radius: ${(props) => getRadius(props)};
+  box-shadow: ${(props) => getBoxShadow(props)};
 `;
 
 export default DefaultBox;

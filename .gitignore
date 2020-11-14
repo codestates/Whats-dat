@@ -8,6 +8,9 @@
 # stories
 *.stories.js
 
+# md
+discuss.md
+
 # testing
 /coverage
 
