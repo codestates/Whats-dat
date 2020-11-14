@@ -1,43 +1,51 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import GlobalContext from "../contexts/GlobalContext";
-import Home from "../components/templates/Home/Home";
-import Login from "../components/templates/Login/Login";
-import Register from "../components/templates/Register/Register";
-import MyPage from "../components/templates/MyPage/MyPage";
-import LeaderBoard from "../components/templates/LeaderBoard/LeaderBoard";
-import Lobby from "../components/templates/Lobby/Lobby";
-import NewGame from "../components/templates/NewGame/NewGame";
-import SelectWord from "../components/templates/SelectWord/SelectWord";
-import Drawing from "../components/templates/Drawing/Drawing";
-import GuessWord from "../components/templates/GuessWord/GuessWord";
-import GameResults from "../components/templates/GameResults/GameResults";
-
-// 로그인을 안 한 경우에만 보이는 페이지
-// 방에 속해있어야 접속할 수 있는 경로
-// 로그인 할 때만 보이는 페이지
+import { Redirect, Switch, withRouter } from "react-router-dom";
+import { PrivateRoute as Route } from "../utils/PrivateRoute";
+import Home from "./Home";
+import Login from "./Login";
+import Register from "./Register";
+import MyPage from "./MyPage";
+import LeaderBoard from "./LeaderBoard";
+import Lobby from "./Lobby";
+import NewGame from "./NewGame";
+import Game from "./Game";
+import ROUTES from "../utils/RoutePath";
+import GUARDTYPE from "../utils/GuardType";
 
 const App = () => {
+  const {
+    HOME,
+    REGISTER,
+    LOGIN,
+    MYPAGE,
+    LEADERBOARD,
+    NEWGAME,
+    LOBBY,
+    GAME,
+  } = ROUTES;
+  const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
   return (
-    <GlobalContext>
-      <Router>
-        {/* 로그인을 안 한 경우에만 보이는 페이지 */}
-        <Route exact path="/" component={Home} />
-        <Route path="/register" component={Register} />
-        {/* 로그인 했을 때만 보이는 페이지 */}
-        <Route path="/login" component={Login} />
-        <Route path="/mypage" component={MyPage} />
-        <Route path="/leaderboard" component={LeaderBoard} />
-        <Route path="/newGame" component={NewGame} />
-        {/* 방에 속해있어야 접속할 수 있는 경로  */}
-        <Route path="/lobby/:id" component={Lobby} />
-        <Route path="/game/:id/selectword" component={SelectWord} />
-        <Route path="/game/:id/drawing" component={Drawing} />
-        <Route path="/game/:id/guessWord" component={GuessWord} />
-        <Route path="/game:id/gameResults" component={GameResults} />
-      </Router>
-    </GlobalContext>
+    <Switch>
+      {/* 로그인을 안 한 경우에만 보이는 페이지 */}
+      <Route exact path={HOME} component={Home} permission={IS_NOT_SIGNED} />
+      <Route path={REGISTER} component={Register} permission={IS_NOT_SIGNED} />
+      <Route path={LOGIN} component={Login} permission={IS_NOT_SIGNED} />
+
+      {/* 로그인 했을 때만 보이는 페이지 */}
+      <Route path={MYPAGE} component={MyPage} permission={IS_SIGNED} />
+      <Route
+        path={LEADERBOARD}
+        component={LeaderBoard}
+        permission={IS_SIGNED}
+      />
+      <Route path={NEWGAME} component={NewGame} permission={IS_SIGNED} />
+      {/* 방에 속해있어야 접속할 수 있는 경로  */}
+      <Route path={LOBBY} component={Lobby} permission={IS_IN_ROOM} />
+      {/* 속해있는 방의 게임이 진행 중 일때만 접속 가능한 경로  */}
+      <Route path={GAME} component={Game} permission={IS_PLAYING} />
+      <Redirect to={Home} />
+    </Switch>
   );
 };
 
-export default App;
+export default withRouter(App);

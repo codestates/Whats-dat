@@ -16,6 +16,7 @@ const useWindowSize = () => {
       window.addEventListener("resize", setSize);
       return () => window.removeEventListener("resize", setSize);
     }
+    return null;
   }, [isWindowClient, setWindowSize]);
 
   return windowSize;
