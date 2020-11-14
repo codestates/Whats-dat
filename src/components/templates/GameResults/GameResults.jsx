@@ -9,8 +9,9 @@ import Paragraph from "../../atoms/paragraph/paragraph";
 // import Image from "../../atoms/image/image";
 import List from "../../modules/list/list";
 import Slider from "../../modules/slider/slider";
+import { gameResults } from "../../modules/slider/sliderFakeDb";
 
-const GameResults = ({ listItemData, gameResultsData }) => {
+const GameResults = ({ listItemData }) => {
   return (
     <>
       <Background />
@@ -18,7 +19,7 @@ const GameResults = ({ listItemData, gameResultsData }) => {
         <CustomContainer>
           <div className="col-container m-top">
             <Paragraph
-              text={gameResultsData[0].username}
+              text={gameResults[0].username}
               color="darkGrey"
               size="base"
               marginBottom="sm"
@@ -31,7 +32,7 @@ const GameResults = ({ listItemData, gameResultsData }) => {
               boxShadow="shadowMd"
             >
               <Paragraph
-                text={gameResultsData[0].start_word}
+                text={gameResults[0].start_word}
                 color="white"
                 size="lg"
               />
@@ -40,7 +41,7 @@ const GameResults = ({ listItemData, gameResultsData }) => {
           </div>
           <div className="m-top m-bottom">
             <Slider
-              slideItems={gameResultsData}
+              slideItems={gameResults}
               slideWidth={30}
               variant="gameResultsPagination"
             />
