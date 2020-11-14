@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 
 import Background from "../../atoms/background/Background";
 import ModuleForm from "../../modules/form/moduleForm";
@@ -11,7 +12,7 @@ import Icon from "../../atoms/icon/icon";
 
 import { LoginWrapper } from "./Login.style";
 
-const Login = () => {
+const Login = ({ method }) => {
   return (
     <>
       <Background />
@@ -33,7 +34,7 @@ const Login = () => {
             />
           </div>
 
-          <ModuleForm type="login" />
+          <ModuleForm type="login" method={method} />
 
           <Paragraph text="Forgot Password?" size="sm" color="grey" />
 
@@ -58,6 +59,10 @@ const Login = () => {
       </ResponsiveContainer>
     </>
   );
+};
+
+Login.propTypes = {
+  method: propTypes.func.isRequired,
 };
 
 export default Login;
