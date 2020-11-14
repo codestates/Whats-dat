@@ -1,26 +1,47 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import propTypes from "prop-types";
-import { round } from "lodash";
-import { useAuth } from "../contexts/UserContext";
-import GuessWord from "../components/templates/GuessWord/GuessWord";
-import SelectWord from "../components/templates/SelectWord/SelectWord";
+import ROUTES from "./RoutePath";
+import GUARDTYPE from "./GuardType";
 
-export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { currentUser } = useAuth();
+export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
+  const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
+  const { HOME, NEWGAME } = ROUTES;
+  const currentUser = true;
+  const currentRoom = true;
+  const currentGame = false;
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        return currentUser ? <Component {...props} /> : <Redirect to="/" />;
-      }}
-    />
-  );
+  const generateRoute = (validation, redirectPath) => {
+    return (
+      <Route
+        {...rest}
+        render={(props) => {
+          return validation ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to={redirectPath} />
+          );
+        }}
+      />
+    );
+  };
+
+  switch (permission) {
+    case IS_SIGNED:
+      return generateRoute(currentUser, HOME);
+    case IS_NOT_SIGNED:
+      return generateRoute(!currentUser, NEWGAME);
+    case IS_IN_ROOM:
+      return generateRoute(currentRoom, HOME);
+    case IS_PLAYING:
+      return generateRoute(currentGame, HOME);
+    default:
+      throw new Error("invalid routing");
+  }
 };
 
 PrivateRoute.propTypes = {
-  component: propTypes.node,
+  component: propTypes.func,
 };
 
 export default PrivateRoute;
