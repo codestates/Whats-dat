@@ -28,7 +28,11 @@ const loginConfig = {
     password: Yup.string().required("Password is Required"),
   }),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {
+    console.log("form-data", values);
+    // FIXME
+    // method("email", values.email, values.password);
+  },
 };
 
 const registerConfig = {
@@ -182,6 +186,7 @@ const ModuleForm = ({
   initialValues,
   selectedWord,
   children,
+  method,
 }) => {
   switch (type) {
     case "login":
@@ -192,6 +197,7 @@ const ModuleForm = ({
             initialValues={loginConfig.initialValues}
             validationSchema={loginConfig.validationSchema}
             onSubmit={loginConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="input"
@@ -451,6 +457,7 @@ ModuleForm.propTypes = {
   btncolor: propTypes.string,
   selectedWord: propTypes.string,
   children: propTypes.node,
+  method: propTypes.func,
 };
 
 export default ModuleForm;

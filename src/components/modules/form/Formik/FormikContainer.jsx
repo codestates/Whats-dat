@@ -14,12 +14,13 @@ const FormikContainer = ({
   children,
   onSubmit,
   btncolor,
+  method,
 }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={method}
     >
       {(formik) => (
         <Form>
