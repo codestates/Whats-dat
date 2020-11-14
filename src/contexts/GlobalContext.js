@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { ThemeProvider } from "styled-components";
 import propTypes from "prop-types";
-import app, { googleProvider } from "../firebase";
+// import app, { googleProvider } from "../firebase";
 import theme from "../styles/Theme";
 import GlobalStyle from "../styles/GlobalStyle";
 
