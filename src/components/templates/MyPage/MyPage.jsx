@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import ProfileCard from "../../modules/profileCard/profileCard";
@@ -11,7 +12,7 @@ import {
 } from "./MyPage.style";
 import ButtonList from "../../modules/ButtonList/buttonList";
 
-const MyPage = () => {
+const MyPage = ({ method }) => {
   const items = [
     {
       text: "Leaderboard",
@@ -29,7 +30,7 @@ const MyPage = () => {
       text: "Sign Out",
       color: "tertiary",
       onClick: () => {
-        console.log("click sign out");
+        method(true);
       },
     },
   ];
@@ -62,6 +63,10 @@ const MyPage = () => {
       </ResponsiveContainer>
     </>
   );
+};
+
+MyPage.propTypes = {
+  method: propTypes.func,
 };
 
 export default MyPage;
