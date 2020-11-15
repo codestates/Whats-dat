@@ -54,7 +54,9 @@ const GameResults = ({ listItemData }) => {
     </>
   );
 };
+
 GameResults.propTypes = {
   listItemData: propTypes.arrayOf,
 };
+
 export default GameResults;
