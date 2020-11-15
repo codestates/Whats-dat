@@ -1,9 +1,16 @@
 import React, { useRef, useEffect, useState } from "react";
 import propTypes from "prop-types";
-import { DefaultCanvas } from "./canvas.style";
+import { DefaultCanvas, ClearButton } from "./canvas.style";
 import theme from "../../../styles/Theme";
 
-const Canvas = ({ strokeColor, lineWidth, width, height, className }) => {
+const Canvas = ({
+  strokeColor,
+  lineWidth,
+  width,
+  height,
+  className,
+  getCanvaseRef,
+}) => {
   const canvasRef = useRef(null);
   const [offsetCoord, setOffsetCoord] = useState({ x: null, y: null });
   const contextRef = useRef(null);
@@ -31,6 +38,7 @@ const Canvas = ({ strokeColor, lineWidth, width, height, className }) => {
     context.strokeStyle = theme.colors[strokeColor] || "black";
     context.lineWidth = lineWidth * 2.2;
     contextRef.current = context;
+    getCanvaseRef(canvasRef);
   }, []);
 
   useEffect(() => {
@@ -62,7 +70,6 @@ const Canvas = ({ strokeColor, lineWidth, width, height, className }) => {
 
   const startDrawing = (event) => {
     const mousePos = getMosuePositionOnCanvas(event);
-    // const { offsetX, offsetY } = nativeEvent;
     contextRef.current.beginPath();
     contextRef.current.moveTo(mousePos.x, mousePos.y);
     setIsDrawing(true);
@@ -71,7 +78,6 @@ const Canvas = ({ strokeColor, lineWidth, width, height, className }) => {
   const draw = (event) => {
     if (!isDrawing) return;
     const mousePos = getMosuePositionOnCanvas(event);
-    // const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(mousePos.x, mousePos.y);
     contextRef.current.stroke();
   };
@@ -96,9 +102,9 @@ const Canvas = ({ strokeColor, lineWidth, width, height, className }) => {
         onTouchMove={draw}
         onTouchEnd={finishDrawing}
       />
-      <button type="submit" onClick={fillWhite}>
+      <ClearButton type="submit" onClick={fillWhite}>
         Clean Canvas
-      </button>
+      </ClearButton>
     </>
   );
 };
@@ -109,6 +115,7 @@ Canvas.propTypes = {
   strokeColor: propTypes.oneOf(Object.keys(theme.colors)),
   lineWidth: propTypes.number,
   className: propTypes.string,
+  getCanvaseRef: propTypes.func,
 };
 
 export default Canvas;
