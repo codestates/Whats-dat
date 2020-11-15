@@ -17,7 +17,7 @@ const MyPage = ({ currentUser, method, handleClose }) => {
     {
       text: "Leaderboard",
       color: "secondary",
-      link: "/test",
+      link: "/leaderboard",
     },
     {
       text: "Setting",
