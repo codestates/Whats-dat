@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Icon from "../../atoms/icon/icon";
@@ -12,13 +13,13 @@ import {
 } from "./LeaderBoard.style";
 import CustomHook from "./CustomHook";
 
-const LeaderBoard = () => {
+const LeaderBoard = ({ handleClose }) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <RankingHeaderContainer>
-          <CloseButton size="3">
+          <CloseButton size="3" onClick={handleClose}>
             <Icon variant="BUTTON_X" color="navy" />
           </CloseButton>
           <RankingTitle text="Rankings" variant="h1" color="navy" />
@@ -37,6 +38,9 @@ const LeaderBoard = () => {
       </ResponsiveContainer>
     </>
   );
+};
+LeaderBoard.propTypes = {
+  handleClose: propTypes.func,
 };
 
 export default LeaderBoard;
