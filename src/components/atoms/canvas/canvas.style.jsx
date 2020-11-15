@@ -1,24 +1,26 @@
 import styled, { css } from "styled-components";
 
-const getWidth = ({ width }) => {
-  if (!width) return "200%";
-  return `${width * 2}rem`;
-};
+// const getWidth = ({ width }) => {
+//   if (!width) return "200%";
+//   return `${width * 2}rem`;
+// };
 
-const styleWidth = ({ width }) => {
-  if (!width) return "100%";
-  return `${width}rem`;
-};
+// const styleWidth = ({ width }) => {
+//   if (!width) return "100%";
+//   return `${width}rem`;
+// };
 
 export const DefaultCanvas = styled.canvas`
   ${({ theme, width }) => {
     return css`
       display: block;
-      width: ${width}rem;
-      height: ${width}rem;
+      ${"" /* //TODO: 사이즈 단위 확인 */}
+      width: ${width * 10}px;
+      height: ${width * 10}px;
       style-width: 50rem;
       style-height: 50rem;
       border: 2px solid #dbdbdb;
+      z-index: 999;
     `;
   }}
 `;

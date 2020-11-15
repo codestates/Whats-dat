@@ -30,7 +30,6 @@ const Drawing = (props) => {
     const timer = setTimeout(() => {
       if (leftTime > 0) {
         setLeftTime(leftTime - 1);
-        console.log(leftTime);
       }
     }, 1000);
     if (leftTime === 0) {
@@ -42,6 +41,18 @@ const Drawing = (props) => {
 
   const getColorName = (color) => {
     setSelectedColor(color);
+  };
+
+  const onClickMinus = () => {
+    if (strokeSize > 2) {
+      setStrokeSize(strokeSize - 1);
+    }
+  };
+
+  const onClickPlus = () => {
+    if (strokeSize < 5) {
+      setStrokeSize(strokeSize + 1);
+    }
   };
 
   return (
@@ -65,9 +76,10 @@ const Drawing = (props) => {
               playersList={playersList}
             />
           </div>
-          <div className="m-top m-bottom canvas__container">
+          <div className="m-top canvas__container">
             <Canvas
               width={36}
+              height={36}
               lineWidth={strokeSize}
               strokeColor={selectedColor}
             />
@@ -80,16 +92,8 @@ const Drawing = (props) => {
           </div>
           <div className="row-container">
             <LineWidthControllerBox
-              onClickMinus={() => {
-                if (strokeSize > 2) {
-                  setStrokeSize(strokeSize - 1);
-                }
-              }}
-              onClickPlus={() => {
-                if (strokeSize < 5) {
-                  setStrokeSize(strokeSize + 1);
-                }
-              }}
+              onClickMinus={onClickMinus}
+              onClickPlus={onClickPlus}
               lineWidth={strokeSize}
             />
           </div>
