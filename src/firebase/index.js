@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import "firebase/auth";
 
 // FIXME
@@ -23,10 +24,12 @@ const firebaseConfig = {
 };
 
 const app = firebase.initializeApp(firebaseConfig);
-
 export const auth = app.auth();
+export const firestore = app.firestore();
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const facebookProvider = new firebase.auth.FacebookAuthProvider();
 export const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
 export default app;
+
+// TODO : 권한 설정
