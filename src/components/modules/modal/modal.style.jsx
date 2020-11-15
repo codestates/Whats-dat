@@ -5,6 +5,8 @@ import Box from "../../atoms/box/box";
 export const ModalBgContainer = styled(Container)`
   ${({ theme }) => {
     return css`
+      position: fixed;
+      z-index: 9999;
       display: flex;
       justify-content: center;
       align-items: center;

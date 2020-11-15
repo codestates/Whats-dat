@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import propTypes from "prop-types";
 import { ModalBgContainer, ModalBox } from "./modal.style";
 
@@ -6,7 +7,7 @@ import Container from "../../atoms/container/container";
 import Icon from "../../atoms/icon/icon";
 
 const Modal = ({ hasXIcon, handleCloseModal, width, height, children }) => {
-  return (
+  return ReactDOM.createPortal(
     <div onClick={handleCloseModal}>
       <ModalBgContainer>
         <div onClick={(e) => e.stopPropagation()}>
@@ -27,7 +28,8 @@ const Modal = ({ hasXIcon, handleCloseModal, width, height, children }) => {
           </Container>
         </div>
       </ModalBgContainer>
-    </div>
+    </div>,
+    document.querySelector("#modal")
   );
 };
 
