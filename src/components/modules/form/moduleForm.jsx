@@ -27,11 +27,10 @@ const loginConfig = {
     email: Yup.string().required("Email is a required field"),
     password: Yup.string().required("Password is Required"),
   }),
-  // eslint-disable-next-line
   onSubmit: (values) => {
-    console.log("form-data", values);
     // FIXME
-    // method("email", values.email, values.password);
+    // eslint-disable-next-line
+    console.log("form-data", values);
   },
 };
 
@@ -233,7 +232,7 @@ const ModuleForm = ({
             formInfo={registerConfig.formInfo}
             initialValues={registerConfig.initialValues}
             validationSchema={registerConfig.validationSchema}
-            onSubmit={registerConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="input"
@@ -279,9 +278,10 @@ const ModuleForm = ({
         <InfoForm>
           <FormikContainer
             formInfo={detailInfoConfig.formInfo}
-            initialValues={detailInfoConfig.initialValues}
+            initialValues={initialValues}
             validationSchema={detailInfoConfig.validationSchema}
             onSubmit={detailInfoConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="radio"
@@ -289,7 +289,6 @@ const ModuleForm = ({
               name="radioOption"
               options={options}
             />
-
             <FormikControl
               icon={false}
               control="input"
