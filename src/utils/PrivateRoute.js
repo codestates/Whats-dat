@@ -6,11 +6,17 @@ import GUARDTYPE from "./GuardType";
 import { useAuth } from "../contexts/UserContext";
 
 export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
-  const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
-  const { HOME, NEWGAME } = ROUTES;
-  const { currentUser } = useAuth();
-  const currentRoom = false;
-  const currentGame = false;
+  const {
+    IS_SIGNED,
+    IS_NOT_SIGNED,
+    IS_IN_ROOM,
+    IS_PLAYING,
+    HAS_AVATAR,
+  } = GUARDTYPE;
+  const { HOME, NEWGAME, SETTING } = ROUTES;
+  const { currentUser, userGameProfile } = useAuth();
+  const currentRoom = true;
+  const currentGame = true;
 
   const generateRoute = (validation, redirectPath) => {
     return (
@@ -32,6 +38,8 @@ export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
       return generateRoute(currentUser, HOME);
     case IS_NOT_SIGNED:
       return generateRoute(!currentUser, NEWGAME);
+    case HAS_AVATAR:
+      return generateRoute(userGameProfile.nickname.length, SETTING);
     case IS_IN_ROOM:
       return generateRoute(currentRoom, HOME);
     case IS_PLAYING:
