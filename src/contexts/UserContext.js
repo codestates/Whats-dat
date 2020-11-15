@@ -5,6 +5,7 @@ import {
   googleProvider,
   facebookProvider,
   twitterProvider,
+  firestore,
 } from "../firebase";
 
 export const UserContext = createContext();
@@ -14,7 +15,14 @@ export const useAuth = () => {
 };
 
 const UserContextProvider = ({ children }) => {
+  const userGameProfileSchema = {
+    nickname: "",
+    avatar: "",
+    avatarColor: "",
+    score: 0,
+  };
   const [currentUser, setCurrentUser] = useState();
+  const [userGameProfile, setUserGameProfile] = useState(userGameProfileSchema);
   const [loading, setLoading] = useState(true);
 
   const login = (type, email, password) => {
@@ -40,24 +48,54 @@ const UserContextProvider = ({ children }) => {
     return auth.signOut();
   };
 
-  const updateNickNameAndAvatar = (userProfile) => {
-    return currentUser.updateProfile(userProfile);
+  const updateUserGameProfile = (userProfile) => {
+    return firestore
+      .collection("users")
+      .doc(currentUser.uid)
+      .update(userProfile)
+      .then(() => setUserGameProfile(userProfile))
+      .catch((err) => console.log(err.message));
+  };
+
+  const getUser = () => {
+    return firestore.collection("users").doc(currentUser.uid).get();
   };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
+      if (!user) {
+        setUserGameProfile(userGameProfileSchema);
+      }
       setLoading(false);
     });
+
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      firestore
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then((user) => {
+          const currentUserGameProfile = user.data();
+          setUserGameProfile(currentUserGameProfile);
+        })
+        .catch((err) => console.log(err.message));
+    }
+  }, [currentUser]);
 
   const value = {
     currentUser,
     login,
     register,
     logOut,
-    updateNickNameAndAvatar,
+    updateUserGameProfile,
+    setUserGameProfile,
+    userGameProfile,
+    getUser,
   };
 
   return (
