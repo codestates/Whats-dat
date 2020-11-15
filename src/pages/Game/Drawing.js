@@ -1,8 +1,8 @@
 import React from "react";
 import DrawingTemplate from "../../components/templates/Drawing/Drawing";
 
-const Drawing = () => {
-  return <DrawingTemplate />;
+const Drawing = (props) => {
+  return <DrawingTemplate {...props} />;
 };
 
 export default Drawing;

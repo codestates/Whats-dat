@@ -1,8 +1,8 @@
 import React from "react";
 import GameResultsTemplate from "../../components/templates/GameResults/GameResults";
 
-const GameResults = () => {
-  return <GameResultsTemplate>GameResults</GameResultsTemplate>;
+const GameResults = (props) => {
+  return <GameResultsTemplate {...props}>GameResults</GameResultsTemplate>;
 };
 
 export default GameResults;
