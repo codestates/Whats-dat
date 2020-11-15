@@ -5,7 +5,7 @@ import LogOutModal from "../components/templates/logoutModal/logoutModal";
 import { useAuth } from "../contexts/UserContext";
 
 const MyPage = () => {
-  const { currentUser, logOut } = useAuth();
+  const { userGameProfile, logOut } = useAuth();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,7 +24,7 @@ const MyPage = () => {
         />
       ) : null}
       <MyPageTemplage
-        currentUser={currentUser}
+        userGameProfile={userGameProfile}
         method={setIsModalOpen}
         handleClose={() => history.push("/new-game")}
       />
