@@ -12,7 +12,7 @@ import Icon from "../../atoms/icon/icon";
 
 import { RegisterWrapper } from "./Register.style";
 
-const Register = ({ method }) => {
+const Register = ({ method, googleLogin, facebookLogin, twitterLogin }) => {
   return (
     <>
       <Background />
@@ -45,7 +45,11 @@ const Register = ({ method }) => {
           <Paragraph text="Or login with social media" size="sm" color="grey" />
 
           <div className="social__button">
-            <SocialButton />
+            <SocialButton
+              googleLogin={googleLogin}
+              twitterLogin={twitterLogin}
+              facebookLogin={facebookLogin}
+            />
           </div>
         </RegisterWrapper>
       </ResponsiveContainer>
@@ -55,6 +59,9 @@ const Register = ({ method }) => {
 
 Register.propTypes = {
   method: propTypes.func,
+  googleLogin: propTypes.func,
+  facebookLogin: propTypes.func,
+  twitterLogin: propTypes.func,
 };
 
 export default Register;

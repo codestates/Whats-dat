@@ -12,7 +12,7 @@ import Icon from "../../atoms/icon/icon";
 
 import { LoginWrapper } from "./Login.style";
 
-const Login = ({ method }) => {
+const Login = ({ method, googleLogin, twitterLogin, facebookLogin }) => {
   return (
     <>
       <Background />
@@ -53,7 +53,11 @@ const Login = ({ method }) => {
           <Paragraph text="Or login with social media" size="sm" color="grey" />
 
           <div className="social__button">
-            <SocialButton />
+            <SocialButton
+              googleLogin={googleLogin}
+              twitterLogin={twitterLogin}
+              facebookLogin={facebookLogin}
+            />
           </div>
         </LoginWrapper>
       </ResponsiveContainer>
@@ -63,6 +67,9 @@ const Login = ({ method }) => {
 
 Login.propTypes = {
   method: propTypes.func.isRequired,
+  googleLogin: propTypes.func,
+  twitterLogin: propTypes.func,
+  facebookLogin: propTypes.func,
 };
 
 export default Login;

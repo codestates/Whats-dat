@@ -12,7 +12,7 @@ import {
 } from "./MyPage.style";
 import ButtonList from "../../modules/ButtonList/buttonList";
 
-const MyPage = ({ method }) => {
+const MyPage = ({ currentUser, method, handleClose }) => {
   const items = [
     {
       text: "Leaderboard",
@@ -22,9 +22,7 @@ const MyPage = ({ method }) => {
     {
       text: "Setting",
       color: "secondary",
-      onClick: () => {
-        console.log("click setting");
-      },
+      link: "/setting",
     },
     {
       text: "Sign Out",
@@ -41,7 +39,7 @@ const MyPage = ({ method }) => {
       <Background />
       <ResponsiveContainer>
         <HeaderContainer>
-          <CloseButton size="3">
+          <CloseButton size="3" onClick={handleClose}>
             <Icon variant="BUTTON_X" color="navy" />
           </CloseButton>
           <ProfileTitle
@@ -51,10 +49,11 @@ const MyPage = ({ method }) => {
             weight="normal"
           />
           <ProfileCard
-            avatar="AVATAR_KIWI"
+            avatar={JSON.parse(currentUser.photoURL).avatar}
+            color={JSON.parse(currentUser.photoURL).avatarColor}
             rank="123"
             AllUsers="1234"
-            name="누룽지 참나무 통닭"
+            name={currentUser.displayName}
           />
         </HeaderContainer>
         <ButtonListContainer>
@@ -67,6 +66,8 @@ const MyPage = ({ method }) => {
 
 MyPage.propTypes = {
   method: propTypes.func,
+  currentUser: propTypes.objectOf,
+  handleClose: propTypes.func,
 };
 
 export default MyPage;
