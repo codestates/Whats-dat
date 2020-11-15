@@ -5,7 +5,7 @@ import LogOutModal from "../components/templates/logoutModal/logoutModal";
 import { useAuth } from "../contexts/UserContext";
 
 const MyPage = () => {
-  const { logOut } = useAuth();
+  const { currentUser, logOut } = useAuth();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,7 +23,11 @@ const MyPage = () => {
           handleYesBtn={handleLogOut}
         />
       ) : null}
-      <MyPageTemplage method={setIsModalOpen} />
+      <MyPageTemplage
+        currentUser={currentUser}
+        method={setIsModalOpen}
+        handleClose={() => history.push("/new-game")}
+      />
     </>
   );
 };

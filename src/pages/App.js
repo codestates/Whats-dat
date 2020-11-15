@@ -9,6 +9,7 @@ import LeaderBoard from "./LeaderBoard";
 import Lobby from "./Lobby";
 import NewGame from "./NewGame";
 import Game from "./Game";
+import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
 import { useAuth } from "../contexts/UserContext";
@@ -19,6 +20,7 @@ const App = () => {
     REGISTER,
     LOGIN,
     MYPAGE,
+    SETTING,
     LEADERBOARD,
     NEWGAME,
     LOBBY,
@@ -29,7 +31,7 @@ const App = () => {
 
   return (
     <>
-      <pre>{JSON.stringify(currentUser, null, 2)}</pre>
+      {/* {<pre>{JSON.stringify(currentUser, null, 2)}</pre>} */}
       <Switch>
         {/* 로그인을 안 한 경우에만 보이는 페이지 */}
         <Route exact path={HOME} component={Home} permission={IS_NOT_SIGNED} />
@@ -42,6 +44,7 @@ const App = () => {
 
         {/* 로그인 했을 때만 보이는 페이지 */}
         <Route path={MYPAGE} component={MyPage} permission={IS_SIGNED} />
+        <Route path={SETTING} component={Setting} permission={IS_SIGNED} />
         <Route
           path={LEADERBOARD}
           component={LeaderBoard}

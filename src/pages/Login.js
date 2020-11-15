@@ -1,22 +1,41 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import LoginTemplate from "../components/templates/Login/Login";
 import { useAuth } from "../contexts/UserContext";
 
+// FIXME : facebook
 const Login = () => {
-  const { login, currentUser } = useAuth();
+  const { login } = useAuth();
+  const history = useHistory();
 
-  const handleLogin = ({ email, password }) => {
-    console.log(email, password);
-    login("email", `${email}`, `${password}`)
-      // TODO
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+  const handleLogin = async ({ email, password }) => {
+    await login(email, password);
+    history.push("/new-game");
+  };
+
+  const googleLogin = async () => {
+    await login("google");
+    history.push("/new-game");
+  };
+
+  const twitterLogin = async () => {
+    await login("twitter");
+    history.push("/new-game");
+  };
+
+  const facebookLogin = async () => {
+    await login("facebook");
+    history.push("/new-game");
   };
 
   return (
     <>
-      <pre>{JSON.stringify(currentUser, null, 2)}</pre>
-      <LoginTemplate method={handleLogin} />
+      <LoginTemplate
+        method={handleLogin}
+        googleLogin={googleLogin}
+        twitterLogin={twitterLogin}
+        facebookLogin={facebookLogin}
+      />
     </>
   );
 };
