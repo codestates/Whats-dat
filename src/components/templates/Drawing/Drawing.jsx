@@ -25,6 +25,7 @@ const Drawing = (props) => {
   const [leftTime, setLeftTime] = useState(limitTime);
   const [strokeSize, setStrokeSize] = useState(3);
   const [selectedColor, setSelectedColor] = useState("black");
+  const [canvasRef, setCanvaseRef] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -55,6 +56,14 @@ const Drawing = (props) => {
     }
   };
 
+  const getCanvasImageData = () => {
+    const canvasImageData = canvasRef.current
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    // TODO: 임시로 로컬 저장 되도록 되어있음
+    window.location.href = canvasImageData;
+  };
+
   return (
     <>
       <Background />
@@ -82,6 +91,7 @@ const Drawing = (props) => {
               height={36}
               lineWidth={strokeSize}
               strokeColor={selectedColor}
+              getCanvaseRef={setCanvaseRef}
             />
             <ColorPicker
               direction="vertical"
@@ -98,7 +108,7 @@ const Drawing = (props) => {
             />
           </div>
           <div className="m-top">
-            <Button text="Submit" color="danger" />
+            <Button text="Submit" color="danger" onClick={getCanvasImageData} />
           </div>
         </CustomContainer>
       </ResponsiveContainer>
