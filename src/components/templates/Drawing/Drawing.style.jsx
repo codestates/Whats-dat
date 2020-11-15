@@ -38,20 +38,33 @@ export const CustomContainer = styled(Container)`
 
       .canvas__container {
         position: relative;
+        margin-bottom: 2rem;
+        ${theme.device.mobile} {
+          margin-bottom: 0;
+        }
       }
 
       .canvas__colorPicker {
         position: absolute;
-        top: 0;
-        left: -21rem;
+        top: 6rem;
+        left: -5rem;
+      }
+
+      @media only screen and (max-width: 490px) {
+        .canvas__colorPicker {
+          position: absolute;
+          top: 8rem;
+          left: -3rem;
+        }
       }
 
       ${theme.device.mobile} {
         .canvas__colorPicker {
-          display: flex;
-          align-items: start;
-          flex-direction: row;
           position: static;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
           & > button {
             height: 2rem;
             width: 2rem;

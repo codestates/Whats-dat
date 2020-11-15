@@ -25,12 +25,12 @@ const Drawing = (props) => {
   const [leftTime, setLeftTime] = useState(limitTime);
   const [strokeSize, setStrokeSize] = useState(3);
   const [selectedColor, setSelectedColor] = useState("black");
+  const [canvasRef, setCanvaseRef] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (leftTime > 0) {
         setLeftTime(leftTime - 1);
-        console.log(leftTime);
       }
     }, 1000);
     if (leftTime === 0) {
@@ -42,6 +42,26 @@ const Drawing = (props) => {
 
   const getColorName = (color) => {
     setSelectedColor(color);
+  };
+
+  const onClickMinus = () => {
+    if (strokeSize > 2) {
+      setStrokeSize(strokeSize - 1);
+    }
+  };
+
+  const onClickPlus = () => {
+    if (strokeSize < 5) {
+      setStrokeSize(strokeSize + 1);
+    }
+  };
+
+  const getCanvasImageData = () => {
+    const canvasImageData = canvasRef.current
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    // TODO: 임시로 로컬 저장 되도록 되어있음
+    window.location.href = canvasImageData;
   };
 
   return (
@@ -65,11 +85,13 @@ const Drawing = (props) => {
               playersList={playersList}
             />
           </div>
-          <div className="m-top m-bottom canvas__container">
+          <div className="m-top canvas__container">
             <Canvas
               width={36}
+              height={36}
               lineWidth={strokeSize}
               strokeColor={selectedColor}
+              getCanvaseRef={setCanvaseRef}
             />
             <ColorPicker
               direction="vertical"
@@ -80,21 +102,13 @@ const Drawing = (props) => {
           </div>
           <div className="row-container">
             <LineWidthControllerBox
-              onClickMinus={() => {
-                if (strokeSize > 2) {
-                  setStrokeSize(strokeSize - 1);
-                }
-              }}
-              onClickPlus={() => {
-                if (strokeSize < 5) {
-                  setStrokeSize(strokeSize + 1);
-                }
-              }}
+              onClickMinus={onClickMinus}
+              onClickPlus={onClickPlus}
               lineWidth={strokeSize}
             />
           </div>
           <div className="m-top">
-            <Button text="Submit" color="danger" />
+            <Button text="Submit" color="danger" onClick={getCanvasImageData} />
           </div>
         </CustomContainer>
       </ResponsiveContainer>
