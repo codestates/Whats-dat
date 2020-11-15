@@ -13,12 +13,18 @@ import {
 } from "./NewGame.style";
 import { listItemDataSample } from "../../modules/slider/sliderFakeDb";
 
-const NewGame = ({ buttonOnClick }) => {
+const NewGame = ({
+  buttonOnClick,
+  setIsNewGameModalOpen,
+  setIsEnterCodeModalOpen,
+}) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <NewGameContainer>
+          {/* TODO 게임에 들어갈 수 없다면 온클릭에 setIsErrorModalOpen 을
+          달아줘야함. */}
           <Header
             color="primary"
             variant="h1"
@@ -37,13 +43,17 @@ const NewGame = ({ buttonOnClick }) => {
         <StyledButtonsContainer>
           <Button
             color="primary"
-            onClick={() => {}}
+            onClick={() => {
+              setIsNewGameModalOpen(true);
+            }}
             text="New Game"
             className="newGame__btn"
           />
           <Button
             color="secondary"
-            onClick={() => {}}
+            onClick={() => {
+              setIsEnterCodeModalOpen(true);
+            }}
             text="Enter Code"
             className="newGame__enterCodeBtn"
           />
@@ -53,7 +63,7 @@ const NewGame = ({ buttonOnClick }) => {
             colors="grey"
             fontSizes="base"
             fontWeight="normal"
-            href=""
+            href="/my-page"
             textShadow="none"
             className="newGame__myProfile"
           >
@@ -77,6 +87,8 @@ const NewGame = ({ buttonOnClick }) => {
 
 NewGame.propTypes = {
   buttonOnClick: propTypes.func,
+  setIsNewGameModalOpen: propTypes.func,
+  setIsEnterCodeModalOpen: propTypes.func,
 };
 
 export default NewGame;

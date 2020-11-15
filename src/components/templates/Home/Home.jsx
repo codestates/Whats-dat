@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Title from "../../atoms/title/title";
 import Background from "../../atoms/background/Background";
 
@@ -22,8 +23,12 @@ const Home = () => {
         <div>
           <Title />
         </div>
-        <LoginButton text="Log In" color="primary" bold />
-        <SignUpButton text="Sign Up" color="secondary" bold />
+        <Link to="/login">
+          <LoginButton text="Log In" color="primary" bold />
+        </Link>
+        <Link to="/register">
+          <SignUpButton text="Sign Up" color="secondary" bold />
+        </Link>
         <HomeLink colors="white" textShadow="sm">
           HOW TO PLAY
         </HomeLink>

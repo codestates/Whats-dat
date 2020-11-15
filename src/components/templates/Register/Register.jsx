@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 
 import Background from "../../atoms/background/Background";
 import ModuleForm from "../../modules/form/moduleForm";
@@ -11,7 +12,7 @@ import Icon from "../../atoms/icon/icon";
 
 import { RegisterWrapper } from "./Register.style";
 
-const Register = () => {
+const Register = ({ method }) => {
   return (
     <>
       <Background />
@@ -27,7 +28,7 @@ const Register = () => {
             />
           </div>
 
-          <ModuleForm type="register" />
+          <ModuleForm type="register" method={method} />
 
           <div className="divider__button">
             <RoundButton
@@ -50,6 +51,10 @@ const Register = () => {
       </ResponsiveContainer>
     </>
   );
+};
+
+Register.propTypes = {
+  method: propTypes.func,
 };
 
 export default Register;
