@@ -67,13 +67,13 @@ const detailInfoConfig = {
   },
 
   initialValues: {
-    radioOption: "option1",
+    avatar: "",
     nickname: "",
-    color: "",
+    avatarColor: "",
   },
 
   validationSchema: Yup.object({
-    radioOption: Yup.string().required("You Must Select an Avatar"),
+    avatar: Yup.string().required("You Must Select an Avatar"),
     nickname: Yup.string().required("Please Enter Your Nickname"),
   }),
   // eslint-disable-next-line
@@ -286,7 +286,7 @@ const ModuleForm = ({
             <FormikControl
               control="radio"
               label="radio"
-              name="radioOption"
+              name="avatar"
               options={options}
             />
             <FormikControl

@@ -12,7 +12,7 @@ const FormikContainer = ({
   initialValues,
   validationSchema,
   children,
-  onSubmit,
+  // onSubmit
   btncolor,
   method,
 }) => {
@@ -25,7 +25,7 @@ const FormikContainer = ({
       {(formik) => (
         <Form>
           {/* This line is for test purpose!!:{" "}
-					<pre>{JSON.stringify(formik, null, 2)}</pre> */}
+          <pre>{JSON.stringify(formik, null, 2)}</pre> */}
           {formInfo.formTitle ? (
             <Header
               text={
