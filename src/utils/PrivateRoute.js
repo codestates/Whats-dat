@@ -3,12 +3,13 @@ import { Route, Redirect } from "react-router-dom";
 import propTypes from "prop-types";
 import ROUTES from "./RoutePath";
 import GUARDTYPE from "./GuardType";
+import { useAuth } from "../contexts/UserContext";
 
 export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
   const { HOME, NEWGAME } = ROUTES;
-  const currentUser = true;
-  const currentRoom = true;
+  const { currentUser } = useAuth();
+  const currentRoom = false;
   const currentGame = false;
 
   const generateRoute = (validation, redirectPath) => {
