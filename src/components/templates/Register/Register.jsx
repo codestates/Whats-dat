@@ -10,14 +10,23 @@ import RoundButton from "../../atoms/roundButton/roundButton";
 import SocialButton from "../../modules/socialButton/socialButton";
 import Icon from "../../atoms/icon/icon";
 
-import { RegisterWrapper } from "./Register.style";
+import { RegisterWrapper, CloseButton } from "./Register.style";
 
-const Register = ({ method, googleLogin, facebookLogin, twitterLogin }) => {
+const Register = ({
+  method,
+  googleLogin,
+  facebookLogin,
+  twitterLogin,
+  handleClose,
+}) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <RegisterWrapper>
+          <CloseButton size="3" onClick={handleClose}>
+            <Icon variant="BUTTON_X" color="navy" />
+          </CloseButton>
           <div className="header-group">
             <Header variant="h2" text="Create an account" />
             <Header
@@ -62,6 +71,7 @@ Register.propTypes = {
   googleLogin: propTypes.func,
   facebookLogin: propTypes.func,
   twitterLogin: propTypes.func,
+  handleClose: propTypes.func,
 };
 
 export default Register;

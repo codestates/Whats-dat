@@ -12,7 +12,7 @@ import {
 } from "./MyPage.style";
 import ButtonList from "../../modules/ButtonList/buttonList";
 
-const MyPage = ({ currentUser, method, handleClose }) => {
+const MyPage = ({ userGameProfile, method, handleClose }) => {
   const items = [
     {
       text: "Leaderboard",
@@ -49,11 +49,11 @@ const MyPage = ({ currentUser, method, handleClose }) => {
             weight="normal"
           />
           <ProfileCard
-            avatar={JSON.parse(currentUser.photoURL).avatar}
-            color={JSON.parse(currentUser.photoURL).avatarColor}
+            avatar={userGameProfile.avatar || "AVATAR_KIWI"}
+            color={userGameProfile.avatarColor || "green"}
             rank="123"
             AllUsers="1234"
-            name={currentUser.displayName}
+            name={userGameProfile.nickname}
           />
         </HeaderContainer>
         <ButtonListContainer>
@@ -66,7 +66,7 @@ const MyPage = ({ currentUser, method, handleClose }) => {
 
 MyPage.propTypes = {
   method: propTypes.func,
-  currentUser: propTypes.objectOf,
+  userGameProfile: propTypes.objectOf,
   handleClose: propTypes.func,
 };
 

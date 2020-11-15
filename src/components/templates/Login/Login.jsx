@@ -10,14 +10,23 @@ import RoundButton from "../../atoms/roundButton/roundButton";
 import SocialButton from "../../modules/socialButton/socialButton";
 import Icon from "../../atoms/icon/icon";
 
-import { LoginWrapper } from "./Login.style";
+import { LoginWrapper, CloseButton } from "./Login.style";
 
-const Login = ({ method, googleLogin, twitterLogin, facebookLogin }) => {
+const Login = ({
+  method,
+  googleLogin,
+  twitterLogin,
+  facebookLogin,
+  handleClose,
+}) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <LoginWrapper>
+          <CloseButton size="3" onClick={handleClose}>
+            <Icon variant="BUTTON_X" color="navy" />
+          </CloseButton>
           <div className="header-group">
             <Header variant="h2" text="Welcome back" />
             <Header
@@ -70,6 +79,7 @@ Login.propTypes = {
   googleLogin: propTypes.func,
   twitterLogin: propTypes.func,
   facebookLogin: propTypes.func,
+  handleClose: propTypes.func,
 };
 
 export default Login;

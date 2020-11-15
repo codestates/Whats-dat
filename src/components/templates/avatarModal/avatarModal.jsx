@@ -5,23 +5,20 @@ import { AvatarWrapper } from "./avatarModal.style";
 import ModuleForm from "../../modules/form/moduleForm";
 
 const AvatarModal = (props) => {
-  const { options, method, currentUser } = props;
-
-  // FIXME
-  // const avatar = JSON.parse(currentUser.photoURL)
-  //   ? `option${options.indexOf(JSON.parse(currentUser.photoURL)) + 1}`
-  //   : "option1";
-  // const avatarColor = JSON.parse(currentUser.photoURL)
-  //   ? JSON.parse(currentUser.photoURL).avatarColor
-  //   : "";
-  const initialValues = {
-    radioOption: "option1",
-    nickname: currentUser.displayName || "",
-    color: "",
-  };
-
+  const {
+    options,
+    method,
+    initialValues,
+    userGameProfile,
+    handleCloseModal,
+  } = props;
   return (
-    <Modal width={28.5} height={20} hasXIcon={false}>
+    <Modal
+      width={28.5}
+      height={20}
+      hasXIcon={userGameProfile.nickname !== ""}
+      handleCloseModal={handleCloseModal}
+    >
       <AvatarWrapper width={22}>
         <ModuleForm
           type="detailInfo"
@@ -37,7 +34,9 @@ const AvatarModal = (props) => {
 AvatarModal.propTypes = {
   method: propTypes.func,
   options: propTypes.arrayOf,
-  currentUser: propTypes.objectOf,
+  initialValues: propTypes.objectOf,
+  userGameProfile: propTypes.objectOf,
+  handleCloseModal: propTypes.func,
 };
 
 export default AvatarModal;

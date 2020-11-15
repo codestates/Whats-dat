@@ -13,7 +13,7 @@ import {
 } from "./LeaderBoard.style";
 import CustomHook from "./CustomHook";
 
-const LeaderBoard = ({ handleClose }) => {
+const LeaderBoard = ({ handleClose, userGameProfile }) => {
   return (
     <>
       <Background />
@@ -26,11 +26,11 @@ const LeaderBoard = ({ handleClose }) => {
         </RankingHeaderContainer>
         <RankingItem
           isCurrentUser="true"
-          avatarColor="red"
-          icon="AVATAR_SMILE"
-          ranking="244"
-          score="532"
-          nickname="my name"
+          avatarColor={userGameProfile.avatarColor}
+          icon={userGameProfile.avatar}
+          ranking="244" // TODO ranking 하드코딩 한걸 바꿔줘야함
+          score={userGameProfile.score}
+          nickname={userGameProfile.nickname}
         />
         <ListContainer>
           <InfiniteScroll ListItem={RankingItem} CustomHook={CustomHook} />
@@ -41,6 +41,7 @@ const LeaderBoard = ({ handleClose }) => {
 };
 LeaderBoard.propTypes = {
   handleClose: propTypes.func,
+  userGameProfile: propTypes.objectOf,
 };
 
 export default LeaderBoard;

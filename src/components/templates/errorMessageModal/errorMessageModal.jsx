@@ -7,6 +7,11 @@ import Paragraph from "../../atoms/paragraph/paragraph";
 
 const ErrorMessageModal = (props) => {
   const { handleCloseModal, errorMessage } = props;
+  const defaultErrorMessage = {
+    title: "This room is full 😱",
+    paragraph: "Look for another room!",
+  };
+
   return (
     <Modal
       width={28.5}
@@ -22,8 +27,18 @@ const ErrorMessageModal = (props) => {
           weight="exbold"
           marginBottom="sm"
         />
-        <Paragraph text="This room is full 😱" color="darkGrey" />
-        <Paragraph text="Look for another room!" color="darkGrey" />
+        <Paragraph
+          text={errorMessage ? errorMessage.title : defaultErrorMessage.title}
+          color="darkGrey"
+        />
+        <Paragraph
+          text={
+            errorMessage
+              ? errorMessage.paragraph
+              : defaultErrorMessage.paragraph
+          }
+          color="darkGrey"
+        />
       </RowContainer>
     </Modal>
   );
