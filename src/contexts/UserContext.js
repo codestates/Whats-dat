@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
-import app, {
+import {
   auth,
   googleProvider,
   facebookProvider,
@@ -17,13 +17,10 @@ const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  const login = (type, credentials) => {
+  const login = (type, email, password) => {
     switch (type) {
       case "email":
-        return auth.signInWithEmailAndPassword(
-          credentials.email,
-          credentials.password
-        );
+        return auth.signInWithEmailAndPassword(email, password);
       case "google":
         return auth.signInWithPopup(googleProvider);
       case "facebook":
@@ -35,16 +32,16 @@ const UserContextProvider = ({ children }) => {
     }
   };
 
-  // FIXME : google 등의 경우 signin만 있다
-  const register = (type, credentials) => {
-    return auth.createUserWithEmailAndPassword(
-      credentials.email,
-      credentials.password
-    );
+  const register = (email, password) => {
+    return auth.createUserWithEmailAndPassword(email, password);
   };
 
-  const logOut = (type) => {
+  const logOut = () => {
     return auth.signOut();
+  };
+
+  const updateNickNameAndAvatar = (userProfile) => {
+    return currentUser.updateProfile(userProfile);
   };
 
   useEffect(() => {
@@ -55,7 +52,13 @@ const UserContextProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, login, register, logOut };
+  const value = {
+    currentUser,
+    login,
+    register,
+    logOut,
+    updateNickNameAndAvatar,
+  };
 
   return (
     <UserContext.Provider value={value}>
