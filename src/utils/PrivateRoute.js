@@ -9,7 +9,7 @@ export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
   const { HOME, NEWGAME } = ROUTES;
   const currentUser = true;
   const currentRoom = true;
-  const currentGame = false;
+  const currentGame = true;
 
   const generateRoute = (validation, redirectPath) => {
     return (
