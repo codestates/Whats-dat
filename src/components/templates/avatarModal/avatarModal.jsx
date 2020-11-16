@@ -5,18 +5,12 @@ import { AvatarWrapper } from "./avatarModal.style";
 import ModuleForm from "../../modules/form/moduleForm";
 
 const AvatarModal = (props) => {
-  const {
-    options,
-    method,
-    initialValues,
-    userGameProfile,
-    handleCloseModal,
-  } = props;
+  const { options, method, initialValues, handleCloseModal } = props;
   return (
     <Modal
       width={28.5}
       height={20}
-      hasXIcon={userGameProfile.nickname !== ""}
+      hasXIcon
       handleCloseModal={handleCloseModal}
     >
       <AvatarWrapper width={22}>
@@ -33,9 +27,12 @@ const AvatarModal = (props) => {
 
 AvatarModal.propTypes = {
   method: propTypes.func,
-  options: propTypes.arrayOf,
-  initialValues: propTypes.objectOf,
-  userGameProfile: propTypes.objectOf,
+  options: propTypes.arrayOf(propTypes.object),
+  initialValues: propTypes.shape({
+    nickname: propTypes.string,
+    avatar: propTypes.string,
+    avatarColor: propTypes.string,
+  }),
   handleCloseModal: propTypes.func,
 };
 

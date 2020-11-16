@@ -66,7 +66,12 @@ const MyPage = ({ userGameProfile, method, handleClose }) => {
 
 MyPage.propTypes = {
   method: propTypes.func,
-  userGameProfile: propTypes.objectOf,
+  userGameProfile: propTypes.shape({
+    nickname: propTypes.string,
+    score: propTypes.number,
+    avatarColor: propTypes.string,
+    avatar: propTypes.string,
+  }),
   handleClose: propTypes.func,
 };
 
