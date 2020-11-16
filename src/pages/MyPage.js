@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import MyPageTemplage from "../components/templates/MyPage/MyPage";
+import MyPageTemplate from "../components/templates/MyPage/MyPage";
 import LogOutModal from "../components/templates/logoutModal/logoutModal";
 import { useAuth } from "../contexts/UserContext";
 
 const MyPage = () => {
-  const { userGameProfile, logOut } = useAuth();
+  const { currentUser, userGameProfile, getUser, logOut } = useAuth();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    getUser(currentUser.uid)
+      .then((userData) => {
+        const user = userData.data();
+        return user;
+      })
+      .then((user) => {
+        if (
+          !user ||
+          user.nickname === "" ||
+          user.avatar === "" ||
+          user.avatarColor === ""
+        ) {
+          history.push("/setting");
+        }
+      });
+  }, []);
 
   const handleLogOut = async () => {
     await logOut();
@@ -23,7 +41,7 @@ const MyPage = () => {
           handleYesBtn={handleLogOut}
         />
       ) : null}
-      <MyPageTemplage
+      <MyPageTemplate
         userGameProfile={userGameProfile}
         method={setIsModalOpen}
         handleClose={() => history.push("/new-game")}

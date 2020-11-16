@@ -27,10 +27,11 @@ const App = () => {
     GAME,
   } = ROUTES;
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
-  const { userGameProfile } = useAuth();
+  const { currentUser, userGameProfile } = useAuth();
 
   return (
     <>
+      <pre>{JSON.stringify(currentUser, null, 2)}</pre>
       <pre>{JSON.stringify(userGameProfile, null, 2)}</pre>
       <Switch>
         {/* 로그인을 안 한 경우에만 보이는 페이지 */}
@@ -42,7 +43,7 @@ const App = () => {
         />
         <Route path={LOGIN} component={Login} permission={IS_NOT_SIGNED} />
 
-        {/* 로그인 했을 때만 보이는 페이지 */}
+        {/* 로그인 했을 때만 보이는 페이지, 추가 ** 11/16/02:14 김폴빈: userGameProfile 이 존재하지 않을 경우 예외처리 해주어야함. **  */}
         <Route path={MYPAGE} component={MyPage} permission={IS_SIGNED} />
         <Route path={SETTING} component={Setting} permission={IS_SIGNED} />
         <Route

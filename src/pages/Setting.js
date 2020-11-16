@@ -1,25 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AvatarModal from "../components/templates/avatarModal/avatarModal";
 import Background from "../components/atoms/background/Background";
 import { useAuth } from "../contexts/UserContext";
 
 const Setting = () => {
-  const { userGameProfile, updateUserGameProfile, getUser } = useAuth();
+  const {
+    getUser,
+    currentUser,
+    userGameProfile,
+    setUserGameProfile,
+    updateUserGameProfile,
+    createUserGameProfile,
+  } = useAuth();
   const history = useHistory();
+  const [initialValues] = useState(userGameProfile);
 
-  const initialValues = {
-    nickname: "",
-    avatar: "",
-    avatarColor: "",
-  };
+  useEffect(() => {
+    if (userGameProfile && !userGameProfile.nickname.length) {
+      createUserGameProfile(currentUser.uid).then(() => {
+        console.log("createUserGameProfile하고 난 후");
+        getUser(currentUser.uid)
+          .then((userData) => {
+            console.dir(userData);
+            setUserGameProfile(userData.data());
+            // history.push("/my-page");
+          })
+          .catch((error) => {
+            throw new Error(error.message);
+          });
+      });
+    }
+  }, []);
 
   const handleUpdateUserInfo = async (newUserGameProfile) => {
     try {
       await updateUserGameProfile(newUserGameProfile);
+      setUserGameProfile(newUserGameProfile);
       history.push("/new-game");
     } catch (err) {
-      console.log(err);
+      throw new Error(err);
     }
   };
 
@@ -39,7 +59,6 @@ const Setting = () => {
         options={options}
         method={handleUpdateUserInfo}
         initialValues={initialValues}
-        userGameProfile={userGameProfile}
         handleCloseModal={() => history.push("/my-page")}
       />
     </>
@@ -47,3 +66,13 @@ const Setting = () => {
 };
 
 export default Setting;
+
+// ANCHOR
+// 1. 프라이빗라우트 func => node || func
+// 2. a -> link
+// 3. temp profile
+
+// TODO :
+// setting을 refresh했을 때 userGameProfile 값이 초기화됨....ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+// social login시 setting -> avatar 클릭 시 avatar of undefined -> refresh하면 잘 됨...
+// my profile 클릭 범위
