@@ -12,7 +12,7 @@ const ColorPicker = ({
   getColorName,
   btnSize,
 }) => {
-  const paletteColors = ["red", "yellow", "green", "blue", "black", "white"];
+  const paletteColors = ["red", "yellow", "green", "blue", "black", "lightBg"];
   const config = { direction, onClick, className, btnSize };
 
   const renderColorButtons = () =>
