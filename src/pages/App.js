@@ -56,7 +56,7 @@ const App = () => {
         <Route path={LOBBY} component={Lobby} permission={IS_IN_ROOM} />
         {/* 속해있는 방의 게임이 진행 중 일때만 접속 가능한 경로  */}
         <Route path={GAME} component={Game} permission={IS_PLAYING} />
-        <Redirect to={Home} />
+        <Redirect to="/" />
       </Switch>
     </>
   );
