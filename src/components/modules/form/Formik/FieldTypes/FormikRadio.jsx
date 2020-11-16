@@ -10,10 +10,12 @@ const FormikRadio = ({ label, name, options, ...rest }) => {
   const [selected, setSelected] = useState("");
 
   const handleClick = (option, form) => {
-    console.log(option);
+    console.log("click/option", option);
+    console.log(form);
     setSelected(option.avatar);
-    /* eslint no-param-reassign: "error" */
     form.values.avatarColor = option.avatarColor;
+    console.log("click/avatarColor", option.avatarColor);
+    /* eslint no-param-reassign: "error" */
   };
 
   return (
@@ -33,7 +35,7 @@ const FormikRadio = ({ label, name, options, ...rest }) => {
                     <input
                       {...field}
                       type="radio"
-                      id={option.value}
+                      id={option.avatar}
                       value={option.avatar}
                       checked={field.value === option.avatar}
                     />

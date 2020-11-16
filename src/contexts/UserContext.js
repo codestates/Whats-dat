@@ -55,6 +55,7 @@ const UserContextProvider = ({ children }) => {
   };
 
   const logOut = () => {
+    localStorage.clear();
     return auth.signOut();
   };
 

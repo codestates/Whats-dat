@@ -91,6 +91,11 @@ export const StyledLinksContainer = styled.div`
       .newGame__tutorial {
         padding: ${theme.paddings.xxsm};
       }
+
+      a {
+        text-decoration: none;
+        padding: 0;
+      }
     `;
   }}
 `;
