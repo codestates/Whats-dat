@@ -1,5 +1,11 @@
 /* eslint consistent-return: "off" */
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import propTypes from "prop-types";
 import { useField } from "formik";
 
@@ -15,9 +21,10 @@ import { DefaultInput } from "../../atoms/input/input.style";
 
 const SelectWord = (props) => {
   const { handleTimeOut, wordList } = props;
-
-  const [leftTime, setLeftTime] = useState(15);
+  // FIXME : leftTime: 20초
+  const [leftTime, setLeftTime] = useState(10);
   const [selectedWord, setSelectedWord] = useState("");
+  const inputRef = useRef();
 
   const handleClick = (word) => {
     setSelectedWord(word);
@@ -34,16 +41,32 @@ const SelectWord = (props) => {
       setValue(term);
     }, [term]);
 
+    const renderInput = useMemo(
+      () => (
+        <input
+          ref={inputRef}
+          name={name}
+          type={type}
+          placeholder="Enter your word..."
+          value={selectedWord}
+          onChange={(e) => setSelectedWord(e.target.value)}
+        />
+      ),
+      []
+    );
+
     return (
       <>
         <DefaultInput>
           <input
+            ref={inputRef}
             name={name}
             type={type}
             placeholder="Enter your word..."
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
+            value={selectedWord}
+            onChange={(e) => setSelectedWord(e.target.value)}
           />
+          {renderInput}
         </DefaultInput>
       </>
     );
@@ -62,7 +85,7 @@ const SelectWord = (props) => {
     }, 1000);
 
     if (leftTime === 0) {
-      handleTimeOut();
+      handleTimeOut({ word: inputRef.current.value });
       return clearTimeout(timer);
     }
   }, [leftTime]);
@@ -108,7 +131,11 @@ const SelectWord = (props) => {
             <Header text="Or" variant="h3" color="navy" weight="bold" />
           </div>
           <Container size={22}>
-            <ModuleForm type="selectWord" btncolor="danger">
+            <ModuleForm
+              type="selectWord"
+              btncolor="danger"
+              method={handleTimeOut}
+            >
               <CustomField name="word" type="text" value={selectedWord} />
             </ModuleForm>
           </Container>

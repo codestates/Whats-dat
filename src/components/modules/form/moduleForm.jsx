@@ -311,6 +311,7 @@ const ModuleForm = ({
             validationSchema={selectWordConfig.validationSchema}
             onSubmit={selectWordConfig.onSubmit}
             btncolor={btncolor}
+            method={method}
           >
             {children}
           </FormikContainer>
