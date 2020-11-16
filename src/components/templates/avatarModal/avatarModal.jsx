@@ -5,7 +5,8 @@ import { AvatarWrapper } from "./avatarModal.style";
 import ModuleForm from "../../modules/form/moduleForm";
 
 const AvatarModal = (props) => {
-  const { options, method, initialValues, handleCloseModal } = props;
+  const { method, initialValues, handleCloseModal, options } = props;
+
   return (
     <Modal
       width={28.5}
