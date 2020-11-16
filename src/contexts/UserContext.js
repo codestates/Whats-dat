@@ -21,6 +21,7 @@ const UserContextProvider = ({ children }) => {
     avatarColor: "",
     score: 0,
   };
+
   const [currentUser, setCurrentUser] = useState();
   const [userGameProfile, setUserGameProfile] = useState(userGameProfileSchema);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,15 @@ const UserContextProvider = ({ children }) => {
     return auth.createUserWithEmailAndPassword(email, password);
   };
 
+  const createUserGameProfile = (uid) => {
+    return firestore.collection("users").doc(uid).set({
+      nickname: "",
+      avatar: "",
+      avatarColor: "",
+      score: 0,
+    });
+  };
+
   const logOut = () => {
     return auth.signOut();
   };
@@ -52,13 +62,11 @@ const UserContextProvider = ({ children }) => {
     return firestore
       .collection("users")
       .doc(currentUser.uid)
-      .update(userProfile)
-      .then(() => setUserGameProfile(userProfile))
-      .catch((err) => console.log(err.message));
+      .update(userProfile);
   };
 
-  const getUser = () => {
-    return firestore.collection("users").doc(currentUser.uid).get();
+  const getUser = (userId) => {
+    return firestore.collection("users").doc(userId).get();
   };
 
   useEffect(() => {
@@ -83,7 +91,9 @@ const UserContextProvider = ({ children }) => {
           const currentUserGameProfile = user.data();
           setUserGameProfile(currentUserGameProfile);
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => {
+          throw new Error(err.message); // TODO Error Handling needs to be transferred to UI Element
+        });
     }
   }, [currentUser]);
 
@@ -91,6 +101,7 @@ const UserContextProvider = ({ children }) => {
     currentUser,
     login,
     register,
+    createUserGameProfile,
     logOut,
     updateUserGameProfile,
     setUserGameProfile,
