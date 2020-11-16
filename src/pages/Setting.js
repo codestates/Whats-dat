@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import AvatarModal from "../components/templates/avatarModal/avatarModal";
 import Background from "../components/atoms/background/Background";
 import { useAuth } from "../contexts/UserContext";
+import useLocalStorage from "../utils/useLocalStorage";
 
 const Setting = () => {
   const {
@@ -15,21 +16,45 @@ const Setting = () => {
   } = useAuth();
   const history = useHistory();
   const [initialValues] = useState(userGameProfile);
+  const [
+    persistentUserGameProfile,
+    setPersistentUserGameProfile,
+  ] = useLocalStorage("userGameProfile", userGameProfile);
 
   useEffect(() => {
-    if (userGameProfile && !userGameProfile.nickname.length) {
+    // getUser(currentUser.uid).then((userData) => {
+    //   if (userData) setUserGameProfile(userData.data());
+    // });
+
+    if (
+      persistentUserGameProfile &&
+      !persistentUserGameProfile.nickname.length
+    ) {
       createUserGameProfile(currentUser.uid).then(() => {
-        console.log("createUserGameProfile하고 난 후");
         getUser(currentUser.uid)
           .then((userData) => {
-            console.dir(userData);
             setUserGameProfile(userData.data());
-            // history.push("/my-page");
+            setPersistentUserGameProfile(userData.data());
           })
           .catch((error) => {
             throw new Error(error.message);
           });
       });
+    } else if (
+      persistentUserGameProfile &&
+      persistentUserGameProfile.nickname.length
+    ) {
+      // TRY 2
+      setUserGameProfile(persistentUserGameProfile);
+      // TRY 1
+      // getUser(currentUser.uid)
+      //   .then((userData) => {
+      //     setUserGameProfile(userData.data());
+      //     // history.push("/my-page");
+      //   })
+      //   .catch((error) => {
+      //     throw new Error(error.message);
+      //   });
     }
   }, []);
 
@@ -37,6 +62,7 @@ const Setting = () => {
     try {
       await updateUserGameProfile(newUserGameProfile);
       setUserGameProfile(newUserGameProfile);
+      setPersistentUserGameProfile(newUserGameProfile);
       history.push("/new-game");
     } catch (err) {
       throw new Error(err);
