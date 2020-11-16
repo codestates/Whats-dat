@@ -15,6 +15,7 @@ export const LobbyHeader = styled.div`
 `;
 
 export const SettingBox = styled.div`
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
@@ -32,6 +33,7 @@ export const GameSecond = styled(Paragraph)`
 `;
 
 export const Settingbutton = styled(IconButton)`
+  cursor: pointer;
   ${({ theme }) => {
     return css`
       ${theme.device.mobile} {

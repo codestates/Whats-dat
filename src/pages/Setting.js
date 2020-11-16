@@ -53,18 +53,7 @@ const Setting = () => {
       persistentUserGameProfile &&
       persistentUserGameProfile.nickname.length
     ) {
-      // TRY 2
       setUserGameProfile(persistentUserGameProfile);
-      // console.log("5. 기존 유저는 local에서 가져와", userGameProfile);
-      // TRY 1
-      // getUser(currentUser.uid)
-      //   .then((userData) => {
-      //     setUserGameProfile(userData.data());
-      //     // history.push("/my-page");
-      //   })
-      //   .catch((error) => {
-      //     throw new Error(error.message);
-      //   });
     }
   }, []);
 
@@ -73,7 +62,7 @@ const Setting = () => {
       await updateUserGameProfile(newUserGameProfile);
       setUserGameProfile(newUserGameProfile);
       setPersistentUserGameProfile(newUserGameProfile);
-      history.push("/new-game");
+      history.push("/my-page");
     } catch (err) {
       throw new Error(err);
     }
