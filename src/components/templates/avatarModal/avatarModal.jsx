@@ -5,8 +5,7 @@ import { AvatarWrapper } from "./avatarModal.style";
 import ModuleForm from "../../modules/form/moduleForm";
 
 const AvatarModal = (props) => {
-  const { handleCloseModal, options } = props;
-
+  const { options, method, initialValues, handleCloseModal } = props;
   return (
     <Modal
       width={28.5}
@@ -15,15 +14,26 @@ const AvatarModal = (props) => {
       handleCloseModal={handleCloseModal}
     >
       <AvatarWrapper width={22}>
-        <ModuleForm type="detailInfo" options={options} />
+        <ModuleForm
+          type="detailInfo"
+          options={options}
+          method={method}
+          initialValues={initialValues}
+        />
       </AvatarWrapper>
     </Modal>
   );
 };
 
 AvatarModal.propTypes = {
+  method: propTypes.func,
+  options: propTypes.arrayOf(propTypes.object),
+  initialValues: propTypes.shape({
+    nickname: propTypes.string,
+    avatar: propTypes.string,
+    avatarColor: propTypes.string,
+  }),
   handleCloseModal: propTypes.func,
-  options: propTypes.objectOf,
 };
 
 export default AvatarModal;

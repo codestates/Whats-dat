@@ -72,6 +72,10 @@ export const StyledButtonsContainer = styled.div`
           padding: ${theme.paddings.baseSm} ${theme.paddings.baseLg};
         }
       }
+
+      a {
+        text-decoration: none;
+      }
     `;
   }}
 `;

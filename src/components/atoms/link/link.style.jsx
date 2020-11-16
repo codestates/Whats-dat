@@ -1,14 +1,16 @@
 import styled, { css } from "styled-components";
 
-export const DefaultLink = styled.a`
+export const DefaultLink = styled.div`
   ${({ theme, fontSizes, fontWeight, colors, textShadow }) => {
     return css`
-      text-decoration: none;
-      padding: ${theme.paddings.sm};
-      font-size: ${theme.fonts.size[fontSizes]};
-      font-weight: ${theme.fonts.weight[fontWeight]};
-      color: ${theme.colors[colors]};
-      text-shadow: ${theme.textShadow[textShadow]};
+      a {
+        padding: ${theme.paddings.sm};
+        text-decoration: none !important;
+        font-size: ${theme.fonts.size[fontSizes]} !important;
+        font-weight: ${theme.fonts.weight[fontWeight]} !important;
+        color: ${theme.colors[colors]} !important;
+        text-shadow: ${theme.textShadow[textShadow]} !important;
+      }
     `;
   }}
 `;

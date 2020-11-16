@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 
 import Background from "../../atoms/background/Background";
 import ModuleForm from "../../modules/form/moduleForm";
@@ -9,14 +10,23 @@ import RoundButton from "../../atoms/roundButton/roundButton";
 import SocialButton from "../../modules/socialButton/socialButton";
 import Icon from "../../atoms/icon/icon";
 
-import { RegisterWrapper } from "./Register.style";
+import { RegisterWrapper, CloseButton } from "./Register.style";
 
-const Register = () => {
+const Register = ({
+  method,
+  googleLogin,
+  facebookLogin,
+  twitterLogin,
+  handleClose,
+}) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <RegisterWrapper>
+          <CloseButton size="3" onClick={handleClose}>
+            <Icon variant="BUTTON_X" color="navy" />
+          </CloseButton>
           <div className="header-group">
             <Header variant="h2" text="Create an account" />
             <Header
@@ -27,7 +37,7 @@ const Register = () => {
             />
           </div>
 
-          <ModuleForm type="register" />
+          <ModuleForm type="register" method={method} />
 
           <div className="divider__button">
             <RoundButton
@@ -44,12 +54,24 @@ const Register = () => {
           <Paragraph text="Or login with social media" size="sm" color="grey" />
 
           <div className="social__button">
-            <SocialButton />
+            <SocialButton
+              googleLogin={googleLogin}
+              twitterLogin={twitterLogin}
+              facebookLogin={facebookLogin}
+            />
           </div>
         </RegisterWrapper>
       </ResponsiveContainer>
     </>
   );
+};
+
+Register.propTypes = {
+  method: propTypes.func,
+  googleLogin: propTypes.func,
+  facebookLogin: propTypes.func,
+  twitterLogin: propTypes.func,
+  handleClose: propTypes.func,
 };
 
 export default Register;

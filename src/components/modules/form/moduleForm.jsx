@@ -27,8 +27,11 @@ const loginConfig = {
     email: Yup.string().required("Email is a required field"),
     password: Yup.string().required("Password is Required"),
   }),
-  // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {
+    // FIXME
+    // eslint-disable-next-line
+    console.log("form-data", values);
+  },
 };
 
 const registerConfig = {
@@ -64,13 +67,13 @@ const detailInfoConfig = {
   },
 
   initialValues: {
-    radioOption: "option1",
+    avatar: "",
     nickname: "",
-    color: "",
+    avatarColor: "",
   },
 
   validationSchema: Yup.object({
-    radioOption: Yup.string().required("You Must Select an Avatar"),
+    avatar: Yup.string().required("You Must Select an Avatar"),
     nickname: Yup.string().required("Please Enter Your Nickname"),
   }),
   // eslint-disable-next-line
@@ -182,6 +185,7 @@ const ModuleForm = ({
   initialValues,
   selectedWord,
   children,
+  method,
 }) => {
   switch (type) {
     case "login":
@@ -192,6 +196,7 @@ const ModuleForm = ({
             initialValues={loginConfig.initialValues}
             validationSchema={loginConfig.validationSchema}
             onSubmit={loginConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="input"
@@ -227,7 +232,7 @@ const ModuleForm = ({
             formInfo={registerConfig.formInfo}
             initialValues={registerConfig.initialValues}
             validationSchema={registerConfig.validationSchema}
-            onSubmit={registerConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="input"
@@ -273,17 +278,17 @@ const ModuleForm = ({
         <InfoForm>
           <FormikContainer
             formInfo={detailInfoConfig.formInfo}
-            initialValues={detailInfoConfig.initialValues}
+            initialValues={initialValues}
             validationSchema={detailInfoConfig.validationSchema}
             onSubmit={detailInfoConfig.onSubmit}
+            method={method}
           >
             <FormikControl
               control="radio"
               label="radio"
-              name="radioOption"
+              name="avatar"
               options={options}
             />
-
             <FormikControl
               icon={false}
               control="input"
@@ -451,6 +456,7 @@ ModuleForm.propTypes = {
   btncolor: propTypes.string,
   selectedWord: propTypes.string,
   children: propTypes.node,
+  method: propTypes.func,
 };
 
 export default ModuleForm;

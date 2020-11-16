@@ -68,8 +68,8 @@ const colors = {
   grey: "#AEA8B2",
   lightGrey: "#F1EBF5",
   lightBg: "#FBFBFB",
-  red: "#F55827",
-  yellow: "#FAF74F",
+  red: "#F27b57",
+  yellow: "#efe377",
   green: "#91D454",
   blue: "#4797EE",
 };

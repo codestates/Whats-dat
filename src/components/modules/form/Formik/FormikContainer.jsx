@@ -12,19 +12,20 @@ const FormikContainer = ({
   initialValues,
   validationSchema,
   children,
-  onSubmit,
+  // onSubmit
   btncolor,
+  method,
 }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={method}
     >
       {(formik) => (
         <Form>
           {/* This line is for test purpose!!:{" "}
-					<pre>{JSON.stringify(formik, null, 2)}</pre> */}
+          <pre>{JSON.stringify(formik, null, 2)}</pre> */}
           {formInfo.formTitle ? (
             <Header
               text={

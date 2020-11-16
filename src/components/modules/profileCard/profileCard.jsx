@@ -5,10 +5,10 @@ import Avatar from "../../atoms/avatar/avatar";
 import Paragraph from "../../atoms/paragraph/paragraph";
 import Icon from "../../atoms/icon/icon";
 
-const ProfileCard = ({ name, avatar, rank, AllUsers }) => {
+const ProfileCard = ({ name, avatar, rank, AllUsers, color }) => {
   return (
     <ProfileCardBox>
-      <Avatar sizes="md" bgColor="primary" className="profile_avatar">
+      <Avatar sizes="md" bgColor={color} className="profile_avatar">
         <Icon variant={avatar} color="white" />
       </Avatar>
       <Paragraph
@@ -33,6 +33,7 @@ ProfileCard.propTypes = {
   avatar: propTypes.string,
   rank: propTypes.number,
   AllUsers: propTypes.number,
+  color: propTypes.string,
 };
 
 export default ProfileCard;

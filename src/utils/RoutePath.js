@@ -3,6 +3,7 @@ export default {
   REGISTER: "/register",
   LOGIN: "/login",
   MYPAGE: "/my-page",
+  SETTING: "/setting",
   LEADERBOARD: "/leaderboard",
   NEWGAME: "/new-game",
   LOBBY: "/lobby",

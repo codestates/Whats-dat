@@ -1,7 +1,9 @@
 import React from "react";
 import propTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { DefaultLink } from "./link.style";
 
+// ANCHOR
 const TextLink = ({
   href,
   fontSizes = "base",
@@ -20,7 +22,7 @@ const TextLink = ({
       textShadow={textShadow}
       className={className}
     >
-      {children}
+      <Link to={href}>{children}</Link>
     </DefaultLink>
   );
 };

@@ -17,6 +17,7 @@ const profileCardBox = styled.div`
       .profile_avatar {
         margin-top: -4.5rem;
         margin-bottom: ${theme.margins.base};
+        font-size: 3rem;
       }
 
       .profile_name {

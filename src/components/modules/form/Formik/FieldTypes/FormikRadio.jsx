@@ -10,9 +10,10 @@ const FormikRadio = ({ label, name, options, ...rest }) => {
   const [selected, setSelected] = useState("");
 
   const handleClick = (option, form) => {
-    setSelected(option.value);
+    console.log(option);
+    setSelected(option.avatar);
     /* eslint no-param-reassign: "error" */
-    form.values.color = option.color;
+    form.values.avatarColor = option.avatarColor;
   };
 
   return (
@@ -22,21 +23,21 @@ const FormikRadio = ({ label, name, options, ...rest }) => {
           {({ field, form }) => {
             return options.map((option) => {
               return (
-                <React.Fragment key={option.key}>
+                <React.Fragment key={option.avatar}>
                   <Avatar
                     className="circles"
                     onClick={() => handleClick(option, form)}
-                    border={selected === option.value}
-                    bgColor={option.color}
+                    border={selected === option.avatar}
+                    bgColor={option.avatarColor}
                   >
                     <input
                       {...field}
                       type="radio"
                       id={option.value}
-                      value={option.key}
-                      checked={field.value === option.value}
+                      value={option.avatar}
+                      checked={field.value === option.avatar}
                     />
-                    <Icon variant={option.key} color="white" />
+                    <Icon variant={option.avatar} color="white" />
                   </Avatar>
                 </React.Fragment>
               );

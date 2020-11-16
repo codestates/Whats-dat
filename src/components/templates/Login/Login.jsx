@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 
 import Background from "../../atoms/background/Background";
 import ModuleForm from "../../modules/form/moduleForm";
@@ -9,14 +10,23 @@ import RoundButton from "../../atoms/roundButton/roundButton";
 import SocialButton from "../../modules/socialButton/socialButton";
 import Icon from "../../atoms/icon/icon";
 
-import { LoginWrapper } from "./Login.style";
+import { LoginWrapper, CloseButton } from "./Login.style";
 
-const Login = () => {
+const Login = ({
+  method,
+  googleLogin,
+  twitterLogin,
+  facebookLogin,
+  handleClose,
+}) => {
   return (
     <>
       <Background />
       <ResponsiveContainer>
         <LoginWrapper>
+          <CloseButton size="3" onClick={handleClose}>
+            <Icon variant="BUTTON_X" color="navy" />
+          </CloseButton>
           <div className="header-group">
             <Header variant="h2" text="Welcome back" />
             <Header
@@ -33,7 +43,7 @@ const Login = () => {
             />
           </div>
 
-          <ModuleForm type="login" />
+          <ModuleForm type="login" method={method} />
 
           <Paragraph text="Forgot Password?" size="sm" color="grey" />
 
@@ -52,12 +62,24 @@ const Login = () => {
           <Paragraph text="Or login with social media" size="sm" color="grey" />
 
           <div className="social__button">
-            <SocialButton />
+            <SocialButton
+              googleLogin={googleLogin}
+              twitterLogin={twitterLogin}
+              facebookLogin={facebookLogin}
+            />
           </div>
         </LoginWrapper>
       </ResponsiveContainer>
     </>
   );
+};
+
+Login.propTypes = {
+  method: propTypes.func.isRequired,
+  googleLogin: propTypes.func,
+  twitterLogin: propTypes.func,
+  facebookLogin: propTypes.func,
+  handleClose: propTypes.func,
 };
 
 export default Login;

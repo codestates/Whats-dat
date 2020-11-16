@@ -1,8 +1,10 @@
 import styled, { css } from "styled-components";
+import IconButton from "../../atoms/IconButton/iconButton";
 
 export const LoginWrapper = styled.div`
   ${({ theme }) => {
     return css`
+      position: relative;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -57,6 +59,13 @@ export const LoginWrapper = styled.div`
       }
     `;
   }}
+`;
+
+export const CloseButton = styled(IconButton)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
 `;
 
 export default LoginWrapper;

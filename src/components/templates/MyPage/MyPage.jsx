@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import ProfileCard from "../../modules/profileCard/profileCard";
@@ -11,25 +12,23 @@ import {
 } from "./MyPage.style";
 import ButtonList from "../../modules/ButtonList/buttonList";
 
-const MyPage = () => {
+const MyPage = ({ userGameProfile, method, handleClose }) => {
   const items = [
     {
       text: "Leaderboard",
       color: "secondary",
-      link: "/test",
+      link: "/leaderboard",
     },
     {
       text: "Setting",
       color: "secondary",
-      onClick: () => {
-        console.log("click setting");
-      },
+      link: "/setting",
     },
     {
       text: "Sign Out",
       color: "tertiary",
       onClick: () => {
-        console.log("click sign out");
+        method(true);
       },
     },
   ];
@@ -40,7 +39,7 @@ const MyPage = () => {
       <Background />
       <ResponsiveContainer>
         <HeaderContainer>
-          <CloseButton size="3">
+          <CloseButton size="3" onClick={handleClose}>
             <Icon variant="BUTTON_X" color="navy" />
           </CloseButton>
           <ProfileTitle
@@ -50,10 +49,11 @@ const MyPage = () => {
             weight="normal"
           />
           <ProfileCard
-            avatar="AVATAR_KIWI"
+            avatar={userGameProfile.avatar || "AVATAR_KIWI"}
+            color={userGameProfile.avatarColor || "green"}
             rank="123"
             AllUsers="1234"
-            name="누룽지 참나무 통닭"
+            name={userGameProfile.nickname}
           />
         </HeaderContainer>
         <ButtonListContainer>
@@ -62,6 +62,17 @@ const MyPage = () => {
       </ResponsiveContainer>
     </>
   );
+};
+
+MyPage.propTypes = {
+  method: propTypes.func,
+  userGameProfile: propTypes.shape({
+    nickname: propTypes.string,
+    score: propTypes.number,
+    avatarColor: propTypes.string,
+    avatar: propTypes.string,
+  }),
+  handleClose: propTypes.func,
 };
 
 export default MyPage;
