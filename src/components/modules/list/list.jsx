@@ -47,6 +47,7 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
   const renderGameResultList = () => {
     return listItemData.map((item) => (
       <GameResultItem
+        // eslint-disable-next-line no-console
         onClick={() => console.log(item)}
         key={item.nickname}
         {...item}
@@ -63,7 +64,7 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
 
 List.propTypes = {
   listItemName: propTypes.oneOf(Object.keys(allListItems)),
-  listItemData: propTypes.arrayOf,
+  listItemData: propTypes.arrayOf(propTypes.any),
   className: propTypes.string,
   onClick: propTypes.func,
 };

@@ -3,7 +3,7 @@ import Container from "../../atoms/container/container";
 import Box from "../../atoms/box/box";
 
 export const ModalBgContainer = styled(Container)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       position: fixed;
       z-index: 9999;
@@ -18,7 +18,7 @@ export const ModalBgContainer = styled(Container)`
 `;
 
 export const ModalBox = styled(Box)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       position: relative;
 

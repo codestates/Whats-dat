@@ -12,7 +12,6 @@ const FormikContainer = ({
   initialValues,
   validationSchema,
   children,
-  // onSubmit
   btncolor,
   method,
 }) => {

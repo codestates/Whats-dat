@@ -6,26 +6,13 @@ import ModuleForm from "../../modules/form/moduleForm";
 import { RowContainer } from "./newGameModal.style";
 
 const NewGameModal = (props) => {
-  const {
-    isNewGame,
-    handleCloseModal,
-    curRoomName,
-    curLimitTime,
-    curMaxPlayersNum,
-  } = props;
-
+  const { isNewGame, handleCloseModal, method, initialValues } = props;
   const options = [
-    { key: "15s", value: 15 },
+    { key: "Select Time", value: 0 },
     { key: "20s", value: 20 },
     { key: "25s", value: 25 },
     { key: "30s", value: 30 },
   ];
-
-  const initialValues = {
-    roomname: curRoomName,
-    limitTime: curLimitTime,
-    maxPlayers: curMaxPlayersNum,
-  };
 
   return (
     <Modal
@@ -36,12 +23,18 @@ const NewGameModal = (props) => {
     >
       <RowContainer>
         {isNewGame ? (
-          <ModuleForm type="gameStartForm" options={options} />
+          <ModuleForm
+            type="gameStartForm"
+            options={options}
+            initialValues={initialValues}
+            method={method}
+          />
         ) : (
           <ModuleForm
             type="settingForm"
             options={options}
             initialValues={initialValues}
+            method={method}
           />
         )}
       </RowContainer>
@@ -52,9 +45,8 @@ const NewGameModal = (props) => {
 NewGameModal.propTypes = {
   isNewGame: propTypes.bool,
   handleCloseModal: propTypes.func,
-  curRoomName: propTypes.string,
-  curLimitTime: propTypes.number,
-  curMaxPlayersNum: propTypes.number,
+  method: propTypes.func,
+  initialValues: propTypes.number,
 };
 
 export default NewGameModal;

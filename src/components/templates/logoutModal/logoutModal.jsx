@@ -5,8 +5,6 @@ import { RowContainer } from "./logoutModal.style";
 import Paragraph from "../../atoms/paragraph/paragraph";
 import Button from "../../atoms/button/button";
 
-// FIXME : background click
-
 const LogoutModal = (props) => {
   const { handleCloseModal, handleNoBtn, handleYesBtn } = props;
 
