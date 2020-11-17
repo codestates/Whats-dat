@@ -48,3 +48,7 @@ RoomContextProvider.propTypes = {
 };
 
 export default RoomContextProvider;
+
+// {"roomUid":"ZS10","is_started":false,"host":"TAmVZvPdAmQSHyVZgVSI4FEfWah1","settings":{"room_name":"최시영만 들어와라","limit_time":"30","max_players":6},"players":[{"user_id":"TAmVZvPdAmQSHyVZgVSI4FEfWah1","nickname":"엥???","avatar":"AVATAR_HORSE","avatarColor":"grey","score":0,"is_ready":false}, {"user_id":"cZBK4IFZzGh3T3Vc1gaxxwiPPPw1",avatar: "AVATAR_SMILE"
+// avatarColor: "danger"
+// nickname: "helloworld","score":0,"is_ready":false}],"game":{"is_started":false}}

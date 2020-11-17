@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase";
-import app, { firestore } from "../firebase";
+import { firestore } from "../firebase";
+import useLocalState from "../utils/useLocalStorage";
 
 const GameContext = createContext();
 
@@ -9,18 +10,18 @@ export const useGame = () => {
   return useContext(GameContext);
 };
 
-// TODO : canvas string -> canvas image 변환
-
 const GameContextProvider = ({ children }) => {
   const [gameLog, setGameLog] = useState();
   const [loading, setLoading] = useState(false);
+  const [roomInfo, setRoomInfo] = useLocalState("roomInfo", "");
 
   useEffect(() => {
     const getGameLog = async () => {
       setLoading(true);
+      console.log("roomInfo.roomUid", roomInfo.roomUid);
       await firestore
-        .collection("gameDev")
-        .doc("0")
+        .collection("roomDev")
+        .doc(roomInfo.roomUid)
         .collection("game_log")
         .doc("0")
         .onSnapshot((doc) => {
@@ -31,16 +32,16 @@ const GameContextProvider = ({ children }) => {
     getGameLog();
   }, []);
 
-  const submitResult = async ({ roomId, roundIndex, value }) => {
+  const submitResult = async ({ roundIndex, value }) => {
     const onCallSubmitResult = await firebase
       .functions()
       .httpsCallable("handleGameSubmit");
     // TODO: totalplayer 연결
     const result = await onCallSubmitResult({
-      roomId,
+      roomId: roomInfo.roomUid,
       roundIndex,
       value,
-      totalPlayers: 3,
+      totalPlayers: roomInfo.settings.max_players,
     });
     return result;
   };
