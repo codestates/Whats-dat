@@ -355,6 +355,7 @@ const ModuleForm = ({
       );
 
     case "settingForm":
+      console.log("asdasdasdasd", initialValues);
       return (
         <CounterForm>
           <FormikContainer

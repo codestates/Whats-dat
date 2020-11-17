@@ -26,14 +26,14 @@ const NewGameModal = (props) => {
           <ModuleForm
             type="gameStartForm"
             options={options}
-            initialValues={initialValues}
+            initialValues={initialValues} // 얘는 roomanme "abc" abc, limtit "" maxplayer ""
             method={method}
           />
         ) : (
           <ModuleForm
             type="settingForm"
             options={options}
-            initialValues={initialValues}
+            initialValues={initialValues} // roomanem "최시영들어와" limit "30" max_player "6) "
             method={method}
           />
         )}
@@ -50,99 +50,3 @@ NewGameModal.propTypes = {
 };
 
 export default NewGameModal;
-
-/*
-<RowContainer width={22}>
-<Header
-					text={isNewGame ? 'New Game' : 'Setting'}
-					variant='h3'
-					color='navy'
-					weight='normal'
-					marginBottom='sm'
-				/>
-				<div className='form-content'>
-					<label name='roomName'>Room Name</label>
-					<PaddingSmInput
-					name='roomName'
-					colors='lightGrey'
-					placeholder='Limit 20'
-					defaultValue={curRoomName || null}
-					/>
-				</div>
-				<div className='form-content'>
-					<label name='limitTime'>Limit Time</label>
-					<PaddingSmInput
-					name='limitTime'
-						colors='darkGrey'
-						variant='select'
-						defaultValue={`${curLimitTime || 20}s`}
-						>
-						<option>10s</option>
-						<option>15s</option>
-						<option>20s</option>
-						<option>25s</option>
-						<option>30s</option>
-						</PaddingSmInput>
-						</div>
-						<div className='form-content'>
-						<div className='row-container'>
-						<label name='maxPlayers'>Max Players</label>
-						<LineWidthControllerBox>
-						<SmallRoundButton
-						onClick={() => {
-							if (maxPlayersNum <= 4) {
-								setIsMinusDisable(true);
-							} else {
-								setIsMinusDisable(false);
-								setMaxPlayersNum(maxPlayersNum - 1);
-								onClickMinus(maxPlayersNum);
-							}
-						}}
-						size='xsm'
-						color='lightGrey'
-						shadow={true}
-						disable={isMinusDisable}
-						>
-						<Icon variant='BUTTON_MINUS' color='primary' />
-						</SmallRoundButton>
-						<Span text={`${maxPlayersNum}`} color='black' weight='exbold' />
-						<SmallRoundButton
-						onClick={() => {
-							if (maxPlayersNum >= 8) {
-								setIsPlusDisable(true);
-							} else {
-								setIsPlusDisable(false);
-								setMaxPlayersNum(maxPlayersNum + 1);
-								onClickPlus(maxPlayersNum);
-							}
-						}}
-						size='xsm'
-						color='secondary'
-						shadow={true}
-						disable={isPlusDisable}
-						>
-						<Icon variant='BUTTON_PLUS' color='white' />
-						</SmallRoundButton>
-						</LineWidthControllerBox>
-						</div>
-						</div>
-						<div className='m-top'>
-						<Button
-						text='Enter'
-						onClick={handleSubmit}
-						color='secondary'
-						size='sm'
-						/>
-						</div>
-						</RowContainer>
-						*/
-// I'm here!!!!!! zcan you hear? no hear meyes
-
-// const [maxPlayersNum, setMaxPlayersNum] = useState(4);
-// const [isMinusDisable, setIsMinusDisable] = useState(false);
-// const [isPlusDisable, setIsPlusDisable] = useState(false);
-
-// useEffect(() => {
-// 	return curMaxPlayersNum ? setMaxPlayersNum(curMaxPlayersNum) : null;
-// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-// }, []);

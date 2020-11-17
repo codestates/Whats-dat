@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import LobbyTemplate from "../components/templates/Lobby/Lobby";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
-import useLocalStorage from "../utils/useLocalStorage";
+
 import NewGameModal from "../components/templates/newGameModal/newGameModal";
 
 const Lobby = () => {
+  const { getUser, currentUser, setUserGameProfile } = useAuth();
   const {
-    getUser,
-    currentUser,
-
-    setUserGameProfile,
-  } = useAuth();
-  const { setCurrentRoomSetting, updateRoomSetting } = useRoom();
+    setCurrentRoomSetting,
+    updateRoomSetting,
+    currentJoinedRoom,
+    getLobbySnapshot,
+    updatePlayerReady,
+  } = useRoom();
   const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
 
   const [listItemData, setListItemData] = useState([
@@ -35,57 +36,69 @@ const Lobby = () => {
       score: 0,
     },
   ];
-  const [persistentRoomInfo, setPersistentRoomInfo] = useLocalStorage(
-    "roomInfo",
-    ""
-  );
-  const [
-    // eslint-disable-next-line no-unused-vars
-    persistentuserGameProfile,
-    setPersistentuserGameProfile,
-  ] = useLocalStorage("persistentUserGameProfile", "");
 
   useEffect(() => {
-    getUser(currentUser.uid)
-      .then((user) => {
-        setUserGameProfile(user.data());
-        setPersistentuserGameProfile(user.data());
-        return user.data();
-      })
-      .then((data) => {
-        setListItemData([
-          {
-            avatarColor: data.avatarColor,
-            icon: data.avatar,
-            isRoomOwner: true,
-            nickname: data.nickname,
-            onClick: () => {},
-            score: data.score,
-          },
-        ]);
-      });
+    getLobbySnapshot(currentJoinedRoom.roomUid);
+    getUser(currentUser.uid).then((user) => {
+      setUserGameProfile(user.data());
+    });
   }, []);
 
-  const { roomUid } = persistentRoomInfo;
+  useEffect(() => {
+    const playersData = currentJoinedRoom.players.map((player) => {
+      return {
+        avatarColor: player.avatarColor,
+        icon: player.avatar,
+        isRoomOwner: player.uId === currentJoinedRoom.host,
+        nickname: player.nickname,
+        is_ready: false,
+        onClick: () => {
+          // updatePlayerReady;
+        },
+        score: player.score,
+      };
+    });
+    setListItemData(playersData);
+  }, [currentJoinedRoom]);
 
+  const handleUserReady = () => {
+    updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
+  };
+
+  /*
+/ TODO: 게임 생성시 플레이 순서 랜덤 생성
+// const shufflePlayers = function (players) {
+//     const copy = players.slice();
+//     for (let i = players.length - 1; i > 0; i -= 1) {
+//       const j = Math.floor(Math.random() * i);
+//       [copy[i], copy[j]] = [copy[j], copy[i]];
+//     }
+//     return copy;
+//   };
+
+// playOrder = [ user_id, user_id, user_id, user_id, user_id, user_id ]
+
+
+    collection('game_log').doc("0").update({
+      playOrder : [user_id, user_id, user_id, user_id],
+      rounds: {
+        "0": {}
+      },
+      status: "standBy"
+})
+  */
   const handleSubmit = (values) => {
-    updateRoomSetting(values, roomUid)
+    updateRoomSetting(values, currentJoinedRoom.roomUid)
       .then(() => {
-        setPersistentRoomInfo({ roomUid, ...values });
-        setCurrentRoomSetting({ roomUid, ...values });
+        setCurrentRoomSetting({
+          roomUid: currentJoinedRoom.roomUid,
+          ...values,
+        });
         setIsNewGameModalOpen(false);
       })
       .catch((error) => {
         throw new Error(error.message);
       });
-  };
-
-  const initialValues = {
-    settings: {
-      room_name: persistentRoomInfo.settings.room_name,
-      limit_time: persistentRoomInfo.settings.limit_time,
-      max_players: persistentRoomInfo.settings.max_players,
-    },
   };
 
   return (
@@ -94,26 +107,19 @@ const Lobby = () => {
         <NewGameModal
           isNewGame={false}
           handleCloseModal={() => setIsNewGameModalOpen(false)}
-          initialValues={initialValues}
+          initialValues={currentJoinedRoom}
           method={handleSubmit}
         />
       ) : null}
       <LobbyTemplate
         listItemData={listItemData || dummyData}
-        room={persistentRoomInfo}
-        initialValues={initialValues}
+        currentJoinedRoom={currentJoinedRoom}
         setIsNewGameModalOpen={setIsNewGameModalOpen}
         method={handleSubmit}
+        handleUserReady={handleUserReady}
       />
     </>
   );
 };
 
 export default Lobby;
-
-/*
-1. newGame에서 아바타 컬러, icon, isRoomOwner(컨디셔널로 만들어야함), nickname, score 를 갖고온다.
-2. 이 데이터들은 [array] of {objects} 여야한다.
-3. onSnapShot 으로 해당 다큐먼트에 변경사항(players항목에 대해)이 있을 때마다 다큐먼트를 fetch해 온다.
-4. 이 fetch한 다큐멘터를 map으로 돌려야한다.
-*/

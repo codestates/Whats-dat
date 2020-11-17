@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import useLocalStorage from "../utils/useLocalStorage";
 
 import EnterCodeModal from "../components/templates/enterCodeModal/enterCodeModal";
 import ErrorMessageModal from "../components/templates/errorMessageModal/errorMessageModal";
@@ -11,15 +10,19 @@ import { useRoom } from "../contexts/RoomContext";
 
 const NewGame = () => {
   const { getUser, currentUser, userGameProfile } = useAuth();
-  const { createRoom, setCurrentRoomSetting } = useRoom();
-  const [persistentRoomInfo, setPersistentRoomInfo] = useLocalStorage(
-    "roomInfo",
-    ""
-  );
+  const {
+    createRoom,
+    getRoomList,
+    roomList,
+    joinRoom,
+    getJoinedRoomInfo,
+    setCurrentJoinedRoom,
+  } = useRoom();
 
   const history = useHistory();
 
   useEffect(() => {
+    getRoomList();
     getUser(currentUser.uid)
       .then((userData) => {
         const user = userData.data();
@@ -49,10 +52,10 @@ const NewGame = () => {
   };
 
   const roomUid = generateFourDigitCode();
-
   const initialValues = {
     is_started: false,
     host: currentUser.uid,
+    created_at: "",
     settings: {
       room_name: "",
       limit_time: "",
@@ -76,8 +79,9 @@ const NewGame = () => {
   const handleNewGame = (values) => {
     createRoom(values, roomUid)
       .then(() => {
-        setCurrentRoomSetting({ roomUid, ...values });
-        setPersistentRoomInfo({ roomUid, ...values });
+        // setPersistentRoomInfo({ roomUid, ...values });
+        setCurrentJoinedRoom({ roomUid, ...values });
+        getRoomList();
         history.push("/lobby");
       })
       .catch((error) => {
@@ -86,7 +90,15 @@ const NewGame = () => {
       });
   };
 
-  // const handleEnterCode = (values) => {};
+  const handleJoinRoom = (code) => {
+    joinRoom(code);
+    getJoinedRoomInfo(code);
+
+    // TODO 고쳐야함...
+    setTimeout(() => {
+      history.push("/lobby");
+    }, 750);
+  };
 
   // TODO 방이 안들어가질 경우에 해당 모달을 전송
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
@@ -106,6 +118,7 @@ const NewGame = () => {
       {isEnterCodeModalOpen ? (
         <EnterCodeModal
           handleCloseModal={() => setIsEnterCodeModalOpen(false)}
+          method={handleJoinRoom}
         />
       ) : null}
       {isErrorModalOpen ? (
@@ -117,6 +130,8 @@ const NewGame = () => {
         setIsNewGameModalOpen={setIsNewGameModalOpen}
         setIsEnterCodeModalOpen={setIsEnterCodeModalOpen}
         setIsErrorModalOpen={setIsErrorModalOpen}
+        listItemData={roomList}
+        joinRoom={handleJoinRoom}
       />
     </>
   );
