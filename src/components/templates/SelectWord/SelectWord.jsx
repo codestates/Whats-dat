@@ -2,16 +2,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import { useField } from "formik";
+import * as Yup from "yup";
 
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
-import { CustomContainer, ButtonLists } from "./SelectWord.style";
+import { CustomContainer, ButtonLists, AuthForm } from "./SelectWord.style";
 import Header from "../../atoms/header/header";
-import ModuleForm from "../../modules/form/moduleForm";
 import SquareButton from "../../atoms/squareButton/squareButton";
 import { DefaultInput } from "../../atoms/input/input.style";
 import SeletWordTimer from "./SelectWordTimer";
+import FormikContainer from "../../modules/form/Formik/FormikContainer";
 
 const SelectWord = ({ onSubmit, wordList }) => {
   const limitTime = 20;
@@ -26,8 +27,24 @@ const SelectWord = ({ onSubmit, wordList }) => {
     onSubmit({ word: inputRef.current.value });
   };
 
-  // FIXME : lose input focus
-  const CustomField = ({ name, type, value }) => {
+  const formConfig = {
+    formInfo: {
+      formTitle: null,
+      formSubtitle: null,
+      buttonName: "Submit",
+    },
+
+    initialValues: {
+      word: "",
+    },
+
+    validationSchema: Yup.object({
+      word: Yup.string().max(20, "Can't exceed 20 characters"),
+    }),
+    // eslint-disable-next-line
+  };
+
+  const CustomField = ({ name, type }) => {
     // Meta, field 는 폼 기능을 유지 시키기 위해 필요합니다.
     // eslint-disable-next-line
     const [field, meta, helpers] = useField(name);
@@ -35,12 +52,14 @@ const SelectWord = ({ onSubmit, wordList }) => {
 
     useEffect(() => {
       inputRef.current.value = selectedWord;
+      setValue(selectedWord);
     }, [selectedWord]);
 
     return (
       <>
         <DefaultInput>
           <input
+            {...field}
             ref={inputRef}
             key={name}
             name={name}
@@ -55,7 +74,6 @@ const SelectWord = ({ onSubmit, wordList }) => {
   CustomField.propTypes = {
     name: propTypes.string,
     type: propTypes.string,
-    value: propTypes.string,
   };
 
   const renderButtons = () => {
@@ -99,9 +117,17 @@ const SelectWord = ({ onSubmit, wordList }) => {
             <Header text="Or" variant="h3" color="navy" weight="bold" />
           </div>
           <Container size={22}>
-            <ModuleForm type="selectWord" btncolor="danger" method={onSubmit}>
-              <CustomField name="word" type="text" value={selectedWord} />
-            </ModuleForm>
+            <AuthForm>
+              <FormikContainer
+                formInfo={formConfig.formInfo}
+                initialValues={formConfig.initialValues}
+                validationSchema={formConfig.validationSchema}
+                method={onSubmit}
+                btncolor="danger"
+              >
+                <CustomField name="word" type="text" />
+              </FormikContainer>
+            </AuthForm>
           </Container>
         </CustomContainer>
       </ResponsiveContainer>

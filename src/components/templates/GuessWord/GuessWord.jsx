@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import propTypes from "prop-types";
+import { useField } from "formik";
+import * as Yup from "yup";
+
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
-import { CustomContainer } from "./GuessWord.style";
+import { CustomContainer, SimpleForm } from "./GuessWord.style";
 import Header from "../../atoms/header/header";
 import Paragraph from "../../atoms/paragraph/paragraph";
 import GameProgressBar from "../../modules/gameProgress/gameProgress";
 import Image from "../../atoms/image/image";
-import ModuleForm from "../../modules/form/moduleForm";
+import GuessWordTimer from "./GuessWordTimer";
+import FormikContainer from "../../modules/form/Formik/FormikContainer";
+import { DefaultInput } from "../../atoms/input/input.style";
 
 const GuessWord = (props) => {
   const {
@@ -21,25 +26,51 @@ const GuessWord = (props) => {
     imageUrl,
   } = props;
 
-  const [leftTime, setLeftTime] = useState(limitTime);
-  const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef();
 
-  const getValue = (value) => {
-    return setInputValue(value);
+  const handleTimeOut = () => {
+    onSubmit({ word: inputRef.current.value });
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (leftTime > 0) {
-        setLeftTime(leftTime - 1);
-      }
-    }, 1000);
-    if (leftTime === 0) {
-      onSubmit(inputValue);
-      return clearTimeout(timer);
-    }
-    return null;
-  }, [leftTime]);
+  const enterGuessConfig = {
+    formInfo: {
+      formTitle: null,
+      formSubtitle: null,
+      buttonName: "Submit",
+    },
+
+    initialValues: {
+      word: "",
+    },
+
+    validationSchema: Yup.string().max(20, "Can't exceed 20 characters"),
+  };
+
+  const CustomField = ({ name, type }) => {
+    // Meta, field 는 폼 기능을 유지 시키기 위해 필요합니다.
+    // eslint-disable-next-line
+    const [field, meta, helpers] = useField(name);
+
+    return (
+      <>
+        <DefaultInput>
+          <input
+            {...field}
+            ref={inputRef}
+            key={name}
+            name={name}
+            type={type}
+            placeholder="Enter your word..."
+          />
+        </DefaultInput>
+      </>
+    );
+  };
+
+  CustomField.propTypes = {
+    name: propTypes.string,
+    type: propTypes.string,
+  };
 
   return (
     <>
@@ -54,9 +85,9 @@ const GuessWord = (props) => {
               color="navy"
               weight="exbold"
             />
-            <Paragraph
-              text={`${leftTime}s`}
-              color={leftTime <= 5 ? "danger" : "darkGrey"}
+            <GuessWordTimer
+              limitTime={limitTime}
+              handleTimeOut={handleTimeOut}
             />
           </div>
           <div className="small">
@@ -69,12 +100,17 @@ const GuessWord = (props) => {
             <Image url={imageUrl} size={36} />
           </div>
           <Container size={36}>
-            <ModuleForm
-              type="enterGuess"
-              btncolor="danger"
-              method={onSubmit}
-              getValue={getValue}
-            />
+            <SimpleForm>
+              <FormikContainer
+                formInfo={enterGuessConfig.formInfo}
+                initialValues={enterGuessConfig.initialValues}
+                validationSchema={enterGuessConfig.validationSchema}
+                method={onSubmit}
+                btncolor="danger"
+              >
+                <CustomField name="word" type="text" />
+              </FormikContainer>
+            </SimpleForm>
           </Container>
         </CustomContainer>
       </ResponsiveContainer>

@@ -28,7 +28,8 @@ const Drawing = (props) => {
   const [canvasRef, setCanvaseRef] = useState(null);
 
   const sendCanvasImageData = () => {
-    const canvasImageData = canvasRef.current.toDataURL("image/png", 0.3);
+    const canvasImageData =
+      canvasRef && canvasRef.current.toDataURL("image/png", 0.3);
     return onSubmit(canvasImageData);
   };
 
@@ -68,7 +69,7 @@ const Drawing = (props) => {
         <CustomContainer>
           <div className="row-grid m-top m-bottom">
             <Paragraph text={`${curRound}/${totalRound}`} color="darkGrey" />
-            <Box bgColor="quaternary" radius="rounded2Xl" boxShadow="shadowMd">
+            <Box bgColor="primary" radius="rounded2Xl" boxShadow="shadowMd">
               <Paragraph text={preGuessWord} color="white" weight="bold" />
             </Box>
             <Paragraph

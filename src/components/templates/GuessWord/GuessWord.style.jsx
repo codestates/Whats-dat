@@ -30,4 +30,57 @@ export const CustomContainer = styled(Container)`
   }}
 `;
 
+export const AuthForm = styled.div`
+  ${({ theme }) => {
+    return css`
+      width: 100%;
+      margin: 0 auto;
+      padding: ${theme.paddings.base};
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin-bottom: ${theme.margins.xl};
+      }
+
+      .label-alias {
+        display: none;
+      }
+
+      div {
+        margin-bottom: ${theme.margins.sm};
+      }
+
+      button {
+        width: 100%;
+        margin-top: ${theme.margins.base};
+        padding: 1rem;
+      }
+      .formik__error {
+        height: 1rem;
+      }
+    `;
+  }}
+`;
+
+export const SimpleForm = styled(AuthForm)`
+  ${({ theme }) => {
+    return css`
+      input {
+        padding-left: ${theme.paddings.lg};
+      }
+
+      button {
+        margin-top: 0rem;
+        width: 50%;
+        padding: 1rem;
+      }
+    `;
+  }}
+`;
+
 export default CustomContainer;
