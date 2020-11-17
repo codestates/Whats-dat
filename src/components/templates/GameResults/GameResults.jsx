@@ -6,7 +6,6 @@ import Container from "../../atoms/container/container";
 import { CustomContainer } from "./GameResults.style";
 import Box from "../../atoms/box/box";
 import Paragraph from "../../atoms/paragraph/paragraph";
-// import Image from "../../atoms/image/image";
 import List from "../../modules/list/list";
 import Slider from "../../modules/slider/slider";
 import { gameResults } from "../../modules/slider/sliderFakeDb";

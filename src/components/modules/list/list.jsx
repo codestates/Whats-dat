@@ -64,7 +64,7 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
 
 List.propTypes = {
   listItemName: propTypes.oneOf(Object.keys(allListItems)),
-  listItemData: propTypes.arrayOf,
+  listItemData: propTypes.arrayOf(propTypes.any),
   className: propTypes.string,
   onClick: propTypes.func,
 };

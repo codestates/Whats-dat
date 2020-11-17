@@ -23,7 +23,7 @@ const WaitingModal = ({ waitingItems }) => {
 };
 
 WaitingModal.propTypes = {
-  waitingItems: propTypes.arrayOf,
+  waitingItems: propTypes.arrayOf(propTypes.any),
 };
 
 export default WaitingModal;

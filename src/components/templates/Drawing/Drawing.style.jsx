@@ -76,7 +76,7 @@ export const CustomContainer = styled(Container)`
 `;
 
 export const SmallRoundButton = styled(RoundButton)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       width: 2rem;
       height: 2rem;
