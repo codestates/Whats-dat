@@ -23,7 +23,7 @@ const Setting = () => {
   const [
     persistentUserGameProfile,
     setPersistentUserGameProfile,
-  ] = useLocalStorage("userGameProfile", userGameProfile);
+  ] = useLocalStorage("persistentUserGameProfile", userGameProfile);
 
   useEffect(() => {
     // getUser(currentUser.uid).then((userData) => {
@@ -41,8 +41,9 @@ const Setting = () => {
         getUser(currentUser.uid)
           .then((userData) => {
             // console.log("3. create 이후 getUser/userData", userData.data());
-            setUserGameProfile(userData.data());
-            setPersistentUserGameProfile(userData.data());
+            const user = userData.data();
+            setUserGameProfile(user);
+            setPersistentUserGameProfile(user);
           })
           .catch((error) => {
             // console.log("4. create를 못했어여ㅠㅠㅠ", error);
@@ -61,7 +62,10 @@ const Setting = () => {
     try {
       await updateUserGameProfile(newUserGameProfile);
       setUserGameProfile(newUserGameProfile);
-      setPersistentUserGameProfile(newUserGameProfile);
+      setPersistentUserGameProfile({
+        ...newUserGameProfile,
+        user_id: currentUser.uid,
+      });
       history.push("/my-page");
     } catch (err) {
       throw new Error(err);
