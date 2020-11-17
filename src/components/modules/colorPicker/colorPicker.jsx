@@ -24,6 +24,7 @@ const ColorPicker = ({
           icon="test"
           className="colorPicker__btns"
           onClick={() => getColorName(color)}
+          key={`${color}_roundBtn`}
         />
       );
     });
