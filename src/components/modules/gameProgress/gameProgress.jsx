@@ -15,7 +15,7 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
       const isLastPlayer = () => innerPlayersList.length - 1 === playerIndex;
 
       return (
-        <>
+        <React.Fragment key={`${username}Fragment`}>
           <StyledGameProgressColumn>
             <NonePaddingAvatar
               border={playerId === innerCurrentPlayer.player_id}
@@ -48,7 +48,7 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
               </div>
             </StyledGameProgressColumn>
           )}
-        </>
+        </React.Fragment>
       );
     });
   };
@@ -61,18 +61,8 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
 };
 
 GameProgressBar.propTypes = {
-  playersList: propTypes.shape([
-    {
-      player_id: propTypes.string,
-      username: propTypes.string,
-      avatar: propTypes.string,
-    },
-  ]),
-  currentPlayer: propTypes.shape({
-    player_id: propTypes.string,
-    username: propTypes.string,
-    avatar: propTypes.string,
-  }),
+  playersList: propTypes.arrayOf(propTypes.objectOf(propTypes.any)),
+  currentPlayer: propTypes.objectOf(propTypes.any),
 };
 
 export default GameProgressBar;
