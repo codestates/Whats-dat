@@ -13,8 +13,9 @@ export const GapContainer = styled(Container)`
 export const FlexWrapContainer = styled.div`
   ${({ theme }) => {
     return css`
+      width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 50% 50%;
       gap: 0.7rem;
 
       ${theme.device.mobile} {

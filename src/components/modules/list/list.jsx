@@ -45,11 +45,13 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
     }
   };
   const renderGameResultList = () => {
-    return listItemData.map((item) => (
+    return listItemData.map((item, i) => (
       <GameResultItem
         // eslint-disable-next-line no-console
-        onClick={() => console.log(item)}
-        key={item.nickname}
+        handleCardClick={() => onClick(i)}
+        key={i}
+        startWord={item[0].start_word}
+        nickname={item[0].username}
         {...item}
       />
     ));
