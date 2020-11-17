@@ -12,7 +12,7 @@ import Game from "./Game";
 import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
-// import { useAuth } from "../contexts/UserContext";
+import GameContextProvider from "../contexts/GameContext";
 
 const App = () => {
   const {
@@ -55,7 +55,11 @@ const App = () => {
         {/* 방에 속해있어야 접속할 수 있는 경로  */}
         <Route path={LOBBY} component={Lobby} permission={IS_IN_ROOM} />
         {/* 속해있는 방의 게임이 진행 중 일때만 접속 가능한 경로  */}
-        <Route path={GAME} component={Game} permission={IS_PLAYING} />
+
+        <GameContextProvider>
+          <Route path={GAME} component={Game} permission={IS_PLAYING} />
+        </GameContextProvider>
+
         <Redirect to="/" />
       </Switch>
     </>
