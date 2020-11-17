@@ -48,8 +48,9 @@ const Lobby = () => {
   useEffect(() => {
     getUser(currentUser.uid)
       .then((user) => {
-        setUserGameProfile(user.data());
-        setPersistentuserGameProfile(user.data());
+        const newUser = user.data();
+        setUserGameProfile({ ...newUser, user_id: currentUser.uid });
+        setPersistentuserGameProfile({ ...newUser, user_id: currentUser.uid });
         return user.data();
       })
       .then((data) => {

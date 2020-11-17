@@ -2,56 +2,28 @@ import React, { useEffect, useState } from "react";
 import Drawing from "./Drawing";
 import GuessWord from "./GuessWord";
 import SelectWord from "./SelectWord";
-// import GameResults from "./GameResults";
+import GameResults from "./GameResults";
 import { useGame } from "../../contexts/GameContext";
 import WaitingModal from "../../components/templates/waitingModal/waitingModal";
 import DisconnectMessageModal from "../../components/templates/disconnectMessageModal/disconnectMessageModal";
+import useLocalState from "../../utils/useLocalStorage";
+import wordList from "./fakeWordDB";
+import {
+  createGameResultList,
+  getPreviousRoundData,
+  calculateTotalRound,
+  getUnSubmitPlayer,
+} from "./gameUtils";
 
-// eslint-disable-next-line no-var
-var dummyData = [
-  {
-    nickname: "시나본",
-    icon: "AVATAR_HORSE",
-    avatarColor: "primary",
-    isDrawing: false,
-  },
-  {
-    nickname: "죠르디",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-  {
-    nickname: "리트리버",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-  {
-    nickname: "판교불닭",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-  {
-    nickname: "풀프리7기최시용",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-  {
-    nickname: "썬크림",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-  {
-    nickname: "죠르디",
-    icon: "AVATAR_KIWI",
-    avatarColor: "green",
-    isDrawing: true,
-  },
-];
+const getRandomWordList = () => {
+  const copyWordList = [...wordList.eng];
+  const result = [];
+  for (let i = 1; i <= 3; i += 1) {
+    const randomIdx = Math.floor(Math.random() * copyWordList.length);
+    result.push(copyWordList.splice(randomIdx, 1)[0]);
+  }
+  return result;
+};
 
 const index = () => {
   const { gameLog, submitResult } = useGame();
@@ -59,24 +31,36 @@ const index = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   // TODO: 실시간 데이터 연결
   const [isAllConnect, setIsAllConnect] = useState(true);
-  const wordList = ["원할머니 보쌈", "아련한 강아지", "포카칩"];
+  const [roomInfo] = useLocalState("roomInfo", "");
+  const [userInfo] = useLocalState("persistentUserGameProfile", "");
+  const { nickname, avatarColor, avatar, score } = userInfo;
+  const totalRound = calculateTotalRound(roomInfo.players.length);
+  const [waitingItems, setWaitingItems] = useState([]);
 
   const setIsSubmitFalse = () => {
     setIsSubmit(false);
   };
 
-  // TODO: 빈 단어가 들어왔을때 처리 로직
+  const checkValue = (values) => {
+    let value = values;
+    if (typeof value === "object") {
+      value = values.word;
+      if (value.length === 0 && currentRound === 0) {
+        [value] = wordList;
+      } else if (value.length === 0) {
+        value = `${nickname} couldn't answer...`;
+      }
+    }
+    return value;
+  };
 
   const onSubmit = async (values) => {
     if (isSubmit) return;
     setIsSubmit(true);
-    let value = values;
+    const value = checkValue(values);
+
     try {
-      if (typeof value === "object") {
-        value = value.word;
-      }
-      const res = await submitResult({
-        roomId: 0,
+      await submitResult({
         roundIndex: currentRound,
         value,
       });
@@ -86,13 +70,21 @@ const index = () => {
   };
 
   useEffect(() => {
+    console.log("gameLog:", gameLog);
     if (!gameLog) return;
+
     if (gameLog.rounds) {
       setCurrentRound(Object.keys(gameLog.rounds).length - 1);
     }
     if (gameLog.rounds[Object.keys(gameLog.rounds).length - 1].length === 0) {
       setIsSubmit(false);
     }
+
+    if (gameLog.status === "closed") {
+      setIsSubmit(false);
+    }
+
+    setWaitingItems(getUnSubmitPlayer(roomInfo, gameLog));
   }, [gameLog]);
 
   const renderCurrentRound = () => {
@@ -100,10 +92,16 @@ const index = () => {
       return null;
     }
 
+    if (gameLog && gameLog.status === "closed") {
+      const listItemData = createGameResultList(gameLog, roomInfo);
+      console.log(listItemData);
+      return <GameResults listItemData={listItemData} />;
+    }
+
     if (currentRound === 0) {
       return (
         <SelectWord
-          wordList={wordList}
+          wordList={getRandomWordList()}
           onSubmit={onSubmit}
           setIsSubmit={setIsSubmit}
         />
@@ -115,29 +113,17 @@ const index = () => {
       return (
         <Drawing
           onSubmit={onSubmit}
-          preGuessWord="망고 프라푸치노"
+          preGuessWord={getPreviousRoundData(gameLog, userInfo, currentRound)}
           curRound={currentRound}
           totalRound={3}
-          limitTime={15}
+          limitTime={Number(roomInfo.settings.limit_time)}
           setIsSubmitFalse={setIsSubmitFalse}
           currentPlayer={{
-            player_id: "siDaBest",
-            username: "Si",
-            avatar: "AVATAR_KIWI",
+            user_id: userInfo.user_id,
+            username: userInfo.nickname,
+            avatar: userInfo.avatar,
           }}
-          playersList={[
-            { player_id: "kjeDaBest", username: "kje", avatar: "AVATAR_KIWI" },
-            {
-              player_id: "dongocDaBest",
-              username: "dongoc",
-              avatar: "AVATAR_KIWI",
-            },
-            {
-              player_id: "paulDaBest",
-              username: "paul",
-              avatar: "AVATAR_KIWI",
-            },
-          ]}
+          playersList={roomInfo.players}
         />
       );
     }
@@ -146,29 +132,17 @@ const index = () => {
       return (
         <GuessWord
           onSubmit={onSubmit}
-          imageUrl="imageUrl"
+          imageUrl={getPreviousRoundData(gameLog, userInfo, currentRound)}
           curRound={currentRound}
           totalRound={3}
-          limitTime={15}
+          limitTime={Number(roomInfo.settings.limit_time)}
           setIsSubmitFalse={setIsSubmitFalse}
           currentPlayer={{
-            player_id: "siDaBest",
-            username: "Si",
-            avatar: "AVATAR_KIWI",
+            user_id: userInfo.user_id,
+            username: userInfo.nickname,
+            avatar: userInfo.avatar,
           }}
-          playersList={[
-            { player_id: "kjeDaBest", username: "kje", avatar: "AVATAR_KIWI" },
-            {
-              player_id: "dongocDaBest",
-              username: "dongoc",
-              avatar: "AVATAR_KIWI",
-            },
-            {
-              player_id: "paulDaBest",
-              username: "paul",
-              avatar: "AVATAR_KIWI",
-            },
-          ]}
+          playersList={roomInfo.players}
         />
       );
     }
@@ -180,7 +154,7 @@ const index = () => {
     <>
       {isAllConnect ? null : <DisconnectMessageModal />}
       {isSubmit && isAllConnect ? (
-        <WaitingModal waitingItems={dummyData} />
+        <WaitingModal waitingItems={waitingItems} />
       ) : null}
       {renderCurrentRound()}
     </>
