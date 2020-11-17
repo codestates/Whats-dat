@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Container from "../../atoms/container/container";
 
 export const GapContainer = styled(Container)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       flex-direction: column;
       gap: 0.7rem;

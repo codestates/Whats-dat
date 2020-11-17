@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const getPadding = ({ theme, padding }) => {
   if (!padding) return "0";

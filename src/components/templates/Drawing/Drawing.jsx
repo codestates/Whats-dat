@@ -34,7 +34,7 @@ const Drawing = (props) => {
       }
     }, 1000);
     if (leftTime === 0) {
-      handleTimeOut(); // TODO : game 종료시 fetch
+      handleTimeOut();
       return clearTimeout(timer);
     }
     return null;

@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import Container from "../../atoms/container/container";
 
 export const CustomContainer = styled(Container)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       width: 80%;
       display: flex;

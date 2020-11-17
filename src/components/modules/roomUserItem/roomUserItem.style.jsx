@@ -3,7 +3,7 @@ import { DefaultBox } from "../../atoms/box/box.style";
 import Avatar from "../../atoms/avatar/avatar";
 
 export const ItemBox = styled(DefaultBox)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       justify-content: space-between;
 
@@ -30,7 +30,7 @@ export const ItemBox = styled(DefaultBox)`
 `;
 
 export const NonePaddingAvatar = styled(Avatar)`
-  ${({ theme }) => {
+  ${() => {
     return css`
       padding: 0.5rem;
     `;
