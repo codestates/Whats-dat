@@ -186,6 +186,7 @@ const ModuleForm = ({
   selectedWord,
   children,
   method,
+  getValue,
 }) => {
   switch (type) {
     case "login":
@@ -350,6 +351,7 @@ const ModuleForm = ({
             validationSchema={enterGuessConfig.validationSchema}
             onSubmit={enterGuessConfig.onSubmit}
             btncolor={btncolor}
+            method={method}
           >
             <FormikControl
               control="input"
@@ -360,6 +362,7 @@ const ModuleForm = ({
               placeholder="Enter your word..."
               icon={false}
               bordercolors="secondary"
+              getValue={getValue}
             />
           </FormikContainer>
         </SimpleForm>
@@ -458,6 +461,7 @@ ModuleForm.propTypes = {
   selectedWord: propTypes.string,
   children: propTypes.node,
   method: propTypes.func,
+  getValue: propTypes.func,
 };
 
 export default ModuleForm;

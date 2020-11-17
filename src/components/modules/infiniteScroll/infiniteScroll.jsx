@@ -10,7 +10,6 @@ function InfiniteScroll({ ListItem }) {
 
   const lastListItemElementRef = useCallback(
     (node) => {
-      console.log("lastItem");
       // last item visible event
       // if (loading) return;
       if (observer.current) observer.current.disconnect();
@@ -26,7 +25,6 @@ function InfiniteScroll({ ListItem }) {
 
   const firstListItemElementRef = useCallback(
     (node) => {
-      console.log("firstItem");
       // last item visible event
       // if (loading) return;
       if (observer.current) observer.current.disconnect();

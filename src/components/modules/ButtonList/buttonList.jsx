@@ -1,15 +1,16 @@
 import React from "react";
-import propTypes from "prop-types";
+import propTypes, { shape } from "prop-types";
 import { Link } from "react-router-dom";
 import ButtonListBox from "./buttonList.style";
 import SquareButton from "../../atoms/squareButton/squareButton";
+import theme from "../../../styles/Theme";
 
 const ButtonList = ({ items, size }) => {
   const renderButtons = () => {
     return items.map(({ text, onClick, link, color }) => {
       if (link) {
         return (
-          <Link to={link}>
+          <Link to={link} key={text}>
             <SquareButton
               text={text}
               color={color}
@@ -41,7 +42,14 @@ const ButtonList = ({ items, size }) => {
 
 ButtonList.propTypes = {
   size: propTypes.string,
-  items: propTypes.arrayOf,
+  items: propTypes.arrayOf(
+    propTypes.shape({
+      text: propTypes.string,
+      onClick: propTypes.func,
+      link: propTypes.string,
+      color: propTypes.oneOf(Object.keys(theme.colors)),
+    })
+  ),
 };
 
 export default ButtonList;

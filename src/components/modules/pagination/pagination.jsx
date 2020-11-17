@@ -13,11 +13,11 @@ const Pagination = ({
 }) => {
   return (
     <PaginationBox className={className}>
-      <IconButton size="3" onClick={onClickPrev} isNotVisible={isFirstPage}>
-        <Icon variant="BUTTON_LEFT" color="drakGrey" />
+      <IconButton size={3} onClick={onClickPrev} isNotVisible={isFirstPage}>
+        <Icon variant="BUTTON_LEFT" color="darkGrey" />
       </IconButton>
-      <IconButton size="3" onClick={onClickNext} isNotVisible={isLastPage}>
-        <Icon variant="BUTTON_RIGHT" color="drakGrey" />
+      <IconButton size={3} onClick={onClickNext} isNotVisible={isLastPage}>
+        <Icon variant="BUTTON_RIGHT" color="darkGrey" />
       </IconButton>
     </PaginationBox>
   );
