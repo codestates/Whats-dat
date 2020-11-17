@@ -341,7 +341,6 @@ const ModuleForm = ({
             validationSchema={enterGuessConfig.validationSchema}
             method={enterGuessConfig.onSubmit}
             btncolor={btncolor}
-            method={method}
           >
             <FormikControl
               control="input"
