@@ -13,10 +13,10 @@ const Cloud = ({ top, scale, opacity, seconds, color, className }) => {
 };
 
 Cloud.propTypes = {
-  top: propTypes.number,
-  scale: propTypes.number,
-  opacity: propTypes.number,
-  seconds: propTypes.number,
+  top: propTypes.string,
+  scale: propTypes.string,
+  opacity: propTypes.string,
+  seconds: propTypes.string,
   color: propTypes.string,
   className: propTypes.string,
 };

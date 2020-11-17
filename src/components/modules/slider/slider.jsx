@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import propTypes from "prop-types";
 import List from "../list/list";
 import Image from "../../atoms/image/image";
@@ -23,12 +23,18 @@ const Slider = ({
   className,
   currentSlide,
   setCurrentSlide,
+  joinRoom,
 }) => {
-  const totalSlides = slideItems.length - 1;
-  // const [currentSlide, setCurrentSlide] = useState(0);
   const windowSize = useWindowSize();
+  const [slideItemsData, setSlideItemsData] = useState(slideItems);
+
+  useEffect(() => {
+    setSlideItemsData(slideItems);
+  }, [slideItems]);
 
   const slideRef = useRef(null);
+  const totalSlides = slideItems ? slideItems.length - 1 : 0;
+
   const isFirstPage = () => currentSlide === 0;
   const isLastPage = () => currentSlide === totalSlides;
   const isFirstRound = () => currentSlide === 0;
@@ -164,14 +170,17 @@ const Slider = ({
           </ImageAndTextContainer>
         );
       }
-      return null;
+      return "loading";
     });
   };
+
+  // foo();
+  // const mappableData = Promise.resolve(slideItemsData[0]);
 
   const renderSlideItems = () => {
     switch (variant) {
       case "gamesPagination":
-        return slideItems.map((slideItem, index) => {
+        return slideItemsData.map((slideItem, index) => {
           return (
             <StyledSingleSlide
               key={`${variant}${index}`}
@@ -182,12 +191,14 @@ const Slider = ({
                 listItemName="AvailableGameItem"
                 listItemData={slideItem}
                 className="slide__lists"
+                joinRoom={joinRoom}
               />
             </StyledSingleSlide>
           );
         });
+
       case "gameResultsPagination":
-        return renderImageSlides(slideItems);
+        return renderImageSlides(slideItemsData);
       default:
         return "heeloo";
     }
@@ -201,7 +212,9 @@ const Slider = ({
     >
       <StyledContentsContainer slideWidth={slideWidth}>
         <StyledSlidesContainer ref={slideRef}>
-          {renderSlideItems(variant, slideItems)}
+          {slideItemsData
+            ? renderSlideItems(variant, slideItemsData)
+            : "loading"}
         </StyledSlidesContainer>
       </StyledContentsContainer>
       <Pagination
@@ -221,11 +234,12 @@ const Slider = ({
 
 Slider.propTypes = {
   variant: propTypes.oneOf(variantOption),
-  slideItems: propTypes.arrayOf,
+  slideItems: propTypes.arrayOf(propTypes.any),
   slideWidth: propTypes.number,
   className: propTypes.string,
   currentSlide: propTypes.number,
   setCurrentSlide: propTypes.func,
+  joinRoom: propTypes.func,
 };
 
 export default Slider;

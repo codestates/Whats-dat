@@ -16,7 +16,14 @@ export const allListItems = {
   RoomUserItem: "RoomUserItem",
 };
 
-const List = ({ listItemName, listItemData, className, onClick }) => {
+const List = ({
+  listItemName,
+  listItemData,
+  className,
+  joinRoom,
+  handleUserReady,
+  onClick,
+}) => {
   const renderList = () => {
     switch (listItemName) {
       case "WaitingItem":
@@ -29,7 +36,9 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
             key={`${item.roomName}${index}`}
             {...item}
             className={className}
-            onClick={onClick}
+            onClick={() => {
+              joinRoom(item.roomCode);
+            }}
           />
         ));
       case "RankingItem":
@@ -38,7 +47,11 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
         ));
       case "RoomUserItem":
         return listItemData.map((item) => (
-          <RoomUserItem key={item.nickname} {...item} />
+          <RoomUserItem
+            handleUserReady={handleUserReady}
+            key={item.nickname}
+            {...item}
+          />
         ));
       default:
         return null;
@@ -69,6 +82,8 @@ List.propTypes = {
   listItemData: propTypes.arrayOf(propTypes.any),
   className: propTypes.string,
   onClick: propTypes.func,
+  joinRoom: propTypes.func,
+  handleUserReady: propTypes.func,
 };
 
 export default List;
