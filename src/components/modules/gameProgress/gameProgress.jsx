@@ -11,7 +11,7 @@ import {
 const GameProgressBar = ({ playersList, currentPlayer }) => {
   const renderAvatarLists = (innerPlayersList, innerCurrentPlayer) => {
     return innerPlayersList.map((player, playerIndex) => {
-      const { player_id: playerId, username, avatar } = player;
+      const { user_id: playerId, nickname, avatar } = player;
       const isLastPlayer = () => innerPlayersList.length - 1 === playerIndex;
 
       return (
@@ -30,9 +30,9 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
               <Paragraph
                 size="xSm"
                 text={
-                  username.slice(0, 5).length === username.length
-                    ? username
-                    : `${username.slice(0, 5)}...`
+                  nickname.slice(0, 4).length === nickname.length
+                    ? nickname
+                    : `${nickname.slice(0, 4)}...`
                 }
                 color={
                   playerId === innerCurrentPlayer.player_id ? "navy" : "grey"
@@ -63,13 +63,13 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
 GameProgressBar.propTypes = {
   playersList: propTypes.shape([
     {
-      player_id: propTypes.string,
+      user_id: propTypes.string,
       username: propTypes.string,
       avatar: propTypes.string,
     },
   ]),
   currentPlayer: propTypes.shape({
-    player_id: propTypes.string,
+    user_id: propTypes.string,
     username: propTypes.string,
     avatar: propTypes.string,
   }),

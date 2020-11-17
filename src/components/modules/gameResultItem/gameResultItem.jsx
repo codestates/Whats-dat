@@ -15,7 +15,7 @@ const GameResultItem = ({ isWinner, startWord, nickname, handleCardClick }) => {
       isWinnerStatus={isWinner}
       onClick={handleCardClick}
     >
-      <div className="m-left m-right width">
+      <div className="m-left m-right">
         <Paragraph
           text={startWord}
           color={isWinner ? "white" : "navy"}
