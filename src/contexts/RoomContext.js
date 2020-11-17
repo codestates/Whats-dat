@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase/app";
 import { firestore } from "../firebase";
@@ -8,11 +8,14 @@ export const RoomContext = createContext();
 export const useRoom = () => {
   return useContext(RoomContext);
 };
+
 const RoomContextProvider = ({ children }) => {
   const { currentUser, userGameProfile } = useAuth();
   const [currentRoomSetting, setCurrentRoomSetting] = useState();
   const [roomList, setRoomList] = useState();
   const [currentJoinedRoom, setCurrentJoinedRoom] = useState();
+  const [isInRoom, setIsInRoom] = useState();
+
   const createRoom = (values, roomUid) => {
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
     return firestore
@@ -22,11 +25,16 @@ const RoomContextProvider = ({ children }) => {
         roomUid,
         ...values,
         created_at: timestamp,
+      })
+      .then(() => {
+        setIsInRoom(true);
       });
   };
+
   const updateRoomSetting = (values, roomUid) => {
     return firestore.collection("roomDev").doc(roomUid).update(values);
   };
+
   const chunkBySix = (roomListData) => {
     let tempArr = [];
     const listItemData = [];
@@ -43,6 +51,7 @@ const RoomContextProvider = ({ children }) => {
     }
     return listItemData;
   };
+
   const getRoomList = () => {
     const roomListRef = firestore
       .collection("roomDev")
@@ -71,6 +80,7 @@ const RoomContextProvider = ({ children }) => {
         setRoomList(data[0]);
       });
   };
+
   const joinRoom = async (code) => {
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     try {
@@ -96,7 +106,10 @@ const RoomContextProvider = ({ children }) => {
           firestore
             .collection("roomDev")
             .doc(`${roomCode}`)
-            .update({ players: [...data] });
+            .update({ players: [...data] })
+            .then(() => {
+              setIsInRoom(true);
+            });
         })
         .catch((error) => {
           throw new Error(error.message);
@@ -105,6 +118,7 @@ const RoomContextProvider = ({ children }) => {
       throw new Error(error.message);
     }
   };
+
   const getJoinedRoomInfo = (code) => {
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     firestore
@@ -118,15 +132,37 @@ const RoomContextProvider = ({ children }) => {
         throw new Error(error.message);
       });
   };
-  const getLobbySnapshot = (code) => {
-    const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
-    firestore
-      .collection("roomDev")
-      .doc(`${roomCode}`)
-      .onSnapshot((doc) => {
-        setCurrentJoinedRoom(doc.data());
-      });
-  };
+
+  // const getLobbySnapshot = (code) => {
+  //   const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
+  //   const unsubscribe = firestore
+  //     .collection("roomDev")
+  //     .doc(`${currentJoinedRoom.roomUid}`)
+  //     .onSnapshot((doc) => {
+  //       setCurrentJoinedRoom(doc.data());
+  //     });
+
+  //   if (setIsInRoom === false) {
+  //     unsubscribe();
+  //   }
+  // };
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (currentJoinedRoom) {
+      const unsubscribe = firestore
+        .collection("roomDev")
+        .doc(`${currentJoinedRoom.roomUid}`)
+        .onSnapshot((doc) => {
+          setCurrentJoinedRoom(doc.data());
+        });
+
+      if (isInRoom === false) {
+        return unsubscribe;
+      }
+    }
+  }, [isInRoom]);
+
   const updatePlayerReady = (code, userid) => {
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     const newCurrentJoinedRoom = currentJoinedRoom.players.map((player) => {
@@ -141,16 +177,32 @@ const RoomContextProvider = ({ children }) => {
       .doc(`${roomCode}`)
       .update({ players: newCurrentJoinedRoom });
   };
-  const enterRoom = async (uid) => {
+
+  const enterRoom = (uid) => {
     const room = firestore.collection("roomDev").document(uid).get().data();
     if (uid === room.uid) {
       return true;
     }
     return false;
   };
-  const updateRoom = async (uid, info) => {
-    return firestore.collection("roomDev").document(uid).update(info);
+
+  const leaveRoom = (code, userid) => {
+    const newPlayerList = [];
+    currentJoinedRoom.players.forEach((player) => {
+      if (player.user_id !== userid) {
+        newPlayerList.push(player);
+      }
+    }); // 유저를 제외한 어레이를 리턴해서
+
+    return firestore
+      .collection("roomDev")
+      .doc(`${code}`)
+      .update({ players: newPlayerList })
+      .then(() => {
+        setIsInRoom(false);
+      });
   };
+
   const value = {
     currentRoomSetting,
     roomList,
@@ -159,18 +211,20 @@ const RoomContextProvider = ({ children }) => {
     updateRoomSetting,
     chunkBySix,
     enterRoom,
-    updateRoom,
     getRoomList,
     joinRoom,
     getJoinedRoomInfo,
     currentJoinedRoom,
     setCurrentJoinedRoom,
-    getLobbySnapshot,
+    // getLobbySnapshot,
     updatePlayerReady,
+    leaveRoom,
   };
   return <RoomContext.Provider value={value}>{children}</RoomContext.Provider>;
 };
+
 RoomContextProvider.propTypes = {
   children: propTypes.node.isRequired,
 };
+
 export default RoomContextProvider;

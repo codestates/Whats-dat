@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import LobbyTemplate from "../components/templates/Lobby/Lobby";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
@@ -13,9 +14,9 @@ const Lobby = () => {
     currentJoinedRoom,
     getLobbySnapshot,
     updatePlayerReady,
+    leaveRoom,
   } = useRoom();
   const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
-
   const [listItemData, setListItemData] = useState([
     {
       avatarColor: "blue",
@@ -37,8 +38,10 @@ const Lobby = () => {
     },
   ];
 
+  const history = useHistory();
+
   useEffect(() => {
-    getLobbySnapshot(currentJoinedRoom.roomUid);
+    // getLobbySnapshot(currentJoinedRoom.roomUid);
     getUser(currentUser.uid).then((user) => {
       setUserGameProfile(user.data());
     });
@@ -63,6 +66,11 @@ const Lobby = () => {
 
   const handleUserReady = () => {
     updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
+  };
+
+  const handleLeaveRoom = async () => {
+    await leaveRoom(currentJoinedRoom.roomUid, currentUser.uid);
+    history.push("/new-game");
   };
 
   /*
@@ -117,6 +125,7 @@ const Lobby = () => {
         setIsNewGameModalOpen={setIsNewGameModalOpen}
         method={handleSubmit}
         handleUserReady={handleUserReady}
+        handleLeaveRoom={handleLeaveRoom}
       />
     </>
   );

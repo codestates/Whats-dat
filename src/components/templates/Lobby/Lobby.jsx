@@ -14,7 +14,6 @@ import {
   RoomTitle,
   CurrentUserNum,
   SettingBox,
-  Settingbutton,
 } from "./Lobby.style";
 
 const Lobby = ({
@@ -22,6 +21,7 @@ const Lobby = ({
   currentJoinedRoom,
   setIsNewGameModalOpen,
   handleUserReady,
+  handleLeaveRoom,
 }) => {
   const history = useHistory();
   return (
@@ -46,7 +46,7 @@ const Lobby = ({
             <Icon
               variant="BUTTON_EXIT"
               color="secondary"
-              onClick={() => history.push("/new-game")}
+              onClick={() => handleLeaveRoom()}
             />
           </ExitButton>
           {currentJoinedRoom ? (
@@ -97,5 +97,6 @@ Lobby.propTypes = {
   currentJoinedRoom: propTypes.objectOf(propTypes.any),
   setIsNewGameModalOpen: propTypes.func,
   handleUserReady: propTypes.func,
+  handleLeaveRoom: propTypes.func,
 };
 export default Lobby;
