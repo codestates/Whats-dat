@@ -10,14 +10,14 @@ const FormikCounter = ({ label, name, maxPlayers = 4, ...rest }) => {
   /* eslint no-param-reassign: "error" */
   const incrementNumPlayers = (form) => {
     if (numPlayers < 6) {
-      form.values.maxPlayers = numPlayers + 1;
+      form.values.settings.max_players = numPlayers + 1;
       setNumPlayers(numPlayers + 1);
     }
   };
 
   const decrementNumPlayers = (form) => {
     if (numPlayers > 4) {
-      form.values.maxPlayers = numPlayers - 1;
+      form.values.settings.max_players = numPlayers - 1;
       setNumPlayers(numPlayers - 1);
     }
   };
@@ -26,6 +26,7 @@ const FormikCounter = ({ label, name, maxPlayers = 4, ...rest }) => {
     <div className="form-control counter-group">
       <Field name={name} {...rest}>
         {({ field, form }) => {
+          form.values.settings.max_players = numPlayers;
           return (
             <>
               <label htmlFor={name}>{label}</label>

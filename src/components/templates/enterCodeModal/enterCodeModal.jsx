@@ -5,7 +5,7 @@ import { RowContainer } from "./enterCodeModal.style";
 import ModuleForm from "../../modules/form/moduleForm";
 
 const EnterCodeModal = (props) => {
-  const { handleCloseModal } = props;
+  const { handleCloseModal, method } = props;
   return (
     <Modal
       width={28.5}
@@ -14,7 +14,7 @@ const EnterCodeModal = (props) => {
       handleCloseModal={handleCloseModal}
     >
       <RowContainer width={22}>
-        <ModuleForm type="enterCode" />
+        <ModuleForm type="enterCode" method={method} />
       </RowContainer>
     </Modal>
   );
@@ -22,6 +22,7 @@ const EnterCodeModal = (props) => {
 
 EnterCodeModal.propTypes = {
   handleCloseModal: propTypes.func,
+  method: propTypes.func,
 };
 EnterCodeModal.defaultProps = {};
 

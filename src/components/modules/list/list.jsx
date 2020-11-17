@@ -47,6 +47,7 @@ const List = ({ listItemName, listItemData, className, onClick }) => {
   const renderGameResultList = () => {
     return listItemData.map((item) => (
       <GameResultItem
+        // eslint-disable-next-line no-console
         onClick={() => console.log(item)}
         key={item.nickname}
         {...item}

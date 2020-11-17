@@ -163,17 +163,7 @@ const gameStartConfig = {
     buttonName: "Confirm",
   },
 
-  initialValues: {
-    roomname: "",
-    limitTime: 20,
-    maxPlayers: 4,
-  },
-
-  validationSchema: Yup.object({
-    roomname: Yup.string()
-      .required("You Must Enter Room Name")
-      .max(20, "Room Name cannot be more than 20 characters."),
-  }),
+  validationSchema: Yup.object({}),
   // eslint-disable-next-line
   onSubmit: (values) => console.log("form-data", values),
 };
@@ -324,7 +314,7 @@ const ModuleForm = ({
             formInfo={enterCodeConfig.formInfo}
             initialValues={enterCodeConfig.initialValues}
             validationSchema={enterCodeConfig.validationSchema}
-            onSubmit={enterCodeConfig.onSubmit}
+            method={method}
             btncolor={btncolor}
           >
             <FormikControl
@@ -347,7 +337,7 @@ const ModuleForm = ({
             formInfo={enterGuessConfig.formInfo}
             initialValues={enterGuessConfig.initialValues}
             validationSchema={enterGuessConfig.validationSchema}
-            onSubmit={enterGuessConfig.onSubmit}
+            method={enterGuessConfig.onSubmit}
             btncolor={btncolor}
           >
             <FormikControl
@@ -370,15 +360,15 @@ const ModuleForm = ({
           <FormikContainer
             formInfo={settingConfig.formInfo}
             initialValues={initialValues}
-            validationSchema={settingConfig.validationSchema}
-            onSubmit={settingConfig.onSubmit}
+            // validationSchema={settingConfig.validationSchema}
+            method={method}
             btncolor={btncolor}
           >
             <FormikControl
               control="input"
               type="text"
               label="Room Name"
-              name="roomname"
+              name="settings.room_name"
               placeholder="Limited to 20 characters"
               icon={false}
               bordercolors="secondary"
@@ -388,7 +378,7 @@ const ModuleForm = ({
               control="select"
               type="text"
               label="Limit Time"
-              name="limitTime"
+              name="settings.limit_time"
               bordercolors="secondary"
               options={options}
             />
@@ -397,8 +387,8 @@ const ModuleForm = ({
               control="counter"
               type="number"
               label="Max Players"
-              name="maxPlayers"
-              maxPlayers={initialValues.maxPlayers}
+              name="settings.max_players"
+              maxPlayers={initialValues.settings.max_players}
             />
           </FormikContainer>
         </CounterForm>
@@ -409,36 +399,34 @@ const ModuleForm = ({
         <CounterForm>
           <FormikContainer
             formInfo={gameStartConfig.formInfo}
-            initialValues={gameStartConfig.initialValues}
+            initialValues={initialValues}
             validationSchema={gameStartConfig.validationSchema}
-            onSubmit={gameStartConfig.onSubmit}
+            method={method}
             btncolor={btncolor}
           >
             <FormikControl
               control="input"
               type="text"
               label="Room Name"
-              name="roomname"
+              name="settings.room_name"
               placeholder="Limited to 20 characters"
               icon={false}
               bordercolors="secondary"
             />
-
             <FormikControl
               control="select"
               defaultValue="60s"
               type="text"
               label="Limit Time"
-              name="limitTime"
+              name="settings.limit_time"
               bordercolors="secondary"
               options={options}
             />
-
             <FormikControl
               control="counter"
               type="number"
               label="Max Players"
-              name="maxPlayers"
+              name="settings.max_players"
             />
           </FormikContainer>
         </CounterForm>
