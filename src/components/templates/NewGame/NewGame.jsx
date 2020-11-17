@@ -11,12 +11,14 @@ import {
   StyledButtonsContainer,
   StyledLinksContainer,
 } from "./NewGame.style";
-import { listItemDataSample } from "../../modules/slider/sliderFakeDb";
+
+// import { listItemDataSample } from "../../modules/slider/sliderFakeDb";
 
 const NewGame = ({
-  buttonOnClick,
+  joinRoom,
   setIsNewGameModalOpen,
   setIsEnterCodeModalOpen,
+  listItemData,
 }) => {
   return (
     <>
@@ -34,7 +36,8 @@ const NewGame = ({
             className="newGame__header"
           />
           <Slider
-            slideItems={listItemDataSample}
+            joinRoom={joinRoom}
+            slideItems={listItemData}
             slideWidth={30}
             variant="gamesPagination"
             className="newGame__slider"
@@ -86,9 +89,10 @@ const NewGame = ({
 };
 
 NewGame.propTypes = {
-  buttonOnClick: propTypes.func,
+  joinRoom: propTypes.func,
   setIsNewGameModalOpen: propTypes.func,
   setIsEnterCodeModalOpen: propTypes.func,
+  listItemData: propTypes.arrayOf(propTypes.any),
 };
 
 export default NewGame;

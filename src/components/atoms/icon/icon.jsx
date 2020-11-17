@@ -63,11 +63,11 @@ export const icons = {
   MEDAL: RiMedalFill,
 };
 
-const Icon = ({ variant, color }) => {
+const Icon = ({ variant, color, onClick }) => {
   const IconType = icons[variant];
   return (
     <IconContext.Provider value={{ color: theme.colors[color] }}>
-      <IconType />
+      <IconType onClick={onClick} />
     </IconContext.Provider>
   );
 };
@@ -75,6 +75,7 @@ const Icon = ({ variant, color }) => {
 Icon.propTypes = {
   color: propTypes.oneOf(Object.keys(theme.colors)),
   variant: propTypes.oneOf(Object.keys(icons)).isRequired,
+  onClick: propTypes.func,
 };
 
 export default Icon;

@@ -16,61 +16,13 @@ import {
   SettingBox,
 } from "./Lobby.style";
 
-// const dummyData = [
-//   {
-//     avatarColor: "blue",
-//     icon: "AVATAR_HORSE",
-//     isRoomOwner: true,
-//     nickname: "판교불닭",
-//     onClick: () => {},
-//     score: 3003,
-//   },
-// ];
-//   {
-//     avatarColor: "green",
-//     icon: "AVATAR_KIWI",
-//     isRoomOwner: false,
-//     nickname: "리트리버",
-//     onClick: function noRefCheck() {},
-//     score: 1004,
-//   },
-//   {
-//     avatarColor: "green",
-//     icon: "AVATAR_KIWI",
-//     isRoomOwner: false,
-//     nickname: "리트리버",
-//     onClick: function noRefCheck() {},
-//     score: 1004,
-//   },
-//   {
-//     avatarColor: "green",
-//     icon: "AVATAR_KIWI",
-//     isRoomOwner: false,
-//     nickname: "리트리버",
-//     onClick: function noRefCheck() {},
-//     score: 1004,
-//   },
-//   {
-//     avatarColor: "green",
-//     icon: "AVATAR_KIWI",
-//     isRoomOwner: false,
-//     nickname: "리트리버",
-//     onClick: function noRefCheck() {},
-//     score: 1004,
-//   },
-//   {
-//     avatarColor: "green",
-//     icon: "AVATAR_KIWI",
-//     isRoomOwner: false,
-//     nickname: "리트리버",
-//     onClick: function noRefCheck() {},
-//     score: 1004,
-//   },
-// ];
-
-const Lobby = ({ listItemData, room, setIsNewGameModalOpen }) => {
+const Lobby = ({
+  listItemData,
+  currentJoinedRoom,
+  setIsNewGameModalOpen,
+  handleUserReady,
+}) => {
   const history = useHistory();
-
   return (
     <>
       <Background />
@@ -82,7 +34,12 @@ const Lobby = ({ listItemData, room, setIsNewGameModalOpen }) => {
               variant="BUTTON_SETTING"
               color="secondary"
             />
-            <GameSecond text={room.settings.limit_time} color="secondary" />
+            {currentJoinedRoom ? (
+              <GameSecond
+                text={currentJoinedRoom.settings.limit_time}
+                color="secondary"
+              />
+            ) : null}
           </SettingBox>
           <ExitButton size="3">
             <Icon
@@ -91,16 +48,35 @@ const Lobby = ({ listItemData, room, setIsNewGameModalOpen }) => {
               onClick={() => history.push("/new-game")}
             />
           </ExitButton>
-          <RoomCode text={room.roomUid} color="navy" size="xl" weight="bold" />
-          <RoomTitle text={room.settings.room_name} color="navy" variant="h2" />
-          <CurrentUserNum
-            text={`${4}/${room.settings.max_players}`}
-            color="navy"
-            size="lg"
-            weight="bold"
-          />
+          {currentJoinedRoom ? (
+            <RoomCode
+              text={currentJoinedRoom.roomUid}
+              color="navy"
+              size="xl"
+              weight="bold"
+            />
+          ) : null}
+          {currentJoinedRoom ? (
+            <RoomTitle
+              text={currentJoinedRoom.settings.room_name}
+              color="navy"
+              variant="h2"
+            />
+          ) : null}
+          {currentJoinedRoom ? (
+            <CurrentUserNum
+              text={`${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`}
+              color="navy"
+              size="lg"
+              weight="bold"
+            />
+          ) : null}
         </LobbyHeader>
-        <UserList listItemName="RoomUserItem" listItemData={listItemData} />
+        <UserList
+          listItemName="RoomUserItem"
+          listItemData={listItemData}
+          handleUserReady={handleUserReady}
+        />
       </ResponsiveContainer>
     </>
   );
@@ -117,8 +93,8 @@ Lobby.propTypes = {
       score: propTypes.number,
     })
   ),
-  room: propTypes.objectOf(propTypes.any),
-
+  currentJoinedRoom: propTypes.objectOf(propTypes.any),
   setIsNewGameModalOpen: propTypes.func,
+  handleUserReady: propTypes.func,
 };
 export default Lobby;

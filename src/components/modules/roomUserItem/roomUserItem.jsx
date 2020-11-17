@@ -6,7 +6,15 @@ import Icon, { icons } from "../../atoms/icon/icon";
 import theme from "../../../styles/Theme";
 
 const RoomUserItem = (props) => {
-  const { isRoomOwner, avatarColor, icon, score, nickname, onClick } = props;
+  const {
+    handleUserReady,
+    isRoomOwner,
+    avatarColor,
+    icon,
+    score,
+    nickname,
+    onClick,
+  } = props;
   const [isReady, setIsReady] = useState(false);
 
   const renderCheckIcon = () => {
@@ -28,6 +36,7 @@ const RoomUserItem = (props) => {
       onClick={() => {
         setIsReady(!isReady);
         onClick(isReady);
+        handleUserReady();
       }}
     >
       <div className="row-container">
@@ -67,6 +76,7 @@ RoomUserItem.propTypes = {
   score: propTypes.number.isRequired,
   nickname: propTypes.string.isRequired,
   onClick: propTypes.func,
+  handleUserReady: propTypes.func,
 };
 
 RoomUserItem.defaultProps = {
