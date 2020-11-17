@@ -5,6 +5,10 @@ export const ImageAndTextContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  div.slide__paragraphContainer {
+    margin: 1rem;
+  }
+
   .slide__description {
     display: flex;
     flex-direction: column;
@@ -15,6 +19,7 @@ export const ImageAndTextContainer = styled.div`
       display: inline;
     }
   }
+
   ${({ theme, slideWidth }) => {
     return css`
       width: ${slideWidth};
@@ -98,7 +103,7 @@ export const StyledContentsContainer = styled.div`
     `;
   }}
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   z-index: 99;
 `;
 

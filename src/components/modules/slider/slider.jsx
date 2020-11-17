@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import List from "../list/list";
 import Image from "../../atoms/image/image";
@@ -16,16 +16,21 @@ import useWindowSize from "./useWindowSize";
 
 const variantOption = ["gamesPagination", "gameResultsPagination"];
 
-const Slider = ({ variant, slideItems, slideWidth, className }) => {
+const Slider = ({
+  variant,
+  slideItems,
+  slideWidth,
+  className,
+  currentSlide,
+  setCurrentSlide,
+}) => {
   const totalSlides = slideItems.length - 1;
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
   const windowSize = useWindowSize();
 
   const slideRef = useRef(null);
-
   const isFirstPage = () => currentSlide === 0;
   const isLastPage = () => currentSlide === totalSlides;
-
   const isFirstRound = () => currentSlide === 0;
   const isLastRound = () => currentSlide + 1 === totalSlides;
 
@@ -83,7 +88,7 @@ const Slider = ({ variant, slideItems, slideWidth, className }) => {
                 className="slider__img"
               />
             </StyledImageSlide>
-            <div className="slide__description">
+            <div className="slide__description" width={renderSlideWidth()}>
               <div clasName="slide__paragraphContainer">
                 <Paragraph
                   text={`${round.username} `}
@@ -219,6 +224,8 @@ Slider.propTypes = {
   slideItems: propTypes.arrayOf,
   slideWidth: propTypes.number,
   className: propTypes.string,
+  currentSlide: propTypes.number,
+  setCurrentSlide: propTypes.func,
 };
 
 export default Slider;
