@@ -216,7 +216,7 @@ const Slider = ({ variant, slideItems, slideWidth, className }) => {
 
 Slider.propTypes = {
   variant: propTypes.oneOf(variantOption),
-  slideItems: propTypes.arrayOf,
+  slideItems: propTypes.arrayOf(propTypes.any),
   slideWidth: propTypes.number,
   className: propTypes.string,
 };

@@ -121,18 +121,8 @@ Drawing.propTypes = {
   totalRound: propTypes.number,
   limitTime: propTypes.number,
   handleTimeOut: propTypes.func,
-  currentPlayer: propTypes.shape({
-    player_id: propTypes.string,
-    username: propTypes.string,
-    avatar: propTypes.string,
-  }),
-  playersList: propTypes.shape([
-    {
-      player_id: propTypes.string,
-      username: propTypes.string,
-      avatar: propTypes.string,
-    },
-  ]),
+  currentPlayer: propTypes.objectOf(propTypes.any),
+  playersList: propTypes.arrayOf(propTypes.objectOf(propTypes.any)),
   preGuessWord: propTypes.string,
 };
 
