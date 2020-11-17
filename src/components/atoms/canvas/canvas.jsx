@@ -19,8 +19,10 @@ const Canvas = ({
   useEffect(() => {
     const isWindowClient = typeof window === "object";
     const getCord = () => {
-      const cord = canvasRef.current.getBoundingClientRect();
-      setOffsetCoord({ x: cord.x, y: cord.y });
+      if (canvasRef && canvasRef.current) {
+        const cord = canvasRef.current.getBoundingClientRect();
+        setOffsetCoord({ x: cord.x, y: cord.y });
+      }
     };
     if (isWindowClient) {
       window.addEventListener("resize", getCord);
@@ -69,6 +71,7 @@ const Canvas = ({
   };
 
   const startDrawing = (event) => {
+    event.preventDefault();
     const mousePos = getMosuePositionOnCanvas(event);
     contextRef.current.beginPath();
     contextRef.current.moveTo(mousePos.x, mousePos.y);
@@ -76,13 +79,15 @@ const Canvas = ({
   };
 
   const draw = (event) => {
+    event.preventDefault();
     if (!isDrawing) return;
     const mousePos = getMosuePositionOnCanvas(event);
     contextRef.current.lineTo(mousePos.x, mousePos.y);
     contextRef.current.stroke();
   };
 
-  const finishDrawing = () => {
+  const finishDrawing = (event) => {
+    event.preventDefault();
     contextRef.current.closePath();
     setIsDrawing(false);
   };

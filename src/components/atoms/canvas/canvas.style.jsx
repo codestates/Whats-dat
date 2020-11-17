@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const DefaultCanvas = styled.canvas`
-  ${({ theme, width }) => {
+  ${({ width }) => {
     return css`
       display: block;
       ${"" /* //TODO: 사이즈 단위 확인 */}
