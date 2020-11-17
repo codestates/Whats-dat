@@ -1,11 +1,5 @@
 /* eslint consistent-return: "off" */
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import { useField } from "formik";
 
@@ -14,15 +8,13 @@ import ResponsiveContainer from "../../modules/responsiveContainer/responsiveCon
 import Container from "../../atoms/container/container";
 import { CustomContainer, ButtonLists } from "./SelectWord.style";
 import Header from "../../atoms/header/header";
-import Paragraph from "../../atoms/paragraph/paragraph";
 import ModuleForm from "../../modules/form/moduleForm";
 import SquareButton from "../../atoms/squareButton/squareButton";
 import { DefaultInput } from "../../atoms/input/input.style";
+import SeletWordTimer from "./SelectWordTimer";
 
-const SelectWord = (props) => {
-  const { handleTimeOut, wordList } = props;
-  // FIXME : leftTime: 20초
-  const [leftTime, setLeftTime] = useState(10);
+const SelectWord = ({ onSubmit, wordList }) => {
+  const limitTime = 20;
   const [selectedWord, setSelectedWord] = useState("");
   const inputRef = useRef();
 
@@ -30,43 +22,31 @@ const SelectWord = (props) => {
     setSelectedWord(word);
   };
 
-  const CustomField = ({ name, type }) => {
+  const handleTimeOut = () => {
+    onSubmit({ word: inputRef.current.value });
+  };
+
+  // FIXME : lose input focus
+  const CustomField = ({ name, type, value }) => {
     // Meta, field 는 폼 기능을 유지 시키기 위해 필요합니다.
     // eslint-disable-next-line
     const [field, meta, helpers] = useField(name);
-    const [term, setTerm] = useState(selectedWord);
     const { setValue } = helpers;
 
     useEffect(() => {
-      setValue(term);
-    }, [term]);
-
-    const renderInput = useMemo(
-      () => (
-        <input
-          ref={inputRef}
-          name={name}
-          type={type}
-          placeholder="Enter your word..."
-          value={selectedWord}
-          onChange={(e) => setSelectedWord(e.target.value)}
-        />
-      ),
-      []
-    );
+      inputRef.current.value = selectedWord;
+    }, [selectedWord]);
 
     return (
       <>
         <DefaultInput>
           <input
             ref={inputRef}
+            key={name}
             name={name}
             type={type}
             placeholder="Enter your word..."
-            value={selectedWord}
-            onChange={(e) => setSelectedWord(e.target.value)}
           />
-          {renderInput}
         </DefaultInput>
       </>
     );
@@ -75,20 +55,8 @@ const SelectWord = (props) => {
   CustomField.propTypes = {
     name: propTypes.string,
     type: propTypes.string,
+    value: propTypes.string,
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (leftTime > 0) {
-        setLeftTime(leftTime - 1);
-      }
-    }, 1000);
-
-    if (leftTime === 0) {
-      handleTimeOut({ word: inputRef.current.value });
-      return clearTimeout(timer);
-    }
-  }, [leftTime]);
 
   const renderButtons = () => {
     return wordList.map((word) => {
@@ -119,9 +87,9 @@ const SelectWord = (props) => {
               color="navy"
               weight="exbold"
             />
-            <Paragraph
-              text={`${leftTime}s`}
-              color={leftTime <= 5 ? "danger" : "darkGrey"}
+            <SeletWordTimer
+              limitTime={limitTime}
+              handleTimeOut={handleTimeOut}
             />
           </div>
 
@@ -131,11 +99,7 @@ const SelectWord = (props) => {
             <Header text="Or" variant="h3" color="navy" weight="bold" />
           </div>
           <Container size={22}>
-            <ModuleForm
-              type="selectWord"
-              btncolor="danger"
-              method={handleTimeOut}
-            >
+            <ModuleForm type="selectWord" btncolor="danger" method={onSubmit}>
               <CustomField name="word" type="text" value={selectedWord} />
             </ModuleForm>
           </Container>
@@ -146,7 +110,7 @@ const SelectWord = (props) => {
 };
 
 SelectWord.propTypes = {
-  handleTimeOut: propTypes.func,
+  onSubmit: propTypes.func,
   wordList: propTypes.arrayOf,
 };
 

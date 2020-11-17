@@ -15,26 +15,31 @@ const GuessWord = (props) => {
     curRound,
     totalRound,
     limitTime,
-    handleTimeOut,
+    onSubmit,
     currentPlayer,
     playersList,
     imageUrl,
   } = props;
 
   const [leftTime, setLeftTime] = useState(limitTime);
+  const [inputValue, setInputValue] = useState("");
 
-  // useEffect(() => {
-  // 	const timer = setTimeout(() => {
-  // 		if (leftTime > 0) {
-  // 			setLeftTime(leftTime - 1);
-  // 			// console.log(leftTime);
-  // 		}
-  // 	}, 1000);
-  // 	if (leftTime === 0) {
-  // 		handleTimeOut(); // TODO : game 종료시 fetch
-  // 		return clearTimeout(timer);
-  // 	}
-  // }, [leftTime]);
+  const getValue = (value) => {
+    return setInputValue(value);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (leftTime > 0) {
+        setLeftTime(leftTime - 1);
+      }
+    }, 1000);
+    if (leftTime === 0) {
+      onSubmit(inputValue);
+      return clearTimeout(timer);
+    }
+    return null;
+  }, [leftTime]);
 
   return (
     <>
@@ -64,7 +69,12 @@ const GuessWord = (props) => {
             <Image url={imageUrl} size={36} />
           </div>
           <Container size={36}>
-            <ModuleForm type="enterGuess" btncolor="danger" />
+            <ModuleForm
+              type="enterGuess"
+              btncolor="danger"
+              method={onSubmit}
+              getValue={getValue}
+            />
           </Container>
         </CustomContainer>
       </ResponsiveContainer>
@@ -76,7 +86,7 @@ GuessWord.propTypes = {
   curRound: propTypes.number,
   totalRound: propTypes.number,
   limitTime: propTypes.number,
-  handleTimeOut: propTypes.func,
+  onSubmit: propTypes.func,
   currentPlayer: propTypes.objectOf,
   playersList: propTypes.arrayOf,
   imageUrl: propTypes.string,

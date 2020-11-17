@@ -6,7 +6,6 @@ import GlobalStyle from "../styles/GlobalStyle";
 import UserContextProvider from "./UserContext";
 import RankContextProvider from "./RankingContext";
 import RoomListContextProvider from "./RoomListContext";
-import GameContextProvider from "./GameContext";
 
 const GlobalContextProvider = ({ children }) => {
   return (
@@ -14,9 +13,7 @@ const GlobalContextProvider = ({ children }) => {
       <GlobalStyle />
       <UserContextProvider>
         <RankContextProvider>
-          <RoomListContextProvider>
-            <GameContextProvider>{children}</GameContextProvider>
-          </RoomListContextProvider>
+          <RoomListContextProvider>{children}</RoomListContextProvider>
         </RankContextProvider>
       </UserContextProvider>
     </ThemeProvider>

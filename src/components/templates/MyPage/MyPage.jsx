@@ -39,7 +39,7 @@ const MyPage = ({ userGameProfile, method, handleClose }) => {
       <Background />
       <ResponsiveContainer>
         <HeaderContainer>
-          <CloseButton size="3" onClick={handleClose}>
+          <CloseButton size={3} onClick={handleClose}>
             <Icon variant="BUTTON_X" color="navy" />
           </CloseButton>
           <ProfileTitle
@@ -51,8 +51,8 @@ const MyPage = ({ userGameProfile, method, handleClose }) => {
           <ProfileCard
             avatar={userGameProfile.avatar || "AVATAR_KIWI"}
             color={userGameProfile.avatarColor || "green"}
-            rank="123"
-            AllUsers="1234"
+            rank={123}
+            AllUsers={1234}
             name={userGameProfile.nickname}
           />
         </HeaderContainer>

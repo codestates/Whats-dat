@@ -6,7 +6,7 @@ import Paragraph from "../../atoms/paragraph/paragraph";
 import Span from "../../atoms/span/span";
 import Button from "../../atoms/button/button";
 
-const EnterCodeModal = (props) => {
+const DisconnectMessageModal = (props) => {
   const { handleCloseModal, handleGoLobbyBtn, leftNickname } = props;
   return (
     <Modal
@@ -35,12 +35,12 @@ const EnterCodeModal = (props) => {
   );
 };
 
-EnterCodeModal.propTypes = {
+DisconnectMessageModal.propTypes = {
   handleCloseModal: propTypes.func,
   leftNickname: propTypes.string,
   handleGoLobbyBtn: propTypes.func,
 };
 
-EnterCodeModal.defaultProps = {};
+DisconnectMessageModal.defaultProps = {};
 
-export default EnterCodeModal;
+export default DisconnectMessageModal;

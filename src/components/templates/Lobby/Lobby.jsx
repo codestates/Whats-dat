@@ -23,13 +23,13 @@ const Lobby = () => {
       <ResponsiveContainer>
         <LobbyHeader>
           <SettingBox>
-            <Settingbutton size="3">
+            <Settingbutton size={3}>
               <Icon variant="BUTTON_SETTING" color="secondary" />
             </Settingbutton>
             <GameSecond text="30s" color="secondary" />
             <GameMode text="Free Mode" color="secondary" />
           </SettingBox>
-          <ExitButton size="3">
+          <ExitButton size={3}>
             <Icon variant="BUTTON_EXIT" color="secondary" />
           </ExitButton>
           <RoomCode text="ABCD" color="navy" size="xl" weight="bold" />

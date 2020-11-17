@@ -16,7 +16,7 @@ const Drawing = (props) => {
     curRound,
     totalRound,
     limitTime,
-    handleTimeOut,
+    onSubmit,
     currentPlayer,
     playersList,
     preGuessWord,
@@ -27,6 +27,11 @@ const Drawing = (props) => {
   const [selectedColor, setSelectedColor] = useState("black");
   const [canvasRef, setCanvaseRef] = useState(null);
 
+  const sendCanvasImageData = () => {
+    const canvasImageData = canvasRef.current.toDataURL("image/png", 0.3);
+    return onSubmit(canvasImageData);
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (leftTime > 0) {
@@ -34,7 +39,7 @@ const Drawing = (props) => {
       }
     }, 1000);
     if (leftTime === 0) {
-      handleTimeOut(); // TODO : game 종료시 fetch
+      sendCanvasImageData();
       return clearTimeout(timer);
     }
     return null;
@@ -54,14 +59,6 @@ const Drawing = (props) => {
     if (strokeSize < 5) {
       setStrokeSize(strokeSize + 1);
     }
-  };
-
-  const getCanvasImageData = () => {
-    const canvasImageData = canvasRef.current
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-    // TODO: 임시로 로컬 저장 되도록 되어있음
-    window.location.href = canvasImageData;
   };
 
   return (
@@ -108,7 +105,11 @@ const Drawing = (props) => {
             />
           </div>
           <div className="m-top">
-            <Button text="Submit" color="danger" onClick={getCanvasImageData} />
+            <Button
+              text="Submit"
+              color="danger"
+              onClick={sendCanvasImageData}
+            />
           </div>
         </CustomContainer>
       </ResponsiveContainer>
@@ -120,7 +121,7 @@ Drawing.propTypes = {
   curRound: propTypes.number,
   totalRound: propTypes.number,
   limitTime: propTypes.number,
-  handleTimeOut: propTypes.func,
+  onSubmit: propTypes.func,
   currentPlayer: propTypes.shape({
     player_id: propTypes.string,
     username: propTypes.string,

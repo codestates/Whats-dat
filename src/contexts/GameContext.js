@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
-import { firestore } from "../firebase";
+import firebase from "firebase";
+import app, { firestore } from "../firebase";
 
 const GameContext = createContext();
 
@@ -9,18 +10,6 @@ export const useGame = () => {
 };
 
 // TODO : canvas string -> canvas image 변환
-// game:
-// is_started: boolean
-// rounds:
-//   0: // 0
-//       player_id[key]
-//         start_word: string
-//   1: // 홀수
-//       player_id
-//         canvas_img:
-//   2: // 짝수
-//       player_id
-//         guessed_word: string
 
 const GameContextProvider = ({ children }) => {
   const [gameLog, setGameLog] = useState();
@@ -35,7 +24,6 @@ const GameContextProvider = ({ children }) => {
         .collection("game_log")
         .doc("0")
         .onSnapshot((doc) => {
-          console.log("gameContext", doc.data());
           setGameLog(doc.data());
         });
       setLoading(false);
@@ -43,7 +31,21 @@ const GameContextProvider = ({ children }) => {
     getGameLog();
   }, []);
 
-  const value = { gameLog };
+  const submitResult = async ({ roomId, roundIndex, value }) => {
+    const onCallSubmitResult = await firebase
+      .functions()
+      .httpsCallable("handleGameSubmit");
+    // TODO: totalplayer 연결
+    const result = await onCallSubmitResult({
+      roomId,
+      roundIndex,
+      value,
+      totalPlayers: 3,
+    });
+    return result;
+  };
+
+  const value = { gameLog, submitResult };
   return (
     <GameContext.Provider value={value}>
       {!loading && children}
