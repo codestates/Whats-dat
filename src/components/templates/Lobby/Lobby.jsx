@@ -14,6 +14,7 @@ import {
   RoomTitle,
   CurrentUserNum,
   SettingBox,
+  Settingbutton,
 } from "./Lobby.style";
 
 const Lobby = ({
@@ -30,14 +31,19 @@ const Lobby = ({
       <ResponsiveContainer>
         <LobbyHeader>
           <SettingBox>
-            <Icon
-              onClick={() => setIsNewGameModalOpen(true)}
-              variant="BUTTON_SETTING"
-              color="secondary"
-            />
+            <Settingbutton size={3}>
+              <Icon
+                onClick={() => setIsNewGameModalOpen(true)}
+                variant="BUTTON_SETTING"
+                color="secondary"
+              />
+            </Settingbutton>
             {currentJoinedRoom ? (
               <GameSecond
-                text={currentJoinedRoom.settings.limit_time}
+                text={
+                  currentJoinedRoom.settings &&
+                  currentJoinedRoom.settings.limit_time
+                }
                 color="secondary"
               />
             ) : null}
@@ -59,14 +65,23 @@ const Lobby = ({
           ) : null}
           {currentJoinedRoom ? (
             <RoomTitle
-              text={currentJoinedRoom.settings.room_name}
+              text={
+                currentJoinedRoom.settings &&
+                currentJoinedRoom.settings.room_name
+              }
               color="navy"
               variant="h2"
             />
           ) : null}
           {currentJoinedRoom ? (
             <CurrentUserNum
-              text={`${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`}
+              text={
+                currentJoinedRoom.players &&
+                `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
+              }
+                currentJoinedRoom.players &&
+                `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
+              }
               color="navy"
               size="lg"
               weight="bold"

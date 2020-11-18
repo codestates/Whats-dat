@@ -16,7 +16,7 @@ const FormikCounter = ({ label, name, maxPlayers = 4, ...rest }) => {
   };
 
   const decrementNumPlayers = (form) => {
-    if (numPlayers > 4) {
+    if (numPlayers > 3) {
       form.values.settings.max_players = numPlayers - 1;
       setNumPlayers(numPlayers - 1);
     }

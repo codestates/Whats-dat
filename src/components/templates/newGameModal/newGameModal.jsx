@@ -9,9 +9,9 @@ const NewGameModal = (props) => {
   const { isNewGame, handleCloseModal, method, initialValues } = props;
   const options = [
     { key: "Select Time", value: 0 },
-    { key: "20s", value: 20 },
-    { key: "25s", value: 25 },
     { key: "30s", value: 30 },
+    { key: "45s", value: 45 },
+    { key: "60s", value: 60 },
   ];
 
   return (
