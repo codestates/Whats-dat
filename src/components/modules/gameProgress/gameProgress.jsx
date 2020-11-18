@@ -18,16 +18,20 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
         <React.Fragment key={`${nickname}Fragment`}>
           <StyledGameProgressColumn>
             <NonePaddingAvatar
-              border={playerId === innerCurrentPlayer.player_id}
-              borderColor="primary"
+              border={playerId === innerCurrentPlayer.user_id}
+              borderColor="navy"
               borderWidth="0.2rem"
               sizes="xSm"
+              bgColor={
+                playerId === innerCurrentPlayer.user_id ? "navy" : "grey"
+              }
               className="gameProgress__avatar"
             >
               <Icon variant={avatar} color="white" />
             </NonePaddingAvatar>
             <div className="gameProgress__username">
               <Paragraph
+                weight="exbold"
                 size="xSm"
                 text={
                   nickname.slice(0, 4).length === nickname.length
@@ -35,7 +39,7 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
                     : `${nickname.slice(0, 4)}...`
                 }
                 color={
-                  playerId === innerCurrentPlayer.player_id ? "navy" : "grey"
+                  playerId === innerCurrentPlayer.user_id ? "navy" : "grey"
                 }
               />
             </div>
