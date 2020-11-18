@@ -29,7 +29,7 @@ const WaitingItem = (props) => {
               : `${nickname} is writing...`
           }
           color="grey"
-          size="base"
+          size="sm"
           weight="bold"
         />
       </div>

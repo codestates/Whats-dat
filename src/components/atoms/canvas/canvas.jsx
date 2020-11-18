@@ -108,7 +108,7 @@ const Canvas = ({
         onTouchEnd={finishDrawing}
       />
       <ClearButton type="submit" onClick={fillWhite}>
-        Clean Canvas
+        Clear Canvas
       </ClearButton>
     </>
   );
