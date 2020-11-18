@@ -23,7 +23,6 @@ const RoomContextProvider = ({ children }) => {
     persistentCurrentRoomCode,
     setPersistentCurrentRoomCode,
   ] = useLocalStorage("roomCode", "");
-  const history = useHistory();
 
   const createRoom = (values, roomUid) => {
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
@@ -91,75 +90,68 @@ const RoomContextProvider = ({ children }) => {
       });
   };
 
-  const getJoinedRoomInfo = (code) => {
-    const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
-    firestore
-      .collection("roomDev")
-      .doc(`${roomCode}`)
-      .get()
-      .then((data) => {
-        setCurrentJoinedRoom({ roomUid: roomCode, ...data.data() });
-        setPersistentCurrentRoomCode(roomCode);
-      })
-      .then(() => {
-        // history.push("/lobby");
-        return "getJoinedRoomInfo done";
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
-  };
-
-  const joinRoom = async (code, setErrorMessage) => {
+  const getJoinedRoomInfo = async (code) => {
+    console.log("getJoinedRoomInfo start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     try {
-      firestore
+      const roomData = await firestore
         .collection("roomDev")
         .doc(`${roomCode}`)
-        .get()
-        .then((doc) => {
-          const data = doc.data();
-          const currentJoinedUsers = data.players.map((player) => {
-            return player.user_id;
-          });
-          if (currentJoinedUsers.includes(currentUser.uid)) {
-            throw new Error("Already Joined User");
-          }
-          return { roomUid: roomCode, ...data };
-        })
-        .then((data) => {
-          const modifiedPlayersData = [];
-          if (data.players.length < data.settings.max_players) {
-            modifiedPlayersData.push(...data.players, {
-              user_id: currentUser.uid,
-              isReady: false,
-              ...userGameProfile,
-            });
-          }
-          return modifiedPlayersData;
-        })
-        .then((data) => {
-          firestore
-            .collection("roomDev")
-            .doc(`${roomCode}`)
-            .update({ players: [...data] })
-            .then(() => {
-              setIsInRoom(true);
-            });
-        })
-        .then(() => {
-          // TODO: 완료시 getJoinedRoomInfo 동기 실행
-          // getJoinedRoomInfo(code);
-        })
-        .catch((error) => {
-          setErrorMessage({
-            title: "Enter Room False",
-            paragraph: `${error.message} 😱`,
-          });
-        });
+        .get();
+      setCurrentJoinedRoom({ roomUid: roomCode, ...roomData.data() });
+      setPersistentCurrentRoomCode(roomCode);
+      console.log("getJoinedRoomInfo done");
+      return true;
     } catch (error) {
       throw new Error(error.message);
     }
+  };
+
+  const joinRoom = async (code, setErrorMessage) => {
+    console.log("joinRoom start");
+    const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
+    try {
+      const doc = await firestore
+        .collection("roomDev")
+        .doc(`${roomCode}`)
+        .get();
+
+      const data = doc.data();
+      const currentJoinedUsers = data.players.map((player) => player.user_id);
+
+      if (currentJoinedUsers.includes(currentUser.uid)) {
+        throw new Error("Already Joined User");
+      }
+      const roomData = { roomUid: roomCode, ...data };
+
+      const modifiedPlayersData = [];
+
+      if (roomData.players.length < roomData.settings.max_players) {
+        modifiedPlayersData.push(...roomData.players, {
+          user_id: currentUser.uid,
+          isReady: false,
+          ...userGameProfile,
+        });
+      }
+
+      await firestore
+        .collection("roomDev")
+        .doc(`${roomCode}`)
+        .update({ players: [...modifiedPlayersData] })
+        .then(() => {
+          setIsInRoom(true);
+        });
+
+      // TODO: 완료시 getJoinedRoomInfo 동기 실행
+      console.log("joinRoom done");
+      return getJoinedRoomInfo(code);
+    } catch (error) {
+      setErrorMessage({
+        title: "Enter Room False",
+        paragraph: `${error.message} 😱`,
+      });
+    }
+    return null;
   };
 
   // const getLobbySnapshot = (code) => {

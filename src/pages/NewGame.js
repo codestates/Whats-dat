@@ -85,7 +85,7 @@ const NewGame = () => {
     // },
   };
 
-  const handleNewGame = (values) => {
+  const handleNewGame = async (values) => {
     console.log("handleNewGame values임", values);
     Object.assign(values, {
       settings: {
@@ -111,16 +111,12 @@ const NewGame = () => {
       return;
     }
 
-    createRoom(values, roomUid)
-      .then(() => {
-        setCurrentJoinedRoom({ roomUid, ...values });
-        getRoomList();
-        history.push("/lobby");
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      });
+    createRoom(values, roomUid).then(() => {
+      setCurrentJoinedRoom({ roomUid, ...values });
+      getRoomList();
+      history.push("/lobby");
+    });
+
     console.log(currentJoinedRoom);
   };
 
@@ -129,13 +125,18 @@ const NewGame = () => {
   }, [currentJoinedRoom]);
 
   const handleJoinRoom = async (code) => {
-    await joinRoom(code, setErrorMessage);
-    await getJoinedRoomInfo(code);
-
-    // TODO 고쳐야함...
-    setTimeout(() => {
+    console.log("---------------handleJoinRoom");
+    const res = await joinRoom(code, setErrorMessage);
+    // await getJoinedRoomInfo(code);
+    console.log("res:", res);
+    if (res) {
       history.push("/lobby");
-    }, 750);
+    }
+
+    // TODO: 고쳐야함...
+    // setTimeout(() => {
+    //   history.push("/lobby");
+    // }, 750);
   };
 
   useEffect(() => {
