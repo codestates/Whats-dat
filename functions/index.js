@@ -1,7 +1,9 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
-admin.initializeApp();
+admin.initializeApp(functions.config().firebase);
+
+const firestore = admin.firestore();
 
 exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
@@ -59,22 +61,24 @@ exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
   }
 });
 
-// TODO: 게임 생성시 플레이 순서 랜덤 생성
-// const shufflePlayers = function (players) {
-//     const copy = players.slice();
-//     for (let i = players.length - 1; i > 0; i -= 1) {
-//       const j = Math.floor(Math.random() * i);
-//       [copy[i], copy[j]] = [copy[j], copy[i]];
-//     }
-//     return copy;
-//   };
+exports.onUserStatusChanged = functions.database
+  .ref("/status/{uid}")
+  .onUpdate(async (change, context) => {
+    const eventStatus = change.after.val();
 
-// playOrder = [ user_id, user_id, user_id, user_id, user_id, user_id ]
+    const userStatusFirestoreRef = firestore.doc(
+      `status/${context.params.uid}`
+    );
 
-// collection('game_log').doc("0").update({
-//   playOrder : [user_id, user_id, user_id, user_id],
-//   rounds: {
-//     "0": {}
-//   },
-//   status: "standBy"
-// })
+    const statusSnapshot = await change.after.ref.once("value");
+    const status = statusSnapshot.val();
+    console.log(status, eventStatus);
+
+    if (status.last_changed > eventStatus.last_changed) {
+      return null;
+    }
+
+    eventStatus.last_changed = new Date(eventStatus.last_changed);
+
+    return userStatusFirestoreRef.set(eventStatus);
+  });
