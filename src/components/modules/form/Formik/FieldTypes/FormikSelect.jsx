@@ -34,7 +34,7 @@ const FormikSelect = ({ type, label, name, options, ...rest }) => {
 FormikSelect.propTypes = {
   label: propTypes.string,
   name: propTypes.string,
-  type: propTypes.any,
+  type: propTypes.string,
   options: propTypes.arrayOf,
 };
 
