@@ -48,7 +48,6 @@ const GameResults = ({ listItemData }) => {
                 color="white"
                 size="lg"
               />
-              {}
             </Box>
           </div>
           <div className="m-top m-bottom">

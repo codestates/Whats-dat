@@ -32,6 +32,11 @@ const GuessWord = (props) => {
     onSubmit({ word: inputRef.current.value });
   };
 
+  // 상황 정리
+  // 다른 사람이 제출하면 재랜더링이 됨
+  // 그런데 버튼으로 클릭한 내용은 기억하고 있음
+  // 인풋으로 입력한 내용은 리셋 됨
+
   const enterGuessConfig = {
     formInfo: {
       formTitle: null,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Drawing from "./Drawing";
 import GuessWord from "./GuessWord";
 import SelectWord from "./SelectWord";
@@ -28,10 +28,10 @@ const index = () => {
   // TODO: 실시간 데이터 연결
   const [isAllConnect, setIsAllConnect] = useState(true);
   const { nickname, avatarColor, avatar, score, uid } = currentUser;
-  let totalRound = 0;
+  const [totalRound, setTotalRound] = useState(0);
   const [waitingItems, setWaitingItems] = useState([]);
 
-  const getRandomWordList = () => {
+  const randomWordList = useMemo(() => {
     const copyWordList = [...wordList.eng];
     const result = [];
     for (let i = 1; i <= 3; i += 1) {
@@ -39,7 +39,7 @@ const index = () => {
       result.push(copyWordList.splice(randomIdx, 1)[0]);
     }
     return result;
-  };
+  }, []);
 
   const setIsSubmitFalse = () => {
     setIsSubmit(false);
@@ -50,7 +50,7 @@ const index = () => {
     if (typeof value === "object") {
       value = values.word;
       if (value.length === 0 && currentRound === 0) {
-        [value] = wordList;
+        [value] = wordList.eng;
       } else if (value.length === 0) {
         value = `${nickname} couldn't answer...`;
       }
@@ -86,7 +86,7 @@ const index = () => {
     if (gameLog.status === "closed") {
       setIsSubmit(false);
     }
-    totalRound = calculateTotalRound(currentJoinedRoom.players.length);
+    setTotalRound(calculateTotalRound(currentJoinedRoom.players.length) - 1);
 
     setWaitingItems(getUnSubmitPlayer(currentJoinedRoom, gameLog));
   }, [gameLog]);
@@ -98,14 +98,13 @@ const index = () => {
 
     if (gameLog && gameLog.status === "closed") {
       const listItemData = createGameResultList(gameLog, currentJoinedRoom);
-      console.log(listItemData);
       return <GameResults listItemData={listItemData} />;
     }
 
     if (currentRound === 0) {
       return (
         <SelectWord
-          wordList={getRandomWordList()}
+          wordList={randomWordList}
           onSubmit={onSubmit}
           setIsSubmit={setIsSubmit}
         />
