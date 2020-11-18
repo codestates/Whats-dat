@@ -27,7 +27,6 @@ const Lobby = ({
   const history = useHistory();
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <LobbyHeader>
           <SettingBox>

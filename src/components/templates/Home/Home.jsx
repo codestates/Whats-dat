@@ -15,7 +15,6 @@ import {
 const Home = () => {
   return (
     <>
-      <Background />
       <HomeContainer>
         <RpqButton color="white">
           <RpqIcon />

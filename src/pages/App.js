@@ -12,6 +12,7 @@ import Game from "./Game";
 import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
+import Background from "../components/atoms/background/Background";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
 import GameContextProvider from "../contexts/GameContext";
@@ -34,6 +35,7 @@ const App = () => {
 
   return (
     <>
+      <Background />
       {/* <pre>{JSON.stringify(currentJoinedRoom, null, 2)}</pre>
       <pre>{JSON.stringify(isInRoom, null, 2)}</pre> */}
       <Switch>

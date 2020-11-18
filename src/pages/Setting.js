@@ -83,7 +83,6 @@ const Setting = () => {
 
   return (
     <>
-      <Background />
       <AvatarModal
         options={options}
         method={handleUpdateUserInfo}
