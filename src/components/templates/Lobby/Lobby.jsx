@@ -30,11 +30,13 @@ const Lobby = ({
       <ResponsiveContainer>
         <LobbyHeader>
           <SettingBox>
-            <Icon
-              onClick={() => setIsNewGameModalOpen(true)}
-              variant="BUTTON_SETTING"
-              color="secondary"
-            />
+            <Settingbutton size={3}>
+              <Icon
+                onClick={() => setIsNewGameModalOpen(true)}
+                variant="BUTTON_SETTING"
+                color="secondary"
+              />
+            </Settingbutton>
             {currentJoinedRoom ? (
               <GameSecond
                 text={currentJoinedRoom.settings.limit_time}
