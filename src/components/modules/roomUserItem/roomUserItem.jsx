@@ -25,8 +25,6 @@ const RoomUserItem = (props) => {
   const { currentJoinedRoom } = useRoom();
 
   useEffect(() => {
-    console.log("changed!");
-    console.log("currentJoinedRoom", currentJoinedRoom);
     currentJoinedRoom.players.forEach((player) => {
       // eslint-disable-next-line camelcase
       if (player.user_id === user_id) {
