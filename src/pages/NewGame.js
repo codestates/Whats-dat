@@ -80,6 +80,11 @@ const NewGame = () => {
     createRoom(values, roomUid)
       .then(() => {
         // setPersistentRoomInfo({ roomUid, ...values });
+        console.log(
+          "iam about to set current joined room, roomUid",
+          roomUid,
+          values
+        );
         setCurrentJoinedRoom({ roomUid, ...values });
         getRoomList();
         history.push("/lobby");

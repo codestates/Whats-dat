@@ -219,6 +219,7 @@ const RoomContextProvider = ({ children }) => {
     // getLobbySnapshot,
     updatePlayerReady,
     leaveRoom,
+    isInRoom,
   };
   return <RoomContext.Provider value={value}>{children}</RoomContext.Provider>;
 };
