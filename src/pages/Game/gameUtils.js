@@ -1,15 +1,24 @@
-import useLocalState from "../../utils/useLocalStorage";
-
-export const getPreviousRoundData = (gameLog, userInfo, currentRound) => {
+export const getPreviousRoundData = (gameLog, currentUser, currentRound) => {
+  console.log("gameLog:", gameLog);
+  console.log("userInfo:", currentUser);
+  console.log("currentRound:", currentRound);
   const { playOrder } = gameLog;
-  const myOrder = playOrder.indexOf(userInfo.user_id);
+  const myOrder = playOrder.indexOf(currentUser.uid);
+  console.log("myOrder:", myOrder);
   let prevOrder;
   if (myOrder === 0) {
     prevOrder = playOrder.length - 1;
   } else {
     prevOrder = myOrder - 1;
   }
+
   const prevPlayerId = playOrder[prevOrder];
+  console.log("preOrder:", myOrder);
+  console.log("prevPlayerId:", prevPlayerId);
+  console.log(
+    "---------results:",
+    gameLog.rounds[currentRound - 1][prevPlayerId]
+  );
   return gameLog.rounds[currentRound - 1][prevPlayerId];
 };
 
@@ -151,4 +160,21 @@ export const createGameResultList = (gameLog, roomInfo) => {
   return resultList;
 };
 
+export const mapProgressPlayers = (playOrder, players) => {
+  return playOrder.map((orderId) => {
+    const playerData = players.filter((player) => {
+      if (orderId === player.user_id) {
+        return true;
+      }
+      return false;
+    });
+
+    return {
+      user_id: orderId,
+      nickname: playerData[0].nickname,
+      avatar: playerData[0].avatar,
+    };
+  });
+};
+// export 하고 연결할게요
 export default createGameResultList;

@@ -40,7 +40,7 @@ const GameContextProvider = ({ children }) => {
       roomId: currentJoinedRoom.roomUid,
       roundIndex,
       value,
-      totalPlayers: currentJoinedRoom.settings.max_players,
+      totalPlayers: currentJoinedRoom.players.length,
     });
     return result;
   };
