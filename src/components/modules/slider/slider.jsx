@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import List from "../list/list";
 import Image from "../../atoms/image/image";
@@ -21,12 +21,12 @@ const Slider = ({
   slideItems,
   slideWidth,
   className,
+  joinRoom,
   currentSlide,
   setCurrentSlide,
-  joinRoom,
 }) => {
-  const windowSize = useWindowSize();
   const [slideItemsData, setSlideItemsData] = useState(slideItems);
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     setSlideItemsData(slideItems);
@@ -37,6 +37,7 @@ const Slider = ({
 
   const isFirstPage = () => currentSlide === 0;
   const isLastPage = () => currentSlide === totalSlides;
+
   const isFirstRound = () => currentSlide === 0;
   const isLastRound = () => currentSlide + 1 === totalSlides;
 
@@ -94,7 +95,7 @@ const Slider = ({
                 className="slider__img"
               />
             </StyledImageSlide>
-            <div className="slide__description" width={renderSlideWidth()}>
+            <div className="slide__description">
               <div clasName="slide__paragraphContainer">
                 <Paragraph
                   text={`${round.username} `}
@@ -237,9 +238,9 @@ Slider.propTypes = {
   slideItems: propTypes.arrayOf(propTypes.any),
   slideWidth: propTypes.number,
   className: propTypes.string,
-  currentSlide: propTypes.number,
-  setCurrentSlide: propTypes.func,
   joinRoom: propTypes.func,
+  setCurrentSlide: propTypes.func,
+  currentSlide: propTypes.arrayOf(propTypes.any),
 };
 
 export default Slider;

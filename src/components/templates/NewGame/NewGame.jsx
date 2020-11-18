@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import propTypes from "prop-types";
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
@@ -20,6 +20,7 @@ const NewGame = ({
   setIsEnterCodeModalOpen,
   listItemData,
 }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <>
       <Background />
@@ -41,6 +42,8 @@ const NewGame = ({
             slideWidth={30}
             variant="gamesPagination"
             className="newGame__slider"
+            currentSlide={currentSlide}
+            setCurrentSlide={setCurrentSlide}
           />
         </NewGameContainer>
         <StyledButtonsContainer>

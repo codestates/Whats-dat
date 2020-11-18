@@ -143,7 +143,7 @@ const settingConfig = {
   initialValues: {
     roomname: "",
     limitTime: 20,
-    maxPlayers: 4,
+    maxPlayers: 3,
   },
 
   validationSchema: Yup.object({
@@ -163,7 +163,10 @@ const gameStartConfig = {
     buttonName: "Confirm",
   },
 
-  validationSchema: Yup.object({}),
+  validationSchema: Yup.object({
+    "settings.limit_time": Yup.number().min(5),
+  }),
+
   // eslint-disable-next-line
   onSubmit: (values) => console.log("form-data", values),
 };
@@ -358,7 +361,6 @@ const ModuleForm = ({
       );
 
     case "settingForm":
-      console.log("asdasdasdasd", initialValues);
       return (
         <CounterForm>
           <FormikContainer
@@ -419,8 +421,7 @@ const ModuleForm = ({
             />
             <FormikControl
               control="select"
-              defaultValue="60s"
-              type="text"
+              type="number"
               label="Limit Time"
               name="settings.limit_time"
               bordercolors="secondary"

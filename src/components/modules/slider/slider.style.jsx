@@ -14,7 +14,7 @@ export const ImageAndTextContainer = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
-    z-index: 99;
+    z-index: 0;
     p {
       display: inline;
     }
@@ -116,7 +116,7 @@ export const StyledSliderContainer = styled.div`
   ${({ slideWidth, theme, variant }) => {
     return css`
       .slide__pagination {
-        z-index: 99;
+        z-index: 0;
         position: absolute;
         width: 80%;
         & > button {

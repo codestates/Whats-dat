@@ -16,13 +16,22 @@ const NewGame = () => {
     roomList,
     joinRoom,
     getJoinedRoomInfo,
+    currentJoinedRoom,
     setCurrentJoinedRoom,
+    setIsInRoom,
   } = useRoom();
-
+  const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
 
+  // TODO 방이 안들어가질 경우에 해당 모달을 전송
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isEnterCodeModalOpen, setIsEnterCodeModalOpen] = useState(false);
+  const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
+
   useEffect(() => {
+    setIsInRoom(false);
     getRoomList();
+    console.log("룸리스트");
     getUser(currentUser.uid)
       .then((userData) => {
         const user = userData.data();
@@ -58,8 +67,8 @@ const NewGame = () => {
     created_at: "",
     settings: {
       room_name: "",
-      limit_time: "",
-      max_players: "",
+      limit_time: 0,
+      max_players: 0,
     },
     players: [
       {
@@ -71,15 +80,39 @@ const NewGame = () => {
         is_ready: false,
       },
     ],
-    game: {
-      is_started: false,
-    },
+    // game: {
+    //   is_started: false,
+    // },
   };
 
   const handleNewGame = (values) => {
+    console.log("handleNewGame values임", values);
+    Object.assign(values, {
+      settings: {
+        room_name: values.settings.room_name,
+        limit_time: parseInt(values.settings.limit_time, 10),
+        max_players: values.settings.max_players,
+      },
+    });
+
+    if (values.settings.limit_time < 1) {
+      setIsErrorModalOpen(true);
+      setErrorMessage({
+        title: "Please select time limit 😱",
+      });
+      return;
+    }
+
+    if (values.settings.room_name.length < 1) {
+      setIsErrorModalOpen(true);
+      setErrorMessage({
+        title: "You must enter room name 😱",
+      });
+      return;
+    }
+
     createRoom(values, roomUid)
       .then(() => {
-        // setPersistentRoomInfo({ roomUid, ...values });
         setCurrentJoinedRoom({ roomUid, ...values });
         getRoomList();
         history.push("/lobby");
@@ -88,11 +121,16 @@ const NewGame = () => {
         // eslint-disable-next-line no-console
         console.log(error);
       });
+    console.log(currentJoinedRoom);
   };
 
-  const handleJoinRoom = (code) => {
-    joinRoom(code);
-    getJoinedRoomInfo(code);
+  useEffect(() => {
+    console.log("currentJoinedRoom:", currentJoinedRoom);
+  }, [currentJoinedRoom]);
+
+  const handleJoinRoom = async (code) => {
+    await joinRoom(code, setErrorMessage);
+    await getJoinedRoomInfo(code);
 
     // TODO 고쳐야함...
     setTimeout(() => {
@@ -100,10 +138,13 @@ const NewGame = () => {
     }, 750);
   };
 
-  // TODO 방이 안들어가질 경우에 해당 모달을 전송
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [isEnterCodeModalOpen, setIsEnterCodeModalOpen] = useState(false);
-  const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
+  useEffect(() => {
+    if (!errorMessage) {
+      setIsErrorModalOpen(false);
+    } else {
+      setIsErrorModalOpen(true);
+    }
+  }, [errorMessage]);
 
   return (
     <>
@@ -123,6 +164,7 @@ const NewGame = () => {
       ) : null}
       {isErrorModalOpen ? (
         <ErrorMessageModal
+          errorMessage={errorMessage}
           handleCloseModal={() => setIsErrorModalOpen(false)}
         />
       ) : null}

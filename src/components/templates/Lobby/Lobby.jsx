@@ -22,6 +22,7 @@ const Lobby = ({
   currentJoinedRoom,
   setIsNewGameModalOpen,
   handleUserReady,
+  handleLeaveRoom,
 }) => {
   const history = useHistory();
   return (
@@ -39,7 +40,10 @@ const Lobby = ({
             </Settingbutton>
             {currentJoinedRoom ? (
               <GameSecond
-                text={currentJoinedRoom.settings.limit_time}
+                text={
+                  currentJoinedRoom.settings &&
+                  currentJoinedRoom.settings.limit_time
+                }
                 color="secondary"
               />
             ) : null}
@@ -48,7 +52,7 @@ const Lobby = ({
             <Icon
               variant="BUTTON_EXIT"
               color="secondary"
-              onClick={() => history.push("/new-game")}
+              onClick={() => handleLeaveRoom()}
             />
           </ExitButton>
           {currentJoinedRoom ? (
@@ -61,14 +65,23 @@ const Lobby = ({
           ) : null}
           {currentJoinedRoom ? (
             <RoomTitle
-              text={currentJoinedRoom.settings.room_name}
+              text={
+                currentJoinedRoom.settings &&
+                currentJoinedRoom.settings.room_name
+              }
               color="navy"
               variant="h2"
             />
           ) : null}
           {currentJoinedRoom ? (
             <CurrentUserNum
-              text={`${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`}
+              text={
+                currentJoinedRoom.players &&
+                `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
+              }
+                currentJoinedRoom.players &&
+                `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
+              }
               color="navy"
               size="lg"
               weight="bold"
@@ -99,5 +112,6 @@ Lobby.propTypes = {
   currentJoinedRoom: propTypes.objectOf(propTypes.any),
   setIsNewGameModalOpen: propTypes.func,
   handleUserReady: propTypes.func,
+  handleLeaveRoom: propTypes.func,
 };
 export default Lobby;

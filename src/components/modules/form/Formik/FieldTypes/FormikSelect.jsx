@@ -5,12 +5,13 @@ import propTypes from "prop-types";
 import Input from "../../../../atoms/input/input";
 import FormikError from "../FormikError";
 
-const FormikSelect = ({ label, name, options, ...rest }) => {
+const FormikSelect = ({ type, label, name, options, ...rest }) => {
   return (
     <div className="form-control">
       {label ? <label htmlFor={name}>{label}</label> : null}
       <Field
-        // as='select'
+        as="select"
+        type={type}
         component={Input}
         variant="select"
         id={name}
@@ -33,6 +34,7 @@ const FormikSelect = ({ label, name, options, ...rest }) => {
 FormikSelect.propTypes = {
   label: propTypes.string,
   name: propTypes.string,
+  type: propTypes.any,
   options: propTypes.arrayOf,
 };
 

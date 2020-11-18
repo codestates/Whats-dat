@@ -25,12 +25,15 @@ const RoomUserItem = (props) => {
   const { currentJoinedRoom } = useRoom();
 
   useEffect(() => {
-    currentJoinedRoom.players.forEach((player) => {
-      // eslint-disable-next-line camelcase
-      if (player.user_id === user_id) {
-        setIsReady(player.is_ready);
-      }
-    });
+    if (currentJoinedRoom !== undefined) {
+      console.log("roomUserItem/currentJoinedRoom", currentJoinedRoom);
+      currentJoinedRoom.players.forEach((player) => {
+        // eslint-disable-next-line camelcase
+        if (player.user_id === user_id) {
+          setIsReady(player.is_ready);
+        }
+      });
+    }
   }, [currentJoinedRoom]);
 
   const renderCheckIcon = () => {

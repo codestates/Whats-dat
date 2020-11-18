@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import LobbyTemplate from "../components/templates/Lobby/Lobby";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
-
 import NewGameModal from "../components/templates/newGameModal/newGameModal";
+import ErrorMessageModal from "../components/templates/errorMessageModal/errorMessageModal";
 
 const Lobby = () => {
   const { getUser, currentUser, setUserGameProfile } = useAuth();
+
   const {
+    isGameStarted,
     setCurrentRoomSetting,
     updateRoomSetting,
     currentJoinedRoom,
     getLobbySnapshot,
+    setCurrentJoinedRoom,
     updatePlayerReady,
+    leaveRoom,
+    persistentCurrentRoomCode,
+    getJoinedRoomInfo,
+    setIsInRoom,
+    isInRoom,
   } = useRoom();
   const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
-
   const [listItemData, setListItemData] = useState([
     {
       avatarColor: "blue",
@@ -36,34 +44,80 @@ const Lobby = () => {
       score: 0,
     },
   ];
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
-    getLobbySnapshot(currentJoinedRoom.roomUid);
+    // getLobbySnapshot(currentJoinedRoom.roomUid);
     getUser(currentUser.uid).then((user) => {
       setUserGameProfile(user.data());
     });
   }, []);
 
   useEffect(() => {
-    const playersData = currentJoinedRoom.players.map((player) => {
-      return {
-        user_id: player.user_id,
-        avatarColor: player.avatarColor,
-        icon: player.avatar,
-        isRoomOwner: player.user_id === currentJoinedRoom.host,
-        nickname: player.nickname,
-        is_ready: false,
-        // onClick: () => {
-        //   // updatePlayerReady;
-        // },
-        score: player.score,
-      };
-    });
-    setListItemData(playersData);
+    if (isGameStarted) {
+      history.push("/game");
+    }
+  }, [isGameStarted]);
+
+  /*
+  useEffect(() => {
+    if (currentJoinedRoom !== undefined) {
+      const playersData = currentJoinedRoom.players.map((player) => {
+        return {
+          user_id: player.user_id,
+          avatarColor: player.avatarColor,
+          icon: player.avatar,
+          isRoomOwner: player.user_id === currentJoinedRoom.host,
+          nickname: player.nickname,
+          is_ready: false,
+          // onClick: () => {
+          //   // updatePlayerReady;
+          // },
+          score: player.score,
+        };
+      });
+      setListItemData(playersData);
+      // setPersistentCurrentRoomCode(currentJoinedRoom.roomdUid);
+    } else {
+      getJoinedRoomInfo(persistentCurrentRoomCode);
+    }
   }, [currentJoinedRoom]);
+  */
+
+  useEffect(() => {
+    if (currentJoinedRoom !== undefined) {
+      const playersData = currentJoinedRoom.players.map((player) => {
+        return {
+          user_id: player.user_id,
+          avatarColor: player.avatarColor,
+          icon: player.avatar,
+          isRoomOwner: player.user_id === currentJoinedRoom.host,
+          nickname: player.nickname,
+          is_ready: false,
+          // onClick: () => {
+          //   // updatePlayerReady;
+          // },
+          score: player.score,
+        };
+      });
+      setListItemData(playersData);
+      // setPersistentCurrentRoomCode(currentJoinedRoom.roomdUid);
+    } else {
+      getJoinedRoomInfo(persistentCurrentRoomCode);
+    }
+  }, [currentJoinedRoom]);
+
+  // const handleUserReady = () => {
+  // }, [currentJoinedRoom]);
 
   const handleUserReady = () => {
     updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
+  };
+  const handleLeaveRoom = async () => {
+    await leaveRoom(currentJoinedRoom.roomUid, currentUser.uid);
+
+    history.push("/new-game");
   };
 
   /*
@@ -89,6 +143,15 @@ const Lobby = () => {
 })
   */
   const handleSubmit = (values) => {
+    // TODO : check
+    if (currentUser.uid !== currentJoinedRoom.host) {
+      setIsErrorModalOpen(true);
+      return;
+    }
+
+    if (values.settings.limit_time < 1) {
+      throw new Error("제한 시간을 선택해주세요.");
+    }
     updateRoomSetting(values, currentJoinedRoom.roomUid)
       .then(() => {
         setCurrentRoomSetting({
@@ -104,6 +167,14 @@ const Lobby = () => {
 
   return (
     <>
+      {isErrorModalOpen ? (
+        <ErrorMessageModal
+          handleCloseModal={() => setIsErrorModalOpen(false)}
+          errorMessage={{
+            title: "You are not allowed to change the room setting",
+          }}
+        />
+      ) : null}
       {isNewGameModalOpen ? (
         <NewGameModal
           isNewGame={false}
@@ -118,6 +189,7 @@ const Lobby = () => {
         setIsNewGameModalOpen={setIsNewGameModalOpen}
         method={handleSubmit}
         handleUserReady={handleUserReady}
+        handleLeaveRoom={handleLeaveRoom}
       />
     </>
   );
