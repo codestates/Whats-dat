@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase";
 import { firestore } from "../firebase";
-import useLocalState from "../utils/useLocalStorage";
+import { useRoom } from "./RoomContext";
 
 const GameContext = createContext();
 
@@ -13,15 +13,14 @@ export const useGame = () => {
 const GameContextProvider = ({ children }) => {
   const [gameLog, setGameLog] = useState();
   const [loading, setLoading] = useState(false);
-  const [roomInfo, setRoomInfo] = useLocalState("roomInfo", "");
+  const { currentJoinedRoom } = useRoom();
 
   useEffect(() => {
     const getGameLog = async () => {
       setLoading(true);
-      console.log("roomInfo.roomUid", roomInfo.roomUid);
       await firestore
         .collection("roomDev")
-        .doc(roomInfo.roomUid)
+        .doc(currentJoinedRoom.roomUid)
         .collection("game_log")
         .doc("0")
         .onSnapshot((doc) => {
@@ -38,10 +37,10 @@ const GameContextProvider = ({ children }) => {
       .httpsCallable("handleGameSubmit");
     // TODO: totalplayer 연결
     const result = await onCallSubmitResult({
-      roomId: roomInfo.roomUid,
+      roomId: currentJoinedRoom.roomUid,
       roundIndex,
       value,
-      totalPlayers: roomInfo.settings.max_players,
+      totalPlayers: currentJoinedRoom.settings.max_players,
     });
     return result;
   };
