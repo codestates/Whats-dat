@@ -88,6 +88,18 @@ const Slider = ({
       if ("guess_img" in round) {
         return (
           <ImageAndTextContainer>
+            <div className="slide__description">
+              <div clasName="slide__paragraphContainer">
+                <Paragraph
+                  text={`${roundsList[index].username}`}
+                  size="sm"
+                  weight="exbold"
+                  color="secondary"
+                />
+                <Paragraph text={`'s drawing is this`} size="sm" color="grey" />
+              </div>
+            </div>
+
             <StyledImageSlide slideWidth={renderSlideWidth()}>
               <Image
                 url={round.guess_img}
@@ -95,6 +107,7 @@ const Slider = ({
                 className="slider__img"
               />
             </StyledImageSlide>
+
             <div className="slide__description">
               <div clasName="slide__paragraphContainer">
                 <Paragraph
@@ -102,7 +115,7 @@ const Slider = ({
                   size="sm"
                   weight="exbold"
                   className="slide__username"
-                  color="navy"
+                  color="secondary"
                 />
                 <Paragraph text={`guessed `} size="sm" color="grey" />
                 <Paragraph
@@ -112,16 +125,6 @@ const Slider = ({
                   color="navy"
                 />
               </div>
-              <div clasName="slide__paragraphContainer">
-                <Paragraph text={`for `} size="sm" color="grey" />
-                <Paragraph
-                  text={`${roundsList[index].username}`}
-                  size="sm"
-                  weight="exbold"
-                  color="navy"
-                />
-                <Paragraph text={`'s drawing`} size="sm" color="grey" />
-              </div>
             </div>
           </ImageAndTextContainer>
         );
@@ -129,26 +132,8 @@ const Slider = ({
       if ("draw_word" in round) {
         return (
           <ImageAndTextContainer>
-            <StyledImageSlide slideWidth={renderSlideWidth()}>
-              <Image url={round.path_url} size={renderSlideWidth()} />
-            </StyledImageSlide>
             <div className="slide__description">
               <div clasName="slide__paragraphContainer">
-                <Paragraph
-                  text={`${round.username} `}
-                  size="sm"
-                  weight="exbold"
-                  className="slide__username"
-                  color="navy"
-                />
-                <Paragraph
-                  text="submitted the above drawing"
-                  size="sm"
-                  color="grey"
-                />
-              </div>
-              <div clasName="slide__paragraphContainer">
-                <Paragraph text={`for `} size="sm" color="grey" />
                 <Paragraph
                   text={`${
                     index - 1 < 0
@@ -157,15 +142,33 @@ const Slider = ({
                   }`}
                   size="sm"
                   weight="exbold"
-                  color="navy"
+                  color="secondary"
                 />
-                <Paragraph text={`'s word `} size="sm" color="grey" />
+                <Paragraph text="'s word is " size="sm" color="grey" />
                 <Paragraph
                   text={`'${round.draw_word}'`}
                   size="sm"
                   weight="exbold"
                   color="navy"
                 />
+              </div>
+            </div>
+
+            <StyledImageSlide slideWidth={renderSlideWidth()}>
+              <Image url={round.path_url} size={renderSlideWidth()} />
+            </StyledImageSlide>
+
+            <div className="slide__description">
+              <div clasName="slide__paragraphContainer">
+                <Paragraph text="and " size="sm" color="grey" />
+                <Paragraph
+                  text={`${round.username} `}
+                  size="sm"
+                  weight="exbold"
+                  className="slide__username"
+                  color="secondary"
+                />
+                <Paragraph text="draw this" size="sm" color="grey" />
               </div>
             </div>
           </ImageAndTextContainer>
