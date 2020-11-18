@@ -131,6 +131,7 @@ export const StyledSliderContainer = styled.div`
         flex-direction: column;
         align-items: center;
         .slide__pagination {
+          z-index: 99;
           display: flex;
           justify-content: center;
           margin-top: ${variant === "gamesPagination"

@@ -15,17 +15,8 @@ import {
   getPreviousRoundData,
   calculateTotalRound,
   getUnSubmitPlayer,
+  mapProgressPlayers,
 } from "./gameUtils";
-
-const getRandomWordList = () => {
-  const copyWordList = [...wordList.eng];
-  const result = [];
-  for (let i = 1; i <= 3; i += 1) {
-    const randomIdx = Math.floor(Math.random() * copyWordList.length);
-    result.push(copyWordList.splice(randomIdx, 1)[0]);
-  }
-  return result;
-};
 
 const index = () => {
   const { gameLog, submitResult } = useGame();
@@ -36,11 +27,19 @@ const index = () => {
 
   // TODO: 실시간 데이터 연결
   const [isAllConnect, setIsAllConnect] = useState(true);
-  // const [roomInfo] = useLocalState("roomInfo", "");
-  // const [userInfo] = useLocalState("persistentUserGameProfile", "");
-  const { nickname, avatarColor, avatar, score, user_id: userId } = currentUser;
+  const { nickname, avatarColor, avatar, score, uid } = currentUser;
   let totalRound = 0;
   const [waitingItems, setWaitingItems] = useState([]);
+
+  const getRandomWordList = () => {
+    const copyWordList = [...wordList.eng];
+    const result = [];
+    for (let i = 1; i <= 3; i += 1) {
+      const randomIdx = Math.floor(Math.random() * copyWordList.length);
+      result.push(copyWordList.splice(randomIdx, 1)[0]);
+    }
+    return result;
+  };
 
   const setIsSubmitFalse = () => {
     setIsSubmit(false);
@@ -128,11 +127,14 @@ const index = () => {
           limitTime={Number(currentJoinedRoom.settings.limit_time)}
           setIsSubmitFalse={setIsSubmitFalse}
           currentPlayer={{
-            user_id: userId,
+            user_id: uid,
             username: nickname,
             avatar,
           }}
-          playersList={currentJoinedRoom.players}
+          playersList={mapProgressPlayers(
+            gameLog.playOrder,
+            currentJoinedRoom.players
+          )}
         />
       );
     }
@@ -147,11 +149,14 @@ const index = () => {
           limitTime={Number(currentJoinedRoom.settings.limit_time)}
           setIsSubmitFalse={setIsSubmitFalse}
           currentPlayer={{
-            user_id: currentUser.user_id,
-            username: currentUser.nickname,
-            avatar: currentUser.avatar,
+            user_id: uid,
+            username: nickname,
+            avatar,
           }}
-          playersList={currentJoinedRoom.players}
+          playersList={mapProgressPlayers(
+            gameLog.playOrder,
+            currentJoinedRoom.players
+          )}
         />
       );
     }
