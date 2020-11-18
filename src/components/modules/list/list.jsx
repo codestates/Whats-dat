@@ -49,7 +49,7 @@ const List = ({
         return listItemData.map((item) => (
           <RoomUserItem
             handleUserReady={handleUserReady}
-            key={item.nickname}
+            key={item.user_id}
             {...item}
           />
         ));

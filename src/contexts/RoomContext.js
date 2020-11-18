@@ -8,6 +8,7 @@ export const RoomContext = createContext();
 export const useRoom = () => {
   return useContext(RoomContext);
 };
+
 const RoomContextProvider = ({ children }) => {
   const { currentUser, userGameProfile } = useAuth();
   const [currentRoomSetting, setCurrentRoomSetting] = useState();
