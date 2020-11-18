@@ -79,9 +79,6 @@ const Lobby = ({
                 currentJoinedRoom.players &&
                 `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
               }
-                currentJoinedRoom.players &&
-                `${currentJoinedRoom.players.length}/${currentJoinedRoom.settings.max_players}`
-              }
               color="navy"
               size="lg"
               weight="bold"
