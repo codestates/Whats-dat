@@ -23,7 +23,6 @@ const GameResults = ({ listItemData }) => {
 
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <CustomContainer>
           <CloseButton size="3" onClick={() => history.push("/lobby")}>
