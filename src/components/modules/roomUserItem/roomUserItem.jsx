@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { ItemBox, NonePaddingAvatar } from "./roomUserItem.style";
 import Paragraph from "../../atoms/paragraph/paragraph";
 import Icon, { icons } from "../../atoms/icon/icon";
 import theme from "../../../styles/Theme";
+import { useAuth } from "../../../contexts/UserContext";
+import { useRoom } from "../../../contexts/RoomContext";
 
 const RoomUserItem = (props) => {
   const {
@@ -16,8 +18,22 @@ const RoomUserItem = (props) => {
     // onClick,
     // eslint-disable-next-line camelcase
     user_id,
+    // eslint-disable-next-line camelcase
   } = props;
   const [isReady, setIsReady] = useState(false);
+  const { currentUser } = useAuth();
+  const { currentJoinedRoom } = useRoom();
+
+  useEffect(() => {
+    console.log("changed!");
+    console.log("currentJoinedRoom", currentJoinedRoom);
+    currentJoinedRoom.players.forEach((player) => {
+      // eslint-disable-next-line camelcase
+      if (player.user_id === user_id) {
+        setIsReady(player.is_ready);
+      }
+    });
+  }, [currentJoinedRoom]);
 
   const renderCheckIcon = () => {
     return isReady ? "BUTTON_CHECK_SELECT" : "BUTTON_CHECK";
@@ -36,9 +52,12 @@ const RoomUserItem = (props) => {
       radius="rounded3Xl"
       boxShadow="shadowMd"
       onClick={() => {
-        setIsReady(!isReady);
+        // eslint-disable-next-line camelcase
+        if (user_id === currentUser.uid) {
+          setIsReady(!isReady);
+          handleUserReady();
+        }
         // onClick(isReady);
-        handleUserReady(user_id);
       }}
     >
       <div className="row-container">

@@ -62,10 +62,8 @@ const Lobby = () => {
     setListItemData(playersData);
   }, [currentJoinedRoom]);
 
-  const handleUserReady = (userId) => {
-    if (currentUser.uid === userId) {
-      updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
-    }
+  const handleUserReady = () => {
+    updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
   };
 
   /*

@@ -8,6 +8,7 @@ import WaitingModal from "../../components/templates/waitingModal/waitingModal";
 import DisconnectMessageModal from "../../components/templates/disconnectMessageModal/disconnectMessageModal";
 import useLocalState from "../../utils/useLocalStorage";
 import wordList from "./fakeWordDB";
+
 import {
   createGameResultList,
   getPreviousRoundData,
