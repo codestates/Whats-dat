@@ -13,7 +13,9 @@ const RoomUserItem = (props) => {
     icon,
     score,
     nickname,
-    onClick,
+    // onClick,
+    // eslint-disable-next-line camelcase
+    user_id,
   } = props;
   const [isReady, setIsReady] = useState(false);
 
@@ -35,8 +37,8 @@ const RoomUserItem = (props) => {
       boxShadow="shadowMd"
       onClick={() => {
         setIsReady(!isReady);
-        onClick(isReady);
-        handleUserReady();
+        // onClick(isReady);
+        handleUserReady(user_id);
       }}
     >
       <div className="row-container">
@@ -75,8 +77,9 @@ RoomUserItem.propTypes = {
   icon: propTypes.oneOf(Object.keys(icons)),
   score: propTypes.number.isRequired,
   nickname: propTypes.string.isRequired,
-  onClick: propTypes.func,
+  // onClick: propTypes.func,
   handleUserReady: propTypes.func,
+  user_id: propTypes.string,
 };
 
 RoomUserItem.defaultProps = {

@@ -47,22 +47,25 @@ const Lobby = () => {
   useEffect(() => {
     const playersData = currentJoinedRoom.players.map((player) => {
       return {
+        user_id: player.user_id,
         avatarColor: player.avatarColor,
         icon: player.avatar,
-        isRoomOwner: player.uId === currentJoinedRoom.host,
+        isRoomOwner: player.user_id === currentJoinedRoom.host,
         nickname: player.nickname,
         is_ready: false,
-        onClick: () => {
-          // updatePlayerReady;
-        },
+        // onClick: () => {
+        //   // updatePlayerReady;
+        // },
         score: player.score,
       };
     });
     setListItemData(playersData);
   }, [currentJoinedRoom]);
 
-  const handleUserReady = () => {
-    updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
+  const handleUserReady = (userId) => {
+    if (currentUser.uid === userId) {
+      updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
+    }
   };
 
   /*
