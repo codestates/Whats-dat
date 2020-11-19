@@ -33,6 +33,7 @@ AvatarModal.propTypes = {
     nickname: propTypes.string,
     avatar: propTypes.string,
     avatarColor: propTypes.string,
+    score: propTypes.number,
   }),
   handleCloseModal: propTypes.func,
 };

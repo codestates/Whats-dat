@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Header from "../../atoms/header/header";
 import Slider from "../../modules/slider/slider";
@@ -19,6 +18,7 @@ const NewGame = ({
   setIsNewGameModalOpen,
   setIsEnterCodeModalOpen,
   listItemData,
+  getRoomNext,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
@@ -43,6 +43,7 @@ const NewGame = ({
             className="newGame__slider"
             currentSlide={currentSlide}
             setCurrentSlide={setCurrentSlide}
+            getRoomNext={getRoomNext}
           />
         </NewGameContainer>
         <StyledButtonsContainer>
@@ -95,6 +96,7 @@ NewGame.propTypes = {
   setIsNewGameModalOpen: propTypes.func,
   setIsEnterCodeModalOpen: propTypes.func,
   listItemData: propTypes.arrayOf(propTypes.any),
+  getRoomNext: propTypes.func,
 };
 
 export default NewGame;

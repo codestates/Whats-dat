@@ -5,7 +5,6 @@ import ROUTES from "./RoutePath";
 import GUARDTYPE from "./GuardType";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
-import { useGame } from "../contexts/GameContext";
 
 export const PrivateRoute = ({ component: Component, permission, ...rest }) => {
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
@@ -41,7 +40,7 @@ result와 lobby의 분기점..
   1. user가 x버튼을 클릭했을 때 -> 그럼 클릭을 안하면?
   2. 시간 제한.. <이게 옳은 방안인가...??? n분 후에는 강제로 로비행
   3. 실시간 접속상태 < 지금은 구현하기 어려움
-  4. 
+  4.
 `
 
 // 실시간 접속 상태를 알아야한다

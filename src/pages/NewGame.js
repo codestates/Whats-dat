@@ -15,10 +15,10 @@ const NewGame = () => {
     getRoomList,
     roomList,
     joinRoom,
-    getJoinedRoomInfo,
     currentJoinedRoom,
     setCurrentJoinedRoom,
     setIsInRoom,
+    getRoomNext,
   } = useRoom();
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
@@ -31,7 +31,7 @@ const NewGame = () => {
   useEffect(() => {
     setIsInRoom(false);
     getRoomList();
-    console.log("룸리스트");
+
     getUser(currentUser.uid)
       .then((userData) => {
         const user = userData.data();
@@ -86,7 +86,6 @@ const NewGame = () => {
   };
 
   const handleNewGame = async (values) => {
-    console.log("handleNewGame values임", values);
     Object.assign(values, {
       settings: {
         room_name: values.settings.room_name,
@@ -116,19 +115,13 @@ const NewGame = () => {
       getRoomList();
       history.push("/lobby");
     });
-
-    console.log(currentJoinedRoom);
   };
 
-  useEffect(() => {
-    console.log("currentJoinedRoom:", currentJoinedRoom);
-  }, [currentJoinedRoom]);
+  useEffect(() => {}, [currentJoinedRoom]);
 
   const handleJoinRoom = async (code) => {
-    console.log("---------------handleJoinRoom");
     const res = await joinRoom(code, setErrorMessage);
     // await getJoinedRoomInfo(code);
-    console.log("res:", res);
     if (res) {
       history.push("/lobby");
     }
@@ -174,6 +167,7 @@ const NewGame = () => {
         setIsEnterCodeModalOpen={setIsEnterCodeModalOpen}
         setIsErrorModalOpen={setIsErrorModalOpen}
         listItemData={roomList}
+        getRoomNext={getRoomNext}
         joinRoom={handleJoinRoom}
       />
     </>

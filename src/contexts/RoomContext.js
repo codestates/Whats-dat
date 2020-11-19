@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase/app";
-import { useHistory } from "react-router-dom";
-import { words } from "lodash";
+
 import { firestore } from "../firebase";
 import { useAuth } from "./UserContext";
 import useLocalStorage from "../utils/useLocalStorage";
@@ -15,11 +14,13 @@ export const useRoom = () => {
 const RoomContextProvider = ({ children }) => {
   const { currentUser, userGameProfile } = useAuth();
   const [currentRoomSetting, setCurrentRoomSetting] = useState();
-  const [roomList, setRoomList] = useState();
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [currentJoinedRoom, setCurrentJoinedRoom] = useState();
   const [isInRoom, setIsInRoom] = useState();
-  const [loading, setLoading] = useState(true);
+  const [start, setStart] = useState(null);
+
+  const [roomList, setRoomList] = useState();
+
   const [
     persistentCurrentRoomCode,
     setPersistentCurrentRoomCode,
@@ -62,11 +63,44 @@ const RoomContextProvider = ({ children }) => {
     return listItemData;
   };
 
+  const getRoomNext = () => {
+    const nextRoomListData = [];
+
+    if (start) {
+      const roomListRef = firestore
+        .collection("roomDev")
+        .orderBy("created_at", "desc")
+        .startAfter(start)
+        .limit(6);
+
+      roomListRef.get().then((querySnapShot) => {
+        querySnapShot.docs.forEach((doc) => {
+          const uid = doc.id;
+          const roomItem = doc.data();
+          const roomProcessedData = {
+            roomCode: uid,
+            roomName: roomItem.settings.room_name,
+            curNumPlayers: roomItem.players.length,
+            maxNumPlayers: roomItem.settings.max_players,
+          };
+          nextRoomListData.push(roomProcessedData);
+        });
+        setRoomList([...roomList, nextRoomListData]);
+        setStart(querySnapShot.docs[querySnapShot.docs.length - 1]);
+      });
+    }
+  };
+
   const getRoomList = () => {
     const roomListRef = firestore
       .collection("roomDev")
       .orderBy("created_at", "desc")
-      .limit(13);
+      .limit(19);
+
+    roomListRef.get().then((snapshots) => {
+      setStart(snapshots.docs[snapshots.docs.length - 1]);
+    });
+
     const roomListData = [];
     const result = [];
     roomListRef
@@ -92,7 +126,6 @@ const RoomContextProvider = ({ children }) => {
   };
 
   const getJoinedRoomInfo = async (code) => {
-    console.log("getJoinedRoomInfo start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     try {
       const roomData = await firestore
@@ -101,7 +134,6 @@ const RoomContextProvider = ({ children }) => {
         .get();
       setCurrentJoinedRoom({ roomUid: roomCode, ...roomData.data() });
       setPersistentCurrentRoomCode(roomCode);
-      console.log("getJoinedRoomInfo done");
       return true;
     } catch (error) {
       throw new Error(error.message);
@@ -109,7 +141,6 @@ const RoomContextProvider = ({ children }) => {
   };
 
   const joinRoom = async (code, setErrorMessage) => {
-    console.log("joinRoom start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
 
     try {
@@ -149,7 +180,6 @@ const RoomContextProvider = ({ children }) => {
       setIsInRoom(true);
 
       // TODO: 완료시 getJoinedRoomInfo 동기 실행
-      console.log("joinRoom done");
       return getJoinedRoomInfo(code);
     } catch (error) {
       setErrorMessage({
@@ -184,7 +214,6 @@ const RoomContextProvider = ({ children }) => {
         });
       return () => {
         unsubscribe();
-        // setCurrentJoinedRoom("넌 해고야!");
       };
     }
   }, [isInRoom, persistentCurrentRoomCode]);
@@ -215,9 +244,7 @@ const RoomContextProvider = ({ children }) => {
   const cleanRoomData = (code) => {
     const roomRef = firestore.collection("roomDev").doc(`${code}`);
 
-    roomRef.delete().then(() => {
-      console.log("clear room success");
-    });
+    roomRef.delete().then(() => {});
   };
 
   // TODO check
@@ -232,14 +259,10 @@ const RoomContextProvider = ({ children }) => {
     });
 
     const roomHost = { host: currentJoinedRoom.host };
-    // 이 유저가 호스트라면
     if (currentJoinedRoom.host === userid) {
-      // 그리고 다른 유저가 남아있다면
       if (newPlayerList.length >= 1) {
-        // 다른 유저에게 호스트를 넘겨줘
         roomHost.host = newPlayerList[0].user_id;
       } else {
-        // 아니면 방을 폭파해! -> cleanRoomdata 실행
         cleanRoomData(code);
         return;
       }
@@ -343,6 +366,7 @@ const RoomContextProvider = ({ children }) => {
     setPersistentCurrentRoomCode,
     isGameStarted,
     setIsGameStarted,
+    getRoomNext,
   };
   return <RoomContext.Provider value={value}>{children}</RoomContext.Provider>;
 };
