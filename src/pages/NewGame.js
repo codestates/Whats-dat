@@ -19,6 +19,7 @@ const NewGame = () => {
     currentJoinedRoom,
     setCurrentJoinedRoom,
     setIsInRoom,
+    getRoomNext,
   } = useRoom();
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
@@ -174,6 +175,7 @@ const NewGame = () => {
         setIsEnterCodeModalOpen={setIsEnterCodeModalOpen}
         setIsErrorModalOpen={setIsErrorModalOpen}
         listItemData={roomList}
+        getRoomNext={getRoomNext}
         joinRoom={handleJoinRoom}
       />
     </>

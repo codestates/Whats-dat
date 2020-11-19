@@ -19,6 +19,7 @@ const NewGame = ({
   setIsNewGameModalOpen,
   setIsEnterCodeModalOpen,
   listItemData,
+  getRoomNext,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
@@ -43,6 +44,7 @@ const NewGame = ({
             className="newGame__slider"
             currentSlide={currentSlide}
             setCurrentSlide={setCurrentSlide}
+            getRoomNext={getRoomNext}
           />
         </NewGameContainer>
         <StyledButtonsContainer>
@@ -95,6 +97,7 @@ NewGame.propTypes = {
   setIsNewGameModalOpen: propTypes.func,
   setIsEnterCodeModalOpen: propTypes.func,
   listItemData: propTypes.arrayOf(propTypes.any),
+  getRoomNext: propTypes.func,
 };
 
 export default NewGame;

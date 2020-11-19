@@ -2,8 +2,8 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
 admin.initializeApp(functions.config().firebase);
-
-const firestore = admin.firestore();
+// functions.config().firebase
+const { firestore } = functions;
 
 exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
@@ -71,24 +71,31 @@ exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.onUserStatusChanged = functions.database
-  .ref("/status/{uid}")
-  .onUpdate(async (change, context) => {
-    const eventStatus = change.after.val();
+exports.onUserStatusChange = functions.database
+  .ref("/status/{userId}")
+  .onUpdate((event, context) => {
+    console.log(context.params, "eiriwriwer");
 
-    const userStatusFirestoreRef = firestore.doc(
-      `status/${context.params.uid}`
-    );
+    const db = admin.firestore();
+    const fieldValue = admin.firestore.FieldValue;
 
-    const statusSnapshot = await change.after.ref.once("value");
-    const status = statusSnapshot.val();
-    console.log(status, eventStatus);
+    const usersRef = db.collection("users");
+    const snapShot = event.after;
 
-    if (status.last_changed > eventStatus.last_changed) {
-      return null;
-    }
-
-    eventStatus.last_changed = new Date(eventStatus.last_changed);
-
-    return userStatusFirestoreRef.set(eventStatus);
+    return event.after.ref
+      .once("value")
+      .then((statusSnap) => snapShot.val())
+      .then((status) => {
+        if (status === "offline") {
+          console.log("status===offline", context);
+          usersRef.doc(context.params.userId).set(
+            {
+              online: false,
+            },
+            { merge: true }
+          );
+        }
+        return `offline ${context.params.userId}`;
+      })
+      .then(() => {});
   });

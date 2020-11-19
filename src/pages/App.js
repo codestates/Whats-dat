@@ -34,10 +34,7 @@ const App = () => {
   const { currentJoinedRoom, isInRoom } = useRoom();
 
   return (
-    <>
       <Background />
-      {/* <pre>{JSON.stringify(currentJoinedRoom, null, 2)}</pre>
-      <pre>{JSON.stringify(isInRoom, null, 2)}</pre> */}
       <Switch>
         {/* 로그인을 안 한 경우에만 보이는 페이지 */}
         <Route exact path={HOME} component={Home} permission={IS_NOT_SIGNED} />
@@ -64,7 +61,7 @@ const App = () => {
         <GameContextProvider>
           <Route path={GAME} component={Game} permission={IS_PLAYING} />
         </GameContextProvider>
-
+    
         <Redirect to="/" />
       </Switch>
     </>

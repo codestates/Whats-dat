@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/database";
 // FIXME
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,6 +27,7 @@ const app = firebase.initializeApp(firebaseConfig);
 
 export const auth = app.auth();
 export const firestore = app.firestore();
+export const db = app.database();
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const facebookProvider = new firebase.auth.FacebookAuthProvider();
 export const twitterProvider = new firebase.auth.TwitterAuthProvider();

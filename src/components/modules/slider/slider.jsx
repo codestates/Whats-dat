@@ -24,6 +24,7 @@ const Slider = ({
   joinRoom,
   currentSlide,
   setCurrentSlide,
+  getRoomNext,
 }) => {
   const [slideItemsData, setSlideItemsData] = useState(slideItems);
   const windowSize = useWindowSize();
@@ -33,7 +34,7 @@ const Slider = ({
   }, [slideItems]);
 
   const slideRef = useRef(null);
-  const totalSlides = slideItems ? slideItems.length - 1 : 0;
+  const totalSlides = slideItems ? slideItems.length - 2 : 0;
 
   const isFirstPage = () => currentSlide === 0;
   const isLastPage = () => currentSlide === totalSlides;
@@ -44,6 +45,7 @@ const Slider = ({
   const nextSlide = () => {
     if (!isLastPage()) {
       setCurrentSlide(currentSlide + 1);
+      getRoomNext();
     }
   };
 
@@ -244,6 +246,7 @@ Slider.propTypes = {
   joinRoom: propTypes.func,
   setCurrentSlide: propTypes.func,
   currentSlide: propTypes.arrayOf(propTypes.any),
+  getRoomNext: propTypes.func,
 };
 
 export default Slider;

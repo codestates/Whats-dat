@@ -15,11 +15,13 @@ export const useRoom = () => {
 const RoomContextProvider = ({ children }) => {
   const { currentUser, userGameProfile } = useAuth();
   const [currentRoomSetting, setCurrentRoomSetting] = useState();
-  const [roomList, setRoomList] = useState();
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [currentJoinedRoom, setCurrentJoinedRoom] = useState();
   const [isInRoom, setIsInRoom] = useState();
-  const [loading, setLoading] = useState(true);
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
+  const [roomList, setRoomList] = useState();
+
   const [
     persistentCurrentRoomCode,
     setPersistentCurrentRoomCode,
@@ -62,11 +64,63 @@ const RoomContextProvider = ({ children }) => {
     return listItemData;
   };
 
+  /*
+  [[6], [6], [6], [6]]
+  12
+  start 12 - 18
+    TODO:
+    1) start와 대한 전역 스테이트를 만든다
+    2) getRoomList가 실행될 때마다 start를 setStart를 해줌;;
+    3) getRoomNext
+      3-1) start 지점부터
+      3-2)
+    3) Next Btn 클릭 시
+      3-1)
+      3-2)
+      1 [[6], [6]]
+      [[6], [6]]
+      */
+
+  const getRoomNext = () => {
+    const nextRoomListData = [];
+
+    if (start) {
+      const roomListRef = firestore
+        .collection("roomDev")
+        .orderBy("created_at", "desc")
+        .startAt(start)
+        .endBefore(end)
+        .limit(6);
+
+      roomListRef.get().then((querySnapShot) => {
+        querySnapShot.docs.forEach((doc) => {
+          const uid = doc.id;
+          const roomItem = doc.data();
+          const roomProcessedData = {
+            roomCode: uid,
+            roomName: roomItem.settings.room_name,
+            curNumPlayers: roomItem.players.length,
+            maxNumPlayers: roomItem.settings.max_players,
+          };
+          nextRoomListData.push(roomProcessedData);
+        });
+        setRoomList([...roomList, nextRoomListData]);
+        setEnd(start);
+        setStart(querySnapShot.docs[querySnapShot.docs.length - 1]);
+      });
+    }
+  };
+
   const getRoomList = () => {
     const roomListRef = firestore
       .collection("roomDev")
       .orderBy("created_at", "desc")
-      .limit(13);
+      .limit(19);
+
+    roomListRef.get().then((snapshots) => {
+      setStart(snapshots.docs[snapshots.docs.length - 1]);
+    });
+
     const roomListData = [];
     const result = [];
     roomListRef
@@ -184,7 +238,6 @@ const RoomContextProvider = ({ children }) => {
         });
       return () => {
         unsubscribe();
-        // setCurrentJoinedRoom("넌 해고야!");
       };
     }
   }, [isInRoom, persistentCurrentRoomCode]);
@@ -232,14 +285,10 @@ const RoomContextProvider = ({ children }) => {
     });
 
     const roomHost = { host: currentJoinedRoom.host };
-    // 이 유저가 호스트라면
     if (currentJoinedRoom.host === userid) {
-      // 그리고 다른 유저가 남아있다면
-      if (newPlayerList.length > 1) {
-        // 다른 유저에게 호스트를 넘겨줘
+      if (newPlayerList.length >= 1) {
         roomHost.host = newPlayerList[0].user_id;
       } else {
-        // 아니면 방을 폭파해! -> cleanRoomdata 실행
         cleanRoomData(code);
         return;
       }
@@ -343,6 +392,7 @@ const RoomContextProvider = ({ children }) => {
     setPersistentCurrentRoomCode,
     isGameStarted,
     setIsGameStarted,
+    getRoomNext,
   };
   return <RoomContext.Provider value={value}>{children}</RoomContext.Provider>;
 };
