@@ -41,10 +41,20 @@ exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
         totalPlayers % 2 === 1 ? totalPlayers - 1 : totalPlayers - 2;
 
       if (roundIndex === totalRounds) {
-        // [standBy, playing, closed]
-        gameRef.update({
+        // [playing, closed]
+        await gameRef.update({
           status: "closed",
         });
+
+        const roomRef = admin
+          .firestore()
+          .collection("roomDev")
+          .doc(`${roomId}`);
+
+        await roomRef.update({
+          is_started: false,
+        });
+
         return "close modal";
       }
 
