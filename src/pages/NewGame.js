@@ -23,7 +23,6 @@ const NewGame = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
 
-  // TODO 방이 안들어가질 경우에 해당 모달을 전송
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isEnterCodeModalOpen, setIsEnterCodeModalOpen] = useState(false);
   const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
@@ -121,15 +120,9 @@ const NewGame = () => {
 
   const handleJoinRoom = async (code) => {
     const res = await joinRoom(code, setErrorMessage);
-    // await getJoinedRoomInfo(code);
     if (res) {
       history.push("/lobby");
     }
-
-    // TODO: 고쳐야함...
-    // setTimeout(() => {
-    //   history.push("/lobby");
-    // }, 750);
   };
 
   useEffect(() => {

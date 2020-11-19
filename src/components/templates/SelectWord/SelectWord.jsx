@@ -1,9 +1,8 @@
 /* eslint consistent-return: "off" */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import { useField } from "formik";
 import * as Yup from "yup";
-
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
 import { CustomContainer, ButtonLists, AuthForm } from "./SelectWord.style";
@@ -55,6 +54,7 @@ const SelectWord = ({ onSubmit, wordList }) => {
             name={name}
             type={type}
             placeholder="Enter your word..."
+            autoComplete={false}
           />
         </DefaultInput>
       </>

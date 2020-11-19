@@ -1,5 +1,5 @@
 import React from "react";
-import propTypes from "prop-types";
+import propTypes, { shape } from "prop-types";
 import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Icon from "../../atoms/icon/icon";
@@ -24,7 +24,7 @@ const LeaderBoard = ({ handleClose, userGameProfile }) => {
           <RankingTitle text="Rankings" variant="h1" color="navy" />
         </RankingHeaderContainer>
         <RankingItem
-          isCurrentUser="true"
+          isCurrentUser
           avatarColor={userGameProfile.avatarColor}
           icon={userGameProfile.avatar}
           ranking="244" // TODO ranking 하드코딩 한걸 바꿔줘야함
@@ -40,7 +40,14 @@ const LeaderBoard = ({ handleClose, userGameProfile }) => {
 };
 LeaderBoard.propTypes = {
   handleClose: propTypes.func,
-  userGameProfile: propTypes.objectOf,
+  userGameProfile: propTypes.objectOf(
+    propTypes.shape({
+      avatarColor: propTypes.string,
+      avatar: propTypes.string,
+      score: propTypes.number,
+      nickname: propTypes.string,
+    })
+  ),
 };
 
 export default LeaderBoard;

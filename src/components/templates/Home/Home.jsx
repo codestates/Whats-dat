@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Title from "../../atoms/title/title";
-import Background from "../../atoms/background/Background";
 
 import {
   HomeContainer,
@@ -28,7 +27,7 @@ const Home = () => {
         <Link to="/register">
           <SignUpButton text="Sign Up" color="secondary" bold />
         </Link>
-        <HomeLink colors="white" textShadow="sm">
+        <HomeLink colors="white" textShadow="sm" href="/">
           HOW TO PLAY
         </HomeLink>
       </HomeContainer>

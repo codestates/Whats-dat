@@ -1,5 +1,5 @@
 import React from "react";
-import propTypes from "prop-types";
+import propTypes, { shape } from "prop-types";
 import Modal from "../../modules/modal/modal";
 import { RowContainer } from "./errorMessageModal.style";
 import Header from "../../atoms/header/header";
@@ -46,7 +46,12 @@ const ErrorMessageModal = (props) => {
 
 ErrorMessageModal.propTypes = {
   handleCloseModal: propTypes.func,
-  errorMessage: propTypes.string,
+  errorMessage: propTypes.oneOfType([
+    propTypes.objectOf(
+      propTypes.shape({ title: propTypes.string, paragraph: propTypes.string })
+    ),
+    propTypes.oneOf([null]),
+  ]),
 };
 ErrorMessageModal.defaultProps = {};
 

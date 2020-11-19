@@ -10,11 +10,8 @@ const FormikRadio = ({ label, name, options, ...rest }) => {
   const [selected, setSelected] = useState("");
 
   const handleClick = (option, form) => {
-    console.log("click/option", option);
-    console.log(form);
     setSelected(option.avatar);
     form.values.avatarColor = option.avatarColor;
-    console.log("click/avatarColor", option.avatarColor);
     /* eslint no-param-reassign: "error" */
   };
 

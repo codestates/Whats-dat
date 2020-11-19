@@ -27,11 +27,7 @@ const loginConfig = {
     email: Yup.string().required("Email is a required field"),
     password: Yup.string().required("Password is Required"),
   }),
-  onSubmit: (values) => {
-    // FIXME
-    // eslint-disable-next-line
-    console.log("form-data", values);
-  },
+  onSubmit: () => {},
 };
 
 const registerConfig = {
@@ -56,7 +52,7 @@ const registerConfig = {
     ),
   }),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const detailInfoConfig = {
@@ -77,7 +73,7 @@ const detailInfoConfig = {
     nickname: Yup.string().required("Please Enter Your Nickname"),
   }),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const selectWordConfig = {
@@ -93,7 +89,7 @@ const selectWordConfig = {
 
   validationSchema: Yup.object({}),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const enterCodeConfig = {
@@ -113,7 +109,7 @@ const enterCodeConfig = {
       .max(20, "Room Name cannot be more than 20 characters."),
   }),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const enterGuessConfig = {
@@ -129,7 +125,7 @@ const enterGuessConfig = {
 
   validationSchema: Yup.object({}),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const settingConfig = {
@@ -152,7 +148,7 @@ const settingConfig = {
       .max(20, "Room name cannot be more than 20 characters."),
   }),
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const gameStartConfig = {
@@ -168,7 +164,7 @@ const gameStartConfig = {
   }),
 
   // eslint-disable-next-line
-  onSubmit: (values) => console.log("form-data", values),
+  onSubmit: (values) => {},
 };
 
 const ModuleForm = ({

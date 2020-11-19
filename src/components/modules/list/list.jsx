@@ -23,6 +23,7 @@ const List = ({
   joinRoom,
   handleUserReady,
   onClick,
+  persistentCurrentRoomCode,
 }) => {
   const renderList = () => {
     switch (listItemName) {
@@ -65,6 +66,7 @@ const List = ({
         key={i}
         startWord={item[0].start_word}
         nickname={item[0].username}
+        persistentCurrentRoomCode={persistentCurrentRoomCode}
         {...item}
       />
     ));
@@ -84,6 +86,7 @@ List.propTypes = {
   onClick: propTypes.func,
   joinRoom: propTypes.func,
   handleUserReady: propTypes.func,
+  persistentCurrentRoomCode: propTypes.string,
 };
 
 export default List;

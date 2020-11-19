@@ -44,11 +44,10 @@ const Lobby = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // getLobbySnapshot(currentJoinedRoom.roomUid);
     getUser(currentUser.uid).then((user) => {
       setUserGameProfile(user.data());
     });
-  }, []);
+  }, [currentJoinedRoom]);
 
   useEffect(() => {
     if (isGameStarted) {
@@ -56,7 +55,6 @@ const Lobby = () => {
     }
   }, [isGameStarted]);
 
-  /*
   useEffect(() => {
     if (currentJoinedRoom !== undefined) {
       const playersData = currentJoinedRoom.players.map((player) => {
@@ -79,33 +77,6 @@ const Lobby = () => {
       getJoinedRoomInfo(persistentCurrentRoomCode);
     }
   }, [currentJoinedRoom]);
-  */
-
-  useEffect(() => {
-    if (currentJoinedRoom !== undefined) {
-      const playersData = currentJoinedRoom.players.map((player) => {
-        return {
-          user_id: player.user_id,
-          avatarColor: player.avatarColor,
-          icon: player.avatar,
-          isRoomOwner: player.user_id === currentJoinedRoom.host,
-          nickname: player.nickname,
-          is_ready: false,
-          // onClick: () => {
-          //   // updatePlayerReady;
-          // },
-          score: player.score,
-        };
-      });
-      setListItemData(playersData);
-      // setPersistentCurrentRoomCode(currentJoinedRoom.roomdUid);
-    } else {
-      getJoinedRoomInfo(persistentCurrentRoomCode);
-    }
-  }, [currentJoinedRoom]);
-
-  // const handleUserReady = () => {
-  // }, [currentJoinedRoom]);
 
   const handleUserReady = () => {
     updatePlayerReady(currentJoinedRoom.roomUid, currentUser.uid);
@@ -116,30 +87,7 @@ const Lobby = () => {
     history.push("/new-game");
   };
 
-  /*
-/ TODO: 게임 생성시 플레이 순서 랜덤 생성
-// const shufflePlayers = function (players) {
-//     const copy = players.slice();
-//     for (let i = players.length - 1; i > 0; i -= 1) {
-//       const j = Math.floor(Math.random() * i);
-//       [copy[i], copy[j]] = [copy[j], copy[i]];
-//     }
-//     return copy;
-//   };
-
-// playOrder = [ user_id, user_id, user_id, user_id, user_id, user_id ]
-
-
-    collection('game_log').doc("0").update({
-      playOrder : [user_id, user_id, user_id, user_id],
-      rounds: {
-        "0": {}
-      },
-      status: "standBy"
-})
-  */
   const handleSubmit = (values) => {
-    // TODO : check
     if (currentUser.uid !== currentJoinedRoom.host) {
       setIsErrorModalOpen(true);
       return;
@@ -186,6 +134,7 @@ const Lobby = () => {
         method={handleSubmit}
         handleUserReady={handleUserReady}
         handleLeaveRoom={handleLeaveRoom}
+        persistentCurrentRoomCode={persistentCurrentRoomCode}
       />
     </>
   );

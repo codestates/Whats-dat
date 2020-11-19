@@ -1,7 +1,5 @@
 import React from "react";
 import propTypes from "prop-types";
-import { useHistory } from "react-router-dom";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Icon from "../../atoms/icon/icon";
 import UserList from "../../modules/list/list";
@@ -23,6 +21,7 @@ const Lobby = ({
   setIsNewGameModalOpen,
   handleUserReady,
   handleLeaveRoom,
+  persistentCurrentRoomCode,
 }) => {
   return (
     <>
@@ -38,10 +37,10 @@ const Lobby = ({
             </Settingbutton>
             {currentJoinedRoom ? (
               <GameSecond
-                text={
+                text={`${
                   currentJoinedRoom.settings &&
                   currentJoinedRoom.settings.limit_time
-                }
+                }`}
                 color="secondary"
               />
             ) : null}
@@ -87,6 +86,7 @@ const Lobby = ({
           listItemName="RoomUserItem"
           listItemData={listItemData}
           handleUserReady={handleUserReady}
+          persistentCurrentRoomCode={persistentCurrentRoomCode}
         />
       </ResponsiveContainer>
     </>
@@ -108,5 +108,6 @@ Lobby.propTypes = {
   setIsNewGameModalOpen: propTypes.func,
   handleUserReady: propTypes.func,
   handleLeaveRoom: propTypes.func,
+  persistentCurrentRoomCode: propTypes.string,
 };
 export default Lobby;

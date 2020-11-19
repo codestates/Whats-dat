@@ -26,27 +26,18 @@ const Setting = () => {
   ] = useLocalStorage("persistentUserGameProfile", userGameProfile);
 
   useEffect(() => {
-    // getUser(currentUser.uid).then((userData) => {
-    //   if (userData) setUserGameProfile(userData.data());
-    // });
-    // console.log("1. useEffect가 실행된다");
-    // console.log(persistentUserGameProfile);
     if (
       !persistentUserGameProfile ||
       !persistentUserGameProfile.nickname.length
     ) {
-      // console.log("2. createUserGameProfile 실행 직전", currentUser.uid);
-
       createUserGameProfile(currentUser.uid).then(() => {
         getUser(currentUser.uid)
           .then((userData) => {
-            // console.log("3. create 이후 getUser/userData", userData.data());
             const user = userData.data();
             setUserGameProfile(user);
             setPersistentUserGameProfile(user);
           })
           .catch((error) => {
-            // console.log("4. create를 못했어여ㅠㅠㅠ", error);
             throw new Error(error.message);
           });
       });
@@ -94,13 +85,3 @@ const Setting = () => {
 };
 
 export default Setting;
-
-// ANCHOR
-// 1. 프라이빗라우트 func => node || func
-// 2. a -> link
-// 3. temp profile
-
-// TODO :
-// [해결] setting을 refresh했을 때 userGameProfile 값이 초기화됨....ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
-// social login시 setting -> avatar 클릭 시 avatar of undefined -> refresh하면 잘 됨...
-// my profile 클릭 범위

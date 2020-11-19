@@ -15,7 +15,6 @@ const RoomUserItem = (props) => {
     icon,
     score,
     nickname,
-    // onClick,
     // eslint-disable-next-line camelcase
     user_id,
     // eslint-disable-next-line camelcase
@@ -26,7 +25,6 @@ const RoomUserItem = (props) => {
 
   useEffect(() => {
     if (currentJoinedRoom !== undefined) {
-      console.log("roomUserItem/currentJoinedRoom", currentJoinedRoom);
       currentJoinedRoom.players.forEach((player) => {
         // eslint-disable-next-line camelcase
         if (player.user_id === user_id) {
@@ -50,6 +48,8 @@ const RoomUserItem = (props) => {
     <ItemBox
       padding="xxsm"
       // eslint-disable-next-line camelcase
+      key={user_id}
+      // eslint-disable-next-line camelcase
       bgColor={user_id === currentUser.uid ? "lightGrey" : "white"}
       border
       radius="rounded3Xl"
@@ -60,7 +60,6 @@ const RoomUserItem = (props) => {
           setIsReady(!isReady);
           handleUserReady();
         }
-        // onClick(isReady);
       }}
     >
       <div className="row-container">
@@ -101,7 +100,6 @@ RoomUserItem.propTypes = {
   icon: propTypes.oneOf(Object.keys(icons)),
   score: propTypes.number.isRequired,
   nickname: propTypes.string.isRequired,
-  // onClick: propTypes.func,
   handleUserReady: propTypes.func,
   user_id: propTypes.string,
 };

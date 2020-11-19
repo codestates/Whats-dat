@@ -74,20 +74,15 @@ exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
 exports.onUserStatusChange = functions.database
   .ref("/status/{userId}")
   .onUpdate((event, context) => {
-    console.log(context.params, "eiriwriwer");
-
     const db = admin.firestore();
-    const fieldValue = admin.firestore.FieldValue;
-
     const usersRef = db.collection("users");
     const snapShot = event.after;
 
     return event.after.ref
       .once("value")
-      .then((statusSnap) => snapShot.val())
+      .then(() => snapShot.val())
       .then((status) => {
         if (status === "offline") {
-          console.log("status===offline", context);
           usersRef.doc(context.params.userId).set(
             {
               online: false,

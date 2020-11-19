@@ -1,11 +1,7 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const TitleHeader = styled.img`
-  ${({ theme }) => {
-    return css`
-      width: 100%;
-    `;
-  }}
+  width: 100%;
 `;
 
 export default TitleHeader;

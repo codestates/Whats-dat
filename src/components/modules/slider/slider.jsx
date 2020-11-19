@@ -29,12 +29,22 @@ const Slider = ({
   const [slideItemsData, setSlideItemsData] = useState(slideItems);
   const windowSize = useWindowSize();
 
+  const renderTotalSlides = () => {
+    if (slideItems) {
+      if (variant === "gameResultsPagination") {
+        return slideItems.length - 1;
+      }
+      return slideItems.length - 2;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     setSlideItemsData(slideItems);
   }, [slideItems]);
 
   const slideRef = useRef(null);
-  const totalSlides = slideItems ? slideItems.length - 2 : 0;
+  const totalSlides = renderTotalSlides();
 
   const isFirstPage = () => currentSlide === 0;
   const isLastPage = () => currentSlide === totalSlides;
@@ -245,7 +255,7 @@ Slider.propTypes = {
   className: propTypes.string,
   joinRoom: propTypes.func,
   setCurrentSlide: propTypes.func,
-  currentSlide: propTypes.arrayOf(propTypes.any),
+  currentSlide: propTypes.number,
   getRoomNext: propTypes.func,
 };
 

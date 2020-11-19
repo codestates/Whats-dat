@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import propTypes from "prop-types";
 import { useField } from "formik";
 import * as Yup from "yup";
-
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
 import { CustomContainer, SimpleForm } from "./GuessWord.style";
@@ -31,11 +29,6 @@ const GuessWord = (props) => {
   const handleTimeOut = () => {
     onSubmit({ word: inputRef.current.value });
   };
-
-  // 상황 정리
-  // 다른 사람이 제출하면 재랜더링이 됨
-  // 그런데 버튼으로 클릭한 내용은 기억하고 있음
-  // 인풋으로 입력한 내용은 리셋 됨
 
   const enterGuessConfig = {
     formInfo: {
@@ -69,6 +62,7 @@ const GuessWord = (props) => {
             name={name}
             type={type}
             placeholder="Enter your word..."
+            autoComplete={false}
           />
         </DefaultInput>
       </>

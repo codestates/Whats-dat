@@ -189,20 +189,6 @@ const RoomContextProvider = ({ children }) => {
     return null;
   };
 
-  // const getLobbySnapshot = (code) => {
-  //   const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
-  //   const unsubscribe = firestore
-  //     .collection("roomDev")
-  //     .doc(`${currentJoinedRoom.roomUid}`)
-  //     .onSnapshot((doc) => {
-  //       setCurrentJoinedRoom(doc.data());
-  //     });
-
-  //   if (setIsInRoom === false) {
-  //     unsubscribe();
-  //   }
-  // };
-
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (isInRoom && persistentCurrentRoomCode) {

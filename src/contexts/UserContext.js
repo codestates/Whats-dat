@@ -123,11 +123,11 @@ const UserContextProvider = ({ children }) => {
     currentUser,
     login,
     register,
-    createUserGameProfile,
     logOut,
+    userGameProfile,
+    createUserGameProfile,
     updateUserGameProfile,
     setUserGameProfile,
-    userGameProfile,
     getUser,
   };
 

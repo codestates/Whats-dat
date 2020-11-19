@@ -27,7 +27,7 @@ const index = () => {
   const { currentUser } = useAuth();
 
   // TODO: 실시간 데이터 연결
-  const [isAllConnect, setIsAllConnect] = useState(true);
+  const [isAllConnect] = useState(true);
   const { nickname, avatar, uid } = currentUser;
   const [totalRound, setTotalRound] = useState(0);
   const [waitingItems, setWaitingItems] = useState([]);
@@ -75,8 +75,6 @@ const index = () => {
   };
 
   useEffect(() => {
-    console.log("-----------");
-    console.log("gameLog", gameLog);
     if (!gameLog || !currentJoinedRoom) return;
 
     if (gameLog.rounds) {
@@ -90,7 +88,6 @@ const index = () => {
     }
 
     if (gameLog.status === "closed") {
-      console.log("status closed");
       setIsGameStarted(false);
       setIsSubmit(false);
     }
@@ -99,8 +96,6 @@ const index = () => {
   }, [gameLog]);
 
   const renderCurrentRound = () => {
-    console.log("renderCurrentRound run");
-
     if (currentRound === undefined) {
       return null;
     }

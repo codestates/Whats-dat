@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import propTypes from "prop-types";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
 import { CustomContainer, CloseButton } from "./GameResults.style";
