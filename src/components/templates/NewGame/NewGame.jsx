@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Header from "../../atoms/header/header";
 import Slider from "../../modules/slider/slider";

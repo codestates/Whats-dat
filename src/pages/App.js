@@ -14,8 +14,6 @@ import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
 import Background from "../components/atoms/background/Background";
-import { useAuth } from "../contexts/UserContext";
-import { useRoom } from "../contexts/RoomContext";
 
 const App = () => {
   const {
@@ -30,10 +28,9 @@ const App = () => {
     GAME,
   } = ROUTES;
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
-  const { currentUser, userGameProfile } = useAuth();
-  const { currentJoinedRoom, isInRoom } = useRoom();
 
   return (
+    <>
       <Background />
       <Switch>
         {/* 로그인을 안 한 경우에만 보이는 페이지 */}
@@ -61,7 +58,7 @@ const App = () => {
         <GameContextProvider>
           <Route path={GAME} component={Game} permission={IS_PLAYING} />
         </GameContextProvider>
-    
+
         <Redirect to="/" />
       </Switch>
     </>

@@ -14,14 +14,10 @@ const Lobby = () => {
     setCurrentRoomSetting,
     updateRoomSetting,
     currentJoinedRoom,
-    getLobbySnapshot,
-    setCurrentJoinedRoom,
     updatePlayerReady,
     leaveRoom,
     persistentCurrentRoomCode,
     getJoinedRoomInfo,
-    setIsInRoom,
-    isInRoom,
   } = useRoom();
   const [isNewGameModalOpen, setIsNewGameModalOpen] = useState(false);
   const [listItemData, setListItemData] = useState([
