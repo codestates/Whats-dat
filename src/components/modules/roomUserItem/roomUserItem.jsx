@@ -42,13 +42,15 @@ const RoomUserItem = (props) => {
 
   const getCheckIconColor = () => {
     if (isReady) return "green";
-    return isRoomOwner ? "lightGrey" : "grey";
+    // eslint-disable-next-line camelcase
+    return "grey";
   };
 
   return (
     <ItemBox
       padding="xxsm"
-      bgColor={isRoomOwner ? "secondary" : "white"}
+      // eslint-disable-next-line camelcase
+      bgColor={user_id === currentUser.uid ? "lightGrey" : "white"}
       border
       radius="rounded3Xl"
       boxShadow="shadowMd"
@@ -72,8 +74,9 @@ const RoomUserItem = (props) => {
         </div>
         <div className="m-right">
           <Paragraph
-            text={nickname}
-            color={isRoomOwner ? "white" : "navy"}
+            text={isRoomOwner ? `👑  ${nickname}` : nickname}
+            // eslint-disable-next-line camelcase
+            color="navy"
             size="base"
             weight="bold"
           />
@@ -82,7 +85,8 @@ const RoomUserItem = (props) => {
       <div className="m-left m-right">
         <Paragraph
           text={`${score}`}
-          color={isRoomOwner ? "white" : "grey"}
+          // eslint-disable-next-line camelcase
+          color="grey"
           size="base"
           weight="bold"
         />
