@@ -19,6 +19,7 @@ const Setting = () => {
     avatar: "",
     avatarColor: "",
     nickname: "",
+    score: 0,
   });
   const [
     persistentUserGameProfile,

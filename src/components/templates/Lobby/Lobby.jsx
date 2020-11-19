@@ -24,7 +24,6 @@ const Lobby = ({
   handleUserReady,
   handleLeaveRoom,
 }) => {
-  const history = useHistory();
   return (
     <>
       <Background />

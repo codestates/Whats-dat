@@ -6,6 +6,7 @@ import {
   facebookProvider,
   twitterProvider,
   firestore,
+  db,
 } from "../firebase";
 
 export const UserContext = createContext();
@@ -95,6 +96,25 @@ const UserContextProvider = ({ children }) => {
         .catch((err) => {
           throw new Error(err.message); // TODO Error Handling needs to be transferred to UI Element
         });
+
+      const usersRef = firestore.collection("users");
+      const onlineRef = db.ref(".info/connected");
+
+      onlineRef.on("value", (snapshot) => {
+        db.ref(`/status/${currentUser.uid}`)
+          .onDisconnect()
+          .set("offline")
+          .then(() => {
+            usersRef.doc(`${currentUser.uid}`).set(
+              {
+                online: true,
+              },
+              { merge: true }
+            );
+
+            db.ref(`/status/${currentUser.uid}`).set("online");
+          });
+      });
     }
   }, [currentUser]);
 
