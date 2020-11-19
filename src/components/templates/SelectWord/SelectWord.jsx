@@ -78,8 +78,7 @@ const SelectWord = ({ onSubmit, wordList }) => {
       return (
         <SquareButton
           onClick={() => {
-            // inputRef.current.value = word;
-            // tempSetValue(word);
+            onSubmit({ word });
           }}
           text={word}
           color="secondary"
