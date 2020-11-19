@@ -14,8 +14,6 @@ import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
 import Background from "../components/atoms/background/Background";
-import { useAuth } from "../contexts/UserContext";
-import { useRoom } from "../contexts/RoomContext";
 
 const App = () => {
   const {
@@ -30,14 +28,10 @@ const App = () => {
     GAME,
   } = ROUTES;
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
-  const { currentUser, userGameProfile } = useAuth();
-  const { currentJoinedRoom, isInRoom } = useRoom();
 
   return (
     <>
-      <pre>{JSON.stringify(currentJoinedRoom, null, 2)}</pre>
-      <pre>{JSON.stringify(userGameProfile, null, 2)}</pre>
-      <pre>{JSON.stringify(currentUser, null, 2)}</pre>
+      <Background />
       <Switch>
         {/* 로그인을 안 한 경우에만 보이는 페이지 */}
         <Route exact path={HOME} component={Home} permission={IS_NOT_SIGNED} />

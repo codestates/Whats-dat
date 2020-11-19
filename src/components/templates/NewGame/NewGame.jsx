@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Header from "../../atoms/header/header";
 import Slider from "../../modules/slider/slider";
@@ -24,7 +23,6 @@ const NewGame = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <NewGameContainer>
           {/* TODO 게임에 들어갈 수 없다면 온클릭에 setIsErrorModalOpen 을

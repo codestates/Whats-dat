@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AvatarModal from "../components/templates/avatarModal/avatarModal";
-import Background from "../components/atoms/background/Background";
 import { useAuth } from "../contexts/UserContext";
 import useLocalStorage from "../utils/useLocalStorage";
 

@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase/app";
-import { useHistory } from "react-router-dom";
-import { words } from "lodash";
+
 import { firestore } from "../firebase";
 import { useAuth } from "./UserContext";
 import useLocalStorage from "../utils/useLocalStorage";
@@ -19,7 +18,7 @@ const RoomContextProvider = ({ children }) => {
   const [currentJoinedRoom, setCurrentJoinedRoom] = useState();
   const [isInRoom, setIsInRoom] = useState();
   const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
+
   const [roomList, setRoomList] = useState();
 
   const [
@@ -127,7 +126,6 @@ const RoomContextProvider = ({ children }) => {
   };
 
   const getJoinedRoomInfo = async (code) => {
-    console.log("getJoinedRoomInfo start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     try {
       const roomData = await firestore
@@ -136,7 +134,6 @@ const RoomContextProvider = ({ children }) => {
         .get();
       setCurrentJoinedRoom({ roomUid: roomCode, ...roomData.data() });
       setPersistentCurrentRoomCode(roomCode);
-      console.log("getJoinedRoomInfo done");
       return true;
     } catch (error) {
       throw new Error(error.message);
@@ -144,7 +141,6 @@ const RoomContextProvider = ({ children }) => {
   };
 
   const joinRoom = async (code, setErrorMessage) => {
-    console.log("joinRoom start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
 
     try {
@@ -184,7 +180,6 @@ const RoomContextProvider = ({ children }) => {
       setIsInRoom(true);
 
       // TODO: 완료시 getJoinedRoomInfo 동기 실행
-      console.log("joinRoom done");
       return getJoinedRoomInfo(code);
     } catch (error) {
       setErrorMessage({
@@ -249,9 +244,7 @@ const RoomContextProvider = ({ children }) => {
   const cleanRoomData = (code) => {
     const roomRef = firestore.collection("roomDev").doc(`${code}`);
 
-    roomRef.delete().then(() => {
-      console.log("clear room success");
-    });
+    roomRef.delete().then(() => {});
   };
 
   // TODO check
