@@ -16,7 +16,6 @@ import FormikContainer from "../../modules/form/Formik/FormikContainer";
 const SelectWord = ({ onSubmit, wordList }) => {
   const limitTime = 20;
   const inputRef = useRef();
-  const [selectedWord, setSelectedWord] = useState("");
   const handleTimeOut = () => {
     onSubmit({ word: inputRef.current.value });
   };
@@ -41,12 +40,6 @@ const SelectWord = ({ onSubmit, wordList }) => {
     // Meta, field 는 폼 기능을 유지 시키기 위해 필요합니다.
     // eslint-disable-next-line
     const [field, meta, helpers] = useField(name);
-    const { setValue } = helpers;
-
-    useEffect(() => {
-      inputRef.current.value = selectedWord;
-      setValue(selectedWord);
-    }, [selectedWord]);
 
     useEffect(() => {
       inputRef.current.focus();
