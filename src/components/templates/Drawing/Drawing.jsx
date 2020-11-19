@@ -64,7 +64,6 @@ const Drawing = (props) => {
 
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <CustomContainer>
           <div className="row-grid m-top m-bottom">

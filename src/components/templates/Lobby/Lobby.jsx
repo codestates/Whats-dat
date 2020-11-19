@@ -26,7 +26,6 @@ const Lobby = ({
 }) => {
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <LobbyHeader>
           <SettingBox>

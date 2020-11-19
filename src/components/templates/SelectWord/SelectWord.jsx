@@ -4,7 +4,6 @@ import propTypes from "prop-types";
 import { useField } from "formik";
 import * as Yup from "yup";
 
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
 import { CustomContainer, ButtonLists, AuthForm } from "./SelectWord.style";
@@ -16,13 +15,7 @@ import FormikContainer from "../../modules/form/Formik/FormikContainer";
 
 const SelectWord = ({ onSubmit, wordList }) => {
   const limitTime = 20;
-  const [selectedWord, setSelectedWord] = useState("");
   const inputRef = useRef();
-
-  const handleClick = (word) => {
-    setSelectedWord(word);
-  };
-
   const handleTimeOut = () => {
     onSubmit({ word: inputRef.current.value });
   };
@@ -41,19 +34,16 @@ const SelectWord = ({ onSubmit, wordList }) => {
     validationSchema: Yup.object({
       word: Yup.string().max(20, "Can't exceed 20 characters"),
     }),
-    // eslint-disable-next-line
   };
 
   const CustomField = ({ name, type }) => {
     // Meta, field 는 폼 기능을 유지 시키기 위해 필요합니다.
     // eslint-disable-next-line
     const [field, meta, helpers] = useField(name);
-    const { setValue } = helpers;
 
     useEffect(() => {
-      inputRef.current.value = selectedWord;
-      setValue(selectedWord);
-    }, [selectedWord]);
+      inputRef.current.focus();
+    }, []);
 
     return (
       <>
@@ -80,7 +70,9 @@ const SelectWord = ({ onSubmit, wordList }) => {
     return wordList.map((word) => {
       return (
         <SquareButton
-          onClick={() => handleClick(word)}
+          onClick={() => {
+            onSubmit({ word });
+          }}
           text={word}
           color="secondary"
           size="sm"
@@ -94,7 +86,6 @@ const SelectWord = ({ onSubmit, wordList }) => {
 
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <CustomContainer>
           <div className="row-container m-top">
@@ -110,9 +101,7 @@ const SelectWord = ({ onSubmit, wordList }) => {
               handleTimeOut={handleTimeOut}
             />
           </div>
-
           <ButtonLists>{renderButtons()}</ButtonLists>
-
           <div className="m-top">
             <Header text="Or" variant="h3" color="navy" weight="bold" />
           </div>

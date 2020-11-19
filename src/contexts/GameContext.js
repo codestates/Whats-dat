@@ -16,6 +16,8 @@ const GameContextProvider = ({ children }) => {
   const { currentJoinedRoom } = useRoom();
 
   useEffect(() => {
+    if (!currentJoinedRoom) return;
+
     const getGameLog = async () => {
       setLoading(true);
       await firestore

@@ -56,6 +56,9 @@ const GuessWord = (props) => {
     // eslint-disable-next-line
     const [field, meta, helpers] = useField(name);
 
+    useEffect(() => {
+      inputRef.current.focus();
+    }, []);
     return (
       <>
         <DefaultInput>
@@ -79,7 +82,6 @@ const GuessWord = (props) => {
 
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <CustomContainer>
           <div className="row-container m-top">

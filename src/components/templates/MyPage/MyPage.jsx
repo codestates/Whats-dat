@@ -36,7 +36,6 @@ const MyPage = ({ userGameProfile, method, handleClose }) => {
   return (
     <>
       {/* TODO:Router refactor */}
-      <Background />
       <ResponsiveContainer>
         <HeaderContainer>
           <CloseButton size={3} onClick={handleClose}>

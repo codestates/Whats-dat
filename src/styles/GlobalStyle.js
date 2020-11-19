@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
 
     ${({ theme }) => {
       return css`
+        html {
+          font-size: 70.5%;
+        }
+
         ${theme.device.desktopL} {
           html {
             font-size: 62.5%;

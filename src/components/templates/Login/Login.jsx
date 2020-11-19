@@ -21,7 +21,6 @@ const Login = ({
 }) => {
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <LoginWrapper>
           <CloseButton size="3" onClick={handleClose}>

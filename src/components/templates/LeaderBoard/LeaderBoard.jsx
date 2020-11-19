@@ -16,7 +16,6 @@ import CustomHook from "./CustomHook";
 const LeaderBoard = ({ handleClose, userGameProfile }) => {
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <RankingHeaderContainer>
           <CloseButton size="3" onClick={handleClose}>

@@ -8,6 +8,7 @@ import { useRoom } from "../../contexts/RoomContext";
 import { useAuth } from "../../contexts/UserContext";
 import WaitingModal from "../../components/templates/waitingModal/waitingModal";
 import DisconnectMessageModal from "../../components/templates/disconnectMessageModal/disconnectMessageModal";
+
 import wordList from "./fakeWordDB";
 
 import {
@@ -22,12 +23,12 @@ const index = () => {
   const { gameLog, submitResult } = useGame();
   const [currentRound, setCurrentRound] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
-  const { currentJoinedRoom } = useRoom();
+  const { currentJoinedRoom, setIsGameStarted } = useRoom();
   const { currentUser } = useAuth();
 
   // TODO: 실시간 데이터 연결
   const [isAllConnect, setIsAllConnect] = useState(true);
-  const { nickname, avatarColor, avatar, score, uid } = currentUser;
+  const { nickname, avatar, uid } = currentUser;
   const [totalRound, setTotalRound] = useState(0);
   const [waitingItems, setWaitingItems] = useState([]);
 
@@ -50,7 +51,7 @@ const index = () => {
     if (typeof value === "object") {
       value = values.word;
       if (value.length === 0 && currentRound === 0) {
-        [value] = wordList.eng;
+        [value] = randomWordList;
       } else if (value.length === 0) {
         value = `${nickname} couldn't answer...`;
       }
@@ -74,24 +75,32 @@ const index = () => {
   };
 
   useEffect(() => {
-    console.log("gameLog:", gameLog);
+    console.log("-----------");
+    console.log("gameLog", gameLog);
     if (!gameLog || !currentJoinedRoom) return;
 
     if (gameLog.rounds) {
       setCurrentRound(Object.keys(gameLog.rounds).length - 1);
     }
-    if (gameLog.rounds[Object.keys(gameLog.rounds).length - 1].length === 0) {
+    if (
+      Object.keys(gameLog.rounds[Object.keys(gameLog.rounds).length - 1])
+        .length === 0
+    ) {
       setIsSubmit(false);
     }
+
     if (gameLog.status === "closed") {
+      console.log("status closed");
+      setIsGameStarted(false);
       setIsSubmit(false);
     }
     setTotalRound(calculateTotalRound(currentJoinedRoom.players.length) - 1);
-
     setWaitingItems(getUnSubmitPlayer(currentJoinedRoom, gameLog));
   }, [gameLog]);
 
   const renderCurrentRound = () => {
+    console.log("renderCurrentRound run");
+
     if (currentRound === undefined) {
       return null;
     }
@@ -102,13 +111,7 @@ const index = () => {
     }
 
     if (currentRound === 0) {
-      return (
-        <SelectWord
-          wordList={randomWordList}
-          onSubmit={onSubmit}
-          setIsSubmit={setIsSubmit}
-        />
-      );
+      return <SelectWord wordList={randomWordList} onSubmit={onSubmit} />;
     }
 
     if (currentRound % 2 === 1) {
