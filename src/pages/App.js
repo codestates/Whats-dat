@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect, Switch, withRouter } from "react-router-dom";
 import { PrivateRoute as Route } from "../utils/PrivateRoute";
+import GameContextProvider from "../contexts/GameContext";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
@@ -15,7 +16,6 @@ import GUARDTYPE from "../utils/GuardType";
 import Background from "../components/atoms/background/Background";
 import { useAuth } from "../contexts/UserContext";
 import { useRoom } from "../contexts/RoomContext";
-import GameContextProvider from "../contexts/GameContext";
 
 const App = () => {
   const {

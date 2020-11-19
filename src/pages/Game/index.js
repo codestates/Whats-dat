@@ -8,6 +8,7 @@ import { useRoom } from "../../contexts/RoomContext";
 import { useAuth } from "../../contexts/UserContext";
 import WaitingModal from "../../components/templates/waitingModal/waitingModal";
 import DisconnectMessageModal from "../../components/templates/disconnectMessageModal/disconnectMessageModal";
+
 import wordList from "./fakeWordDB";
 
 import {
@@ -22,7 +23,7 @@ const index = () => {
   const { gameLog, submitResult } = useGame();
   const [currentRound, setCurrentRound] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
-  const { currentJoinedRoom } = useRoom();
+  const { currentJoinedRoom, setIsGameStarted } = useRoom();
   const { currentUser } = useAuth();
 
   // TODO: 실시간 데이터 연결
@@ -50,7 +51,7 @@ const index = () => {
     if (typeof value === "object") {
       value = values.word;
       if (value.length === 0 && currentRound === 0) {
-        [value] = wordList.eng;
+        [value] = randomWordList;
       } else if (value.length === 0) {
         value = `${nickname} couldn't answer...`;
       }
@@ -90,6 +91,7 @@ const index = () => {
 
     if (gameLog.status === "closed") {
       console.log("status closed");
+      setIsGameStarted(false);
       setIsSubmit(false);
     }
     setTotalRound(calculateTotalRound(currentJoinedRoom.players.length) - 1);
