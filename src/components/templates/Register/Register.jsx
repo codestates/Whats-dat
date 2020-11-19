@@ -21,7 +21,6 @@ const Register = ({
 }) => {
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <RegisterWrapper>
           <CloseButton size="3" onClick={handleClose}>

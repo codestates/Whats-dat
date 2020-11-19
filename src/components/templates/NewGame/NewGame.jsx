@@ -24,7 +24,6 @@ const NewGame = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <>
-      <Background />
       <ResponsiveContainer>
         <NewGameContainer>
           {/* TODO 게임에 들어갈 수 없다면 온클릭에 setIsErrorModalOpen 을

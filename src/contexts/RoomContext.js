@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
+import { words } from "lodash";
 import { firestore } from "../firebase";
 import { useAuth } from "./UserContext";
 import useLocalStorage from "../utils/useLocalStorage";
@@ -144,75 +145,72 @@ const RoomContextProvider = ({ children }) => {
       });
   };
 
-  const getJoinedRoomInfo = (code) => {
-    const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
-    firestore
-      .collection("roomDev")
-      .doc(`${roomCode}`)
-      .get()
-      .then((data) => {
-        setCurrentJoinedRoom({ roomUid: roomCode, ...data.data() });
-        setPersistentCurrentRoomCode(roomCode);
-      })
-      .then(() => {
-        // history.push("/lobby");
-        return "getJoinedRoomInfo done";
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
-  };
-
-  const joinRoom = async (code, setErrorMessage) => {
+  const getJoinedRoomInfo = async (code) => {
+    console.log("getJoinedRoomInfo start");
     const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
     try {
-      firestore
+      const roomData = await firestore
         .collection("roomDev")
         .doc(`${roomCode}`)
-        .get()
-        .then((doc) => {
-          const data = doc.data();
-          const currentJoinedUsers = data.players.map((player) => {
-            return player.user_id;
-          });
-          if (currentJoinedUsers.includes(currentUser.uid)) {
-            throw new Error("Already Joined User");
-          }
-          return { roomUid: roomCode, ...data };
-        })
-        .then((data) => {
-          const modifiedPlayersData = [];
-          if (data.players.length < data.settings.max_players) {
-            modifiedPlayersData.push(...data.players, {
-              user_id: currentUser.uid,
-              isReady: false,
-              ...userGameProfile,
-            });
-          }
-          return modifiedPlayersData;
-        })
-        .then((data) => {
-          firestore
-            .collection("roomDev")
-            .doc(`${roomCode}`)
-            .update({ players: [...data] })
-            .then(() => {
-              setIsInRoom(true);
-            });
-        })
-        .then(() => {
-          // TODO: 완료시 getJoinedRoomInfo 동기 실행
-          // getJoinedRoomInfo(code);
-        })
-        .catch((error) => {
-          setErrorMessage({
-            title: "Enter Room False",
-            paragraph: `${error.message} 😱`,
-          });
-        });
+        .get();
+      setCurrentJoinedRoom({ roomUid: roomCode, ...roomData.data() });
+      setPersistentCurrentRoomCode(roomCode);
+      console.log("getJoinedRoomInfo done");
+      return true;
     } catch (error) {
       throw new Error(error.message);
     }
+  };
+
+  const joinRoom = async (code, setErrorMessage) => {
+    console.log("joinRoom start");
+    const roomCode = typeof code === "object" ? code.code.toUpperCase() : code;
+
+    try {
+      const roomRef = firestore.collection("roomDev").doc(`${roomCode}`);
+
+      const roomDoc = await roomRef.get();
+      const roomData = roomDoc.data();
+
+      if (!roomData) {
+        throw new Error("Deleted Room");
+      }
+
+      const currentJoinedUsers = roomData.players.map(
+        (player) => player.user_id
+      );
+
+      if (currentJoinedUsers.includes(currentUser.uid)) {
+        throw new Error("Already Joined User");
+      }
+
+      if (roomData.players.length >= roomData.settings.max_players) {
+        throw new Error("Full Room");
+      }
+
+      if (roomData.is_started) {
+        throw new Error("Already Playing");
+      }
+
+      const modifiedPlayersData = [];
+      modifiedPlayersData.push(...roomData.players, {
+        user_id: currentUser.uid,
+        is_ready: false,
+        ...userGameProfile,
+      });
+
+      await roomRef.update({ players: [...modifiedPlayersData] });
+      setIsInRoom(true);
+
+      // TODO: 완료시 getJoinedRoomInfo 동기 실행
+      console.log("joinRoom done");
+      return getJoinedRoomInfo(code);
+    } catch (error) {
+      setErrorMessage({
+        title: `${error.message} 😱`,
+      });
+    }
+    return null;
   };
 
   // const getLobbySnapshot = (code) => {
@@ -306,34 +304,55 @@ const RoomContextProvider = ({ children }) => {
       });
   };
 
-  const startGame = (code) => {
-    const gameLogRef = firestore
-      .collection("roomDev")
-      .doc(`${code}`)
-      .collection("game_log")
-      .doc("0");
+  const startGame = async (code) => {
+    // 전제: 모든 유저가 ready 상태임
 
-    const playerListByUid = [];
-    currentJoinedRoom.players.forEach((player) => {
-      playerListByUid.push(player.user_id);
-    });
+    try {
+      // 1. playerOrder 생성
+      const playerListByUid = [];
+      currentJoinedRoom.players.forEach((player) => {
+        playerListByUid.push(player.user_id);
+      });
 
-    const shufflePlayers = function (players) {
-      const copy = players.slice();
-      for (let i = players.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * i);
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    };
+      const shufflePlayers = function (players) {
+        const copy = players.slice();
+        for (let i = players.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * i);
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      };
 
-    gameLogRef.set({
-      rounds: {
-        0: {},
-      },
-      status: "standBy",
-      playOrder: shufflePlayers(playerListByUid),
-    });
+      // collection을 생성
+      const gameLogRef = firestore
+        .collection("roomDev")
+        .doc(`${code}`)
+        .collection("game_log")
+        .doc("0");
+
+      gameLogRef.set({
+        rounds: {
+          0: {},
+        },
+        status: "playing",
+        playOrder: shufflePlayers(playerListByUid),
+      });
+
+      // room players를 가져온다
+      const roomRef = firestore.collection("roomDev").doc(`${code}`);
+      const roomData = await roomRef.get();
+      let { players } = roomData.data();
+
+      // 모든 players의 is Ready를 false로 매핑
+      players = players.map((player) => {
+        return { ...player, is_ready: false };
+      });
+
+      // room players를 덮어쓴다
+      roomRef.update({ players, is_started: true });
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   useEffect(() => {
