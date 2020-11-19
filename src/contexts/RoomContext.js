@@ -235,7 +235,7 @@ const RoomContextProvider = ({ children }) => {
     // 이 유저가 호스트라면
     if (currentJoinedRoom.host === userid) {
       // 그리고 다른 유저가 남아있다면
-      if (newPlayerList.length > 1) {
+      if (newPlayerList.length >= 1) {
         // 다른 유저에게 호스트를 넘겨줘
         roomHost.host = newPlayerList[0].user_id;
       } else {

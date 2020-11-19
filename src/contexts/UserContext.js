@@ -90,6 +90,7 @@ const UserContextProvider = ({ children }) => {
         .get()
         .then((user) => {
           const currentUserGameProfile = user.data();
+          if (!currentUserGameProfile) return;
           setUserGameProfile(currentUserGameProfile);
         })
         .catch((err) => {
