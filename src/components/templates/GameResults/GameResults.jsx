@@ -3,7 +3,11 @@ import { useHistory } from "react-router-dom";
 import propTypes from "prop-types";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Container from "../../atoms/container/container";
-import { CustomContainer, CloseButton } from "./GameResults.style";
+import {
+  CustomContainer,
+  CloseButton,
+  SliderContainer,
+} from "./GameResults.style";
 import Box from "../../atoms/box/box";
 import Paragraph from "../../atoms/paragraph/paragraph";
 import List from "../../modules/list/list";
@@ -27,7 +31,7 @@ const GameResults = ({ listItemData }) => {
           <CloseButton size="3" onClick={() => history.push("/lobby")}>
             <Icon variant="BUTTON_X" color="navy" />
           </CloseButton>
-          <div className="col-container m-top">
+          <div className="col-container">
             <Paragraph
               text={listItemData[currentGameListIndex][0].username}
               color="darkGrey"
@@ -48,7 +52,7 @@ const GameResults = ({ listItemData }) => {
               />
             </Box>
           </div>
-          <div className="m-top m-bottom">
+          <SliderContainer>
             <Slider
               slideItems={listItemData[currentGameListIndex]}
               slideWidth={30}
@@ -56,7 +60,7 @@ const GameResults = ({ listItemData }) => {
               currentSlide={currentSlide}
               setCurrentSlide={setCurrentSlide}
             />
-          </div>
+          </SliderContainer>
           <Container size={30} className="gameResults__btnContainer">
             <List
               listItemName="GameResultItem"
