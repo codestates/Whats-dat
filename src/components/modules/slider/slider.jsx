@@ -99,7 +99,7 @@ const Slider = ({
     return roundsList.slice(1).map((round, index) => {
       if ("guess_img" in round) {
         return (
-          <ImageAndTextContainer>
+          <ImageAndTextContainer slideWidth={slideWidth}>
             <div className="slide__description">
               <div clasName="slide__paragraphContainer">
                 <Paragraph
@@ -150,17 +150,19 @@ const Slider = ({
           <ImageAndTextContainer>
             <div className="slide__description">
               <div clasName="slide__paragraphContainer">
-                <Paragraph
-                  text={`${
-                    index - 1 < 0
-                      ? roundZero.username
-                      : roundsList[index].username
-                  }`}
-                  size="sm"
-                  weight="exbold"
-                  color="secondary"
-                />
-                <Paragraph text="'s word is " size="sm" color="grey" />
+                <div className="slide__paragraphContainer-inline">
+                  <Paragraph
+                    text={`${
+                      index - 1 < 0
+                        ? roundZero.username
+                        : roundsList[index].username
+                    }`}
+                    size="sm"
+                    weight="exbold"
+                    color="secondary"
+                  />
+                  <Paragraph text="'s word is " size="sm" color="grey" />
+                </div>
                 <Paragraph
                   text={`'${round.draw_word}'`}
                   size="sm"

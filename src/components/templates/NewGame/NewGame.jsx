@@ -11,8 +11,6 @@ import {
   StyledLinksContainer,
 } from "./NewGame.style";
 
-// import { listItemDataSample } from "../../modules/slider/sliderFakeDb";
-
 const NewGame = ({
   joinRoom,
   setIsNewGameModalOpen,

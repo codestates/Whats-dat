@@ -265,10 +265,7 @@ const RoomContextProvider = ({ children }) => {
   };
 
   const startGame = async (code) => {
-    // 전제: 모든 유저가 ready 상태임
-
     try {
-      // 1. playerOrder 생성
       const playerListByUid = [];
       currentJoinedRoom.players.forEach((player) => {
         playerListByUid.push(player.user_id);
@@ -283,7 +280,6 @@ const RoomContextProvider = ({ children }) => {
         return copy;
       };
 
-      // collection을 생성
       const gameLogRef = firestore
         .collection("roomDev")
         .doc(`${code}`)
@@ -298,17 +294,14 @@ const RoomContextProvider = ({ children }) => {
         playOrder: shufflePlayers(playerListByUid),
       });
 
-      // room players를 가져온다
       const roomRef = firestore.collection("roomDev").doc(`${code}`);
       const roomData = await roomRef.get();
       let { players } = roomData.data();
 
-      // 모든 players의 is Ready를 false로 매핑
       players = players.map((player) => {
         return { ...player, is_ready: false };
       });
 
-      // room players를 덮어쓴다
       roomRef.update({ players, is_started: true });
     } catch (error) {
       throw new Error(error);
@@ -343,7 +336,6 @@ const RoomContextProvider = ({ children }) => {
     getJoinedRoomInfo,
     currentJoinedRoom,
     setCurrentJoinedRoom,
-    // getLobbySnapshot,
     updatePlayerReady,
     leaveRoom,
     isInRoom,

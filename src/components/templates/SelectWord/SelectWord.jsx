@@ -55,6 +55,7 @@ const SelectWord = ({ onSubmit, wordList }) => {
             type={type}
             placeholder="Enter your word..."
             autoComplete={false}
+            maxLength={15}
           />
         </DefaultInput>
       </>

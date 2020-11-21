@@ -64,7 +64,9 @@ const Lobby = ({
             <RoomTitle
               text={
                 currentJoinedRoom.settings &&
-                currentJoinedRoom.settings.room_name
+                currentJoinedRoom.settings.room_name.length > 15
+                  ? `${currentJoinedRoom.settings.room_name.slice(0, 15)}...`
+                  : currentJoinedRoom.settings.room_name
               }
               color="navy"
               variant="h2"

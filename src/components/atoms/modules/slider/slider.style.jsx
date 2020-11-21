@@ -1,31 +1,25 @@
 import styled, { css } from "styled-components";
 
 export const ImageAndTextContainer = styled.div`
-  ${({ theme, slideWidth }) => {
+  ${({ slideWidth }) => {
     return css`
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 1rem;
-      div.slide__paragraphContainer-inline {
-        p{
-          display: inline;
-        }
-      }
+
       div.slide__paragraphContainer {
         margin: 1rem;
       }
 
-      div.slide__description {
+      .slide__description {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         z-index: 0;
-        max-width: ${slideWidth - 1}rem;
-        p {
-          max-width: ${slideWidth - 1}rem;
-        }
+        ${"" /* p {
+          display: inline;
+        } */}
       }
 
       width: ${slideWidth};

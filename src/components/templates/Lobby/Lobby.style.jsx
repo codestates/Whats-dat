@@ -19,6 +19,9 @@ export const SettingBox = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  & > button {
+    padding-left: 0;
+  }
 `;
 
 export const GameSecond = styled(Paragraph)`
@@ -26,7 +29,7 @@ export const GameSecond = styled(Paragraph)`
     return css`
       ${theme.device.mobile} {
         font-size: ${theme.fonts.size.sm};
-        margin-top: 3rem;
+        margin-top: 1rem;
       }
     `;
   }}
@@ -73,6 +76,8 @@ export const RoomTitle = styled(Header)`
   ${({ theme }) => {
     return css`
       text-align: center;
+      width: 80%;
+      margin: 0 auto;
       font-size: 4rem;
       margin-top: ${theme.margins.base};
 

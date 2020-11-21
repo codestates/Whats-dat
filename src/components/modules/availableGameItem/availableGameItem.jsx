@@ -32,7 +32,9 @@ const AvailableGameItem = ({
         </div>
         <div className="m-left m-right">
           <Paragraph
-            text={roomName}
+            text={
+              roomName.length > 23 ? `${roomName.slice(0, 23)}...` : roomName
+            }
             color="darkGrey"
             size="sm"
             weight="normal"

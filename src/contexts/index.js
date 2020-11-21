@@ -6,7 +6,6 @@ import GlobalStyle from "../styles/GlobalStyle";
 import UserContextProvider from "./UserContext";
 import RankContextProvider from "./RankingContext";
 import RoomContextProvider from "./RoomContext";
-import GameContextProvider from "./GameContext";
 
 const GlobalContextProvider = ({ children }) => {
   return (

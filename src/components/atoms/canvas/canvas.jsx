@@ -71,7 +71,7 @@ const Canvas = ({
   };
 
   const startDrawing = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     const mousePos = getMosuePositionOnCanvas(event);
     contextRef.current.beginPath();
     contextRef.current.moveTo(mousePos.x, mousePos.y);
@@ -79,7 +79,7 @@ const Canvas = ({
   };
 
   const draw = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     if (!isDrawing) return;
     const mousePos = getMosuePositionOnCanvas(event);
     contextRef.current.lineTo(mousePos.x, mousePos.y);
@@ -87,13 +87,13 @@ const Canvas = ({
   };
 
   const finishDrawing = (event) => {
-    event.preventDefault();
+    event.stopPropagation();
     contextRef.current.closePath();
     setIsDrawing(false);
   };
 
   return (
-    <>
+    <div style={{ touchAction: "none" }}>
       <DefaultCanvas
         onMouseDown={startDrawing}
         onMouseMove={draw}
@@ -110,7 +110,7 @@ const Canvas = ({
       <ClearButton type="submit" onClick={fillWhite}>
         Clear Canvas
       </ClearButton>
-    </>
+    </div>
   );
 };
 

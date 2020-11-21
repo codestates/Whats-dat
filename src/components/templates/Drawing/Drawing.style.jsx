@@ -50,8 +50,8 @@ export const CustomContainer = styled(Container)`
         left: -5rem;
 
         @media only screen and (max-width: 490px) {
-          top: 6rem;
-          left: -3rem;
+          top: 11rem;
+          left: -3.3rem;
           margin-top: -2rem;
         }
 

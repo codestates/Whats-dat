@@ -37,7 +37,6 @@ const GameContextProvider = ({ children }) => {
     const onCallSubmitResult = await firebase
       .functions()
       .httpsCallable("handleGameSubmit");
-    // TODO: totalplayer 연결
     const result = await onCallSubmitResult({
       roomId: currentJoinedRoom.roomUid,
       roundIndex,
