@@ -1,42 +1,32 @@
 import styled, { css } from "styled-components";
 
 export const ImageAndTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  div.slide__paragraphContainer {
-    margin: 1rem;
-  }
-
-  .slide__description {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    z-index: 0;
-    p {
-      display: inline;
-    }
-  }
-
   ${({ theme, slideWidth }) => {
     return css`
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      div.slide__paragraphContainer {
+        margin: 1rem;
+      }
+
+      .slide__description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        z-index: 0;
+        p {
+          display: inline;
+        }
+      }
+
       width: ${slideWidth};
       height: 100%;
       @media only screen and (max-width: 550px) {
         width: ${slideWidth * 0.85}rem;
         height: {slideWidth + 20}rem;
-        .slide__description {
-          margin-top: 3rem;
-        }
-      }
-      ${theme.device.mobile} {
-        display: flex;
-        align-items: center;
-        .slide__description {
-          margin-top: 3rem;
-        }
       }
     `;
   }}
@@ -48,7 +38,7 @@ export const StyledImageSlide = styled.div`
       width: 100%;
       max-width: ${slideWidth}rem;
       padding-bottom: 1rem;
-      display: flex;
+      ${"" /* display: flex; */}
       justify-content: center;
       align-items: center;
       position: relative;
@@ -60,7 +50,6 @@ export const StyledImageSlide = styled.div`
 export const StyledSingleSlide = styled.div`
   ${({ slideWidth, theme }) => {
     return css`
-      width: 100%;
       max-width: ${slideWidth}rem;
       padding-bottom: 1rem;
       div.slide__lists {
@@ -89,8 +78,12 @@ export const StyledSingleSlide = styled.div`
 `;
 
 export const StyledSlidesContainer = styled.div`
-  width: 120rem;
-  display: flex;
+  ${({ slideWidth, totalSlides }) => {
+    return css`
+      display: flex;
+      width: ${slideWidth * totalSlides}rem;
+    `;
+  }}
 `;
 
 export const StyledContentsContainer = styled.div`
@@ -99,7 +92,6 @@ export const StyledContentsContainer = styled.div`
       width: ${slideWidth}rem;
       @media only screen and (max-width: 550px) {
         width: ${slideWidth * 0.85}rem;
-        height: 100%;
       }
     `;
   }}
@@ -112,33 +104,31 @@ export const StyledSliderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 100%;
-  ${({ slideWidth, theme, variant }) => {
+  ${({ theme }) => {
     return css`
       .slide__pagination {
+        width: 85%;
         z-index: 0;
         position: absolute;
-        width: 80%;
         & > button {
           & > svg {
             color: ${theme.colors.navy};
             font-size: 2rem;
           }
         }
+
+        @media only screen and (max-width: 550px) {
+          width: 100%;
+          position: static;
+          display: flex;
+          z-index: 99;
+          justify-content: center;
+        }
       }
 
-      @media only screen and (max-width: 500px) {
-        flex-direction: column;
-        align-items: center;
-        .slide__pagination {
-          z-index: 99;
-          display: flex;
-          justify-content: center;
-          margin-top: ${variant === "gamesPagination"
-            ? slideWidth + 4
-            : slideWidth - 7.5}rem;
-        }
+      @media only screen and (max-width: 550px) {
+        display: block;
       }
     `;
   }}

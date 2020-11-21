@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
-import Background from "../../atoms/background/Background";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
 import Box from "../../atoms/box/box";
 import { CustomContainer } from "./Drawing.style";
@@ -66,7 +65,7 @@ const Drawing = (props) => {
     <>
       <ResponsiveContainer>
         <CustomContainer>
-          <div className="row-grid m-top m-bottom">
+          <div className="row-grid m-top">
             <Paragraph text={`${curRound}/${totalRound}`} color="darkGrey" />
             <Box bgColor="primary" radius="rounded2Xl" boxShadow="shadowMd">
               <Paragraph text={preGuessWord} color="white" weight="bold" />

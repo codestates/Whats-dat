@@ -52,7 +52,6 @@ export const StyledButtonsContainer = styled.div`
         .newGame__btn,
         .newGame__enterCodeBtn {
           font-size: 1.6rem;
-          margin-top: ${theme.margins.xl};
           padding: ${theme.paddings.baseSm} ${theme.paddings.baseLg};
         }
       }
@@ -60,7 +59,6 @@ export const StyledButtonsContainer = styled.div`
         .newGame__btn,
         .newGame__enterCodeBtn {
           font-size: 1.4rem;
-          margin-top: ${theme.margins.xl};
           padding: ${theme.paddings.baseSm} ${theme.paddings.baseLg};
         }
       }
@@ -68,7 +66,6 @@ export const StyledButtonsContainer = styled.div`
         .newGame__btn,
         .newGame__enterCodeBtn {
           font-size: 1.2rem;
-          margin-top: ${theme.margins.xl};
           padding: ${theme.paddings.baseSm} ${theme.paddings.baseLg};
         }
       }

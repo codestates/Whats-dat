@@ -53,7 +53,7 @@ const index = () => {
       if (value.length === 0 && currentRound === 0) {
         [value] = randomWordList;
       } else if (value.length === 0) {
-        value = `${nickname} couldn't answer...`;
+        value = ``;
       }
     }
     return value;

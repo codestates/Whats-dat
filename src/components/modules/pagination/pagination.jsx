@@ -1,8 +1,7 @@
 import React from "react";
 import propTypes from "prop-types";
-import IconButton from "../../atoms/IconButton/iconButton";
 import Icon from "../../atoms/icon/icon";
-import PaginationBox from "./pagination.style";
+import PaginationBox, { PaginationButton } from "./pagination.style";
 
 const Pagination = ({
   onClickPrev,
@@ -13,12 +12,20 @@ const Pagination = ({
 }) => {
   return (
     <PaginationBox className={className}>
-      <IconButton size={3} onClick={onClickPrev} isNotVisible={isFirstPage}>
+      <PaginationButton
+        size={3}
+        onClick={onClickPrev}
+        isNotVisible={isFirstPage}
+      >
         <Icon variant="BUTTON_LEFT" color="darkGrey" />
-      </IconButton>
-      <IconButton size={3} onClick={onClickNext} isNotVisible={isLastPage}>
+      </PaginationButton>
+      <PaginationButton
+        size={3}
+        onClick={onClickNext}
+        isNotVisible={isLastPage}
+      >
         <Icon variant="BUTTON_RIGHT" color="darkGrey" />
-      </IconButton>
+      </PaginationButton>
     </PaginationBox>
   );
 };

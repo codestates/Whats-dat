@@ -12,7 +12,7 @@ export const CustomContainer = styled(Container)`
 
       div.row-container {
         width: 100%;
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
         display: grid;
         grid-template-columns: 1fr 3fr 1fr;
         text-align: center;

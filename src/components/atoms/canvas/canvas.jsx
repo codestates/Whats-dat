@@ -17,6 +17,20 @@ const Canvas = ({
   const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
+    const isWindowClient = typeof window === "object";
+    const getCord = () => {
+      if (canvasRef && canvasRef.current) {
+        const cord = canvasRef.current.getBoundingClientRect();
+        setOffsetCoord({ x: cord.x, y: cord.y });
+      }
+    };
+    if (isWindowClient) {
+      window.addEventListener("resize", getCord);
+    }
+    getCord();
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = width * 10;
     canvas.height = height * 10;
@@ -89,9 +103,9 @@ const Canvas = ({
         width={width}
         height={height}
         className={className}
-        onTouchStart={startDrawing}
-        onTouchMove={draw}
-        onTouchEnd={finishDrawing}
+        onTouchStartCapture={startDrawing}
+        onTouchMoveCapture={draw}
+        onTouchEndCapture={finishDrawing}
       />
       <ClearButton type="submit" onClick={fillWhite}>
         Clear Canvas

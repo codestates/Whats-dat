@@ -30,6 +30,10 @@ export const CustomContainer = styled(Container)`
           width: ${36 * 0.8};
           height: ${36 * 0.8};
           margin-top: 2rem;
+
+          @media only screen and (max-width: 550px) {
+            margin-top: 0.7rem;
+          }
         }
       }
 
@@ -46,16 +50,17 @@ export const CustomContainer = styled(Container)`
         align-items: center;
         justify-content: space-evenly;
       }
-
-      div.m-top {
-        margin-top: 1rem;
-      }
-
-      div.m-bottom {
-        margin-bottom: 3rem;
-      }
     `;
   }}
+`;
+
+export const SliderContainer = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  @media only screen and (max-width: 550px) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 `;
 
 export const CloseButton = styled(IconButton)`

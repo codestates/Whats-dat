@@ -13,7 +13,7 @@ export const CustomContainer = styled(Container)`
 
       div.row-grid {
         width: 100%;
-        margin-bottom: 3rem;
+        margin-bottom: 1rem;
         display: grid;
         grid-template-columns: 1fr 3fr 1fr;
         text-align: center;
@@ -33,7 +33,7 @@ export const CustomContainer = styled(Container)`
       }
 
       div.m-bottom {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
       }
 
       .canvas__container {
@@ -46,20 +46,16 @@ export const CustomContainer = styled(Container)`
 
       .canvas__colorPicker {
         position: absolute;
-        top: 6rem;
+        top: 8rem;
         left: -5rem;
-      }
 
-      @media only screen and (max-width: 490px) {
-        .canvas__colorPicker {
-          position: absolute;
-          top: 8rem;
+        @media only screen and (max-width: 490px) {
+          top: 6rem;
           left: -3rem;
+          margin-top: -2rem;
         }
-      }
 
-      ${theme.device.mobile} {
-        .canvas__colorPicker {
+        ${theme.device.mobile} {
           position: static;
           width: 100%;
           display: flex;
