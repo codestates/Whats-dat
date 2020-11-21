@@ -21,7 +21,7 @@ import {
 
 const index = () => {
   const { gameLog, submitResult } = useGame();
-  const [currentRound, setCurrentRound] = useState();
+  const [currentRound, setCurrentRound] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
   const { currentJoinedRoom, setIsGameStarted } = useRoom();
   const { currentUser } = useAuth();
