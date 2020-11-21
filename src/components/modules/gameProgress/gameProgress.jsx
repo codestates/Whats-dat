@@ -1,11 +1,11 @@
 import React from "react";
 import propTypes from "prop-types";
 import Icon from "../../atoms/icon/icon";
-import Paragraph from "../../atoms/paragraph/paragraph";
 import {
   StyledGameProgress,
   StyledGameProgressColumn,
   NonePaddingAvatar,
+  Nickname,
 } from "./gameProgress.style";
 
 const GameProgressBar = ({ playersList, currentPlayer }) => {
@@ -30,13 +30,13 @@ const GameProgressBar = ({ playersList, currentPlayer }) => {
               <Icon variant={avatar} color="white" />
             </NonePaddingAvatar>
             <div className="gameProgress__username">
-              <Paragraph
+              <Nickname
                 weight="exbold"
                 size="xSm"
                 text={
-                  nickname.slice(0, 4).length === nickname.length
+                  nickname.slice(0, 3).length === nickname.length
                     ? nickname
-                    : `${nickname.slice(0, 4)}...`
+                    : `${nickname.slice(0, 3)}..`
                 }
                 color={
                   playerId === innerCurrentPlayer.user_id ? "navy" : "grey"

@@ -88,7 +88,7 @@ const Slider = ({
   };
   useEffect(() => {
     const translateWidth = renderSlideWidth();
-    slideRef.current.style.transition = "all 0.5s ease-in-out";
+    slideRef.current.style.transition = "transform ease-in-out 0.5s";
     slideRef.current.style.transform = `translateX(-${
       translateWidth * currentSlide
     }rem)`;
@@ -131,7 +131,11 @@ const Slider = ({
                 />
                 <Paragraph text={`guessed `} size="sm" color="grey" />
                 <Paragraph
-                  text={`'${round.guessed_word}'`}
+                  text={`'${
+                    round.guessed_word.length
+                      ? round.guessed_word
+                      : "nothing 😱"
+                  }'`}
                   size="sm"
                   weight="exbold"
                   color="navy"
@@ -190,9 +194,6 @@ const Slider = ({
     });
   };
 
-  // foo();
-  // const mappableData = Promise.resolve(slideItemsData[0]);
-
   const renderSlideItems = () => {
     switch (variant) {
       case "gamesPagination":
@@ -227,7 +228,11 @@ const Slider = ({
       className={className}
     >
       <StyledContentsContainer slideWidth={slideWidth}>
-        <StyledSlidesContainer ref={slideRef}>
+        <StyledSlidesContainer
+          ref={slideRef}
+          slideWidth={slideWidth}
+          totalSlides={totalSlides}
+        >
           {slideItemsData
             ? renderSlideItems(variant, slideItemsData)
             : "loading"}

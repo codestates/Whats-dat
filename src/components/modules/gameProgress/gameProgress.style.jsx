@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Avatar from "../../atoms/avatar/avatar";
+import Paragraph from "../../atoms/paragraph/paragraph";
 
 export const StyledGameProgress = styled.div`
   display: flex;
@@ -41,6 +42,9 @@ export const StyledGameProgressColumn = styled.div`
   }}
 `;
 
+export const Nickname = styled(Paragraph)`
+  white-space: nowrap;
+`;
 export const NonePaddingAvatar = styled(Avatar)`
   padding: 0.5rem;
 `;

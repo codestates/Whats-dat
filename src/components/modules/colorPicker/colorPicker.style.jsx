@@ -9,8 +9,9 @@ const StyledContainer = styled.div`
     return css`
       width: ${btnSize}rem;
       height: auto;
-      padding: ${theme.paddings.sm};
+      padding-bottom: ${theme.paddings.sm};
       flex-direction: ${direction === "horizontal" ? "row" : "column"};
+
       & > button {
         border: 1px solid ${theme.colors.grey};
         margin: 0.3rem;

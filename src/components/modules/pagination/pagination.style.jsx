@@ -1,4 +1,9 @@
 import styled, { css } from "styled-components";
+import IconButton from "../../atoms/IconButton/iconButton";
+
+export const PaginationButton = styled(IconButton)`
+  padding: 0 1rem;
+`;
 
 const paginationButtonBox = styled.div`
   ${({ theme }) => {

@@ -6,7 +6,7 @@ import theme from "../../../styles/Theme";
 const responsiveContainer = ({ children }) => {
   return (
     <Container isFull>
-      <AlignContainer width={Number(theme.size.containerMaxWidth)}>
+      <AlignContainer maxWidth={Number(theme.size.containerMaxWidth)}>
         <ColumnBox
           bgColor="lightBg"
           radius="rounded2Xl"
