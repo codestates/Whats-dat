@@ -2,9 +2,9 @@
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
 </p>
-<center>
-  ![screenshot](https://i.ibb.co/4YbR46J/Screenshot-20201227220437-739x610.png)
-</center>
+
+![screenshot](https://i.ibb.co/4YbR46J/Screenshot-20201227220437-739x610.png)
+
 
 #### What's Dat is a canvas based online multi-player game built with React and Firebase.
 
