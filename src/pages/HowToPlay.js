@@ -14,24 +14,33 @@ import "swiper/components/scrollbar/scrollbar.scss";
 import "../styles/swiper.css";
 import ResponsiveContainer from "../components/modules/responsiveContainer/responsiveContainer";
 import ROUTES from "../utils/RoutePath";
+import howToPlay1 from "../assets/images/how-to-play1.png";
+import howToPlay2 from "../assets/images/how-to-play2.png";
+import howToPlay3 from "../assets/images/how-to-play3.png";
+import howToPlay4 from "../assets/images/how-to-play4.png";
+import howToPlay5 from "../assets/images/how-to-play5.png";
+import howToPlay6 from "../assets/images/how-to-play6.png";
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 const HowToPlay = () => {
   const howToPlayDesc = [
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
-    { src: "https://picsum.photos/200/300?random=1" },
+    { src: howToPlay1 },
+    { src: howToPlay2 },
+    { src: howToPlay3 },
+    { src: howToPlay4 },
+    { src: howToPlay5 },
+    { src: howToPlay6 },
   ];
   const renderSwiperSlider = () => {
     return howToPlayDesc.map(({ src }, i) => {
       return (
         <SwiperSlide key={i}>
-          <Image url={src} border />
+          <img
+            alt="how-to-play"
+            src={src}
+            style={{ width: "100%", height: "100%" }}
+          />
         </SwiperSlide>
       );
     });
