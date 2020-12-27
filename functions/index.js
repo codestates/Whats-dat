@@ -3,7 +3,6 @@ const admin = require("firebase-admin");
 
 admin.initializeApp(functions.config().firebase);
 // functions.config().firebase
-const { firestore } = functions;
 
 exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
@@ -73,24 +72,63 @@ exports.handleGameSubmit = functions.https.onCall(async (data, context) => {
 
 exports.onUserStatusChange = functions.database
   .ref("/status/{userId}")
-  .onUpdate((event, context) => {
+  .onUpdate(async (event, context) => {
     const db = admin.firestore();
     const usersRef = db.collection("users");
     const snapShot = event.after;
+    const { userId } = context.params;
 
-    return event.after.ref
+    const user = await usersRef.doc(userId).get();
+    const { roomId } = user.data();
+    if (!roomId) return;
+    const roomRef = db.collection("roomDev").doc(roomId);
+
+    const status = await event.after.ref
       .once("value")
-      .then(() => snapShot.val())
-      .then((status) => {
-        if (status === "offline") {
-          usersRef.doc(context.params.userId).set(
-            {
-              online: false,
-            },
-            { merge: true }
-          );
-        }
-        return `offline ${context.params.userId}`;
-      })
-      .then(() => {});
+      .then(() => snapShot.val());
+
+    if (status === "online") return;
+
+    usersRef.doc(userId).set(
+      {
+        online: false,
+        roomId: "",
+      },
+      { merge: true }
+    );
+
+    const room = await roomRef.get();
+    const roomData = room.data();
+
+    if (roomData.players.length === 1) {
+      await roomRef.collection("game_log").doc("0").delete();
+      await roomRef.delete();
+      return;
+    }
+
+    if (roomData.is_started === true) {
+      await roomRef.update({
+        is_started: false,
+      });
+
+      const gameRef = admin
+        .firestore()
+        .collection("roomDev")
+        .doc(`${roomId}`)
+        .collection("game_log")
+        .doc("0");
+      await gameRef.update({
+        status: "destroy",
+      });
+    }
+
+    const modifiedPlayers = roomData.players.filter(
+      (player) => player.user_id !== userId
+    );
+
+    await roomRef.update({
+      host:
+        roomData.host === userId ? modifiedPlayers[0].user_id : roomData.host,
+      players: modifiedPlayers,
+    });
   });

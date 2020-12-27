@@ -65,14 +65,10 @@ const Lobby = () => {
           isRoomOwner: player.user_id === currentJoinedRoom.host,
           nickname: player.nickname,
           is_ready: false,
-          // onClick: () => {
-          //   // updatePlayerReady;
-          // },
           score: player.score,
         };
       });
       setListItemData(playersData);
-      // setPersistentCurrentRoomCode(currentJoinedRoom.roomdUid);
     } else {
       getJoinedRoomInfo(persistentCurrentRoomCode);
     }

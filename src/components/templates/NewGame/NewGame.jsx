@@ -5,6 +5,7 @@ import Header from "../../atoms/header/header";
 import Slider from "../../modules/slider/slider";
 import Button from "../../atoms/button/button";
 import TextLink from "../../atoms/link/link";
+import Routes from "../../../utils/RoutePath";
 import {
   NewGameContainer,
   StyledButtonsContainer,
@@ -77,7 +78,7 @@ const NewGame = ({
             colors="grey"
             fontSizes="base"
             fontWeight="normal"
-            href=""
+            href={Routes.HOWTOPLAY}
             textShadow="none"
             className="newGame__tutorial"
           >

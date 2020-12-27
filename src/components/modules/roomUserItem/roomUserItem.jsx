@@ -82,13 +82,13 @@ const RoomUserItem = (props) => {
         </div>
       </div>
       <div className="m-left m-right">
-        <Paragraph
+        {/* <Paragraph
           text={`${score}`}
           // eslint-disable-next-line camelcase
           color="grey"
           size="base"
           weight="bold"
-        />
+        /> */}
       </div>
     </ItemBox>
   );

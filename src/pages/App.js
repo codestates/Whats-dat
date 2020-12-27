@@ -1,6 +1,6 @@
 import React from "react";
-import { Redirect, Switch, withRouter } from "react-router-dom";
-import { PrivateRoute as Route } from "../utils/PrivateRoute";
+import { Redirect, Switch, withRouter, Route } from "react-router-dom";
+import { PrivateRoute } from "../utils/PrivateRoute";
 import GameContextProvider from "../contexts/GameContext";
 import Home from "./Home";
 import Login from "./Login";
@@ -13,6 +13,7 @@ import Game from "./Game";
 import Setting from "./Setting";
 import ROUTES from "../utils/RoutePath";
 import GUARDTYPE from "../utils/GuardType";
+import HowToPlay from "./HowToPlay";
 import Background from "../components/atoms/background/Background";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
     NEWGAME,
     LOBBY,
     GAME,
+    HOWTOPLAY,
   } = ROUTES;
   const { IS_SIGNED, IS_NOT_SIGNED, IS_IN_ROOM, IS_PLAYING } = GUARDTYPE;
 
@@ -33,30 +35,44 @@ const App = () => {
     <>
       <Background />
       <Switch>
-        {/* 로그인을 안 한 경우에만 보이는 페이지 */}
-        <Route exact path={HOME} component={Home} permission={IS_NOT_SIGNED} />
-        <Route
+        <PrivateRoute
+          exact
+          path={HOME}
+          component={Home}
+          permission={IS_NOT_SIGNED}
+        />
+        <Route path={HOWTOPLAY} component={HowToPlay} />
+
+        <PrivateRoute
           path={REGISTER}
           component={Register}
           permission={IS_NOT_SIGNED}
         />
-        <Route path={LOGIN} component={Login} permission={IS_NOT_SIGNED} />
-
-        {/* 로그인 했을 때만 보이는 페이지, 추가 ** 11/16/02:14 김폴빈: userGameProfile 이 존재하지 않을 경우 예외처리 해주어야함. **  */}
-        <Route path={MYPAGE} component={MyPage} permission={IS_SIGNED} />
-        <Route path={SETTING} component={Setting} permission={IS_SIGNED} />
-        <Route
+        <PrivateRoute
+          path={LOGIN}
+          component={Login}
+          permission={IS_NOT_SIGNED}
+        />
+        <PrivateRoute path={MYPAGE} component={MyPage} permission={IS_SIGNED} />
+        <PrivateRoute
+          path={SETTING}
+          component={Setting}
+          permission={IS_SIGNED}
+        />
+        <PrivateRoute
           path={LEADERBOARD}
           component={LeaderBoard}
           permission={IS_SIGNED}
         />
-        <Route path={NEWGAME} component={NewGame} permission={IS_SIGNED} />
-        {/* 방에 속해있어야 접속할 수 있는 경로  */}
-        <Route path={LOBBY} component={Lobby} permission={IS_IN_ROOM} />
-        {/* 속해있는 방의 게임이 진행 중 일때만 접속 가능한 경로  */}
+        <PrivateRoute
+          path={NEWGAME}
+          component={NewGame}
+          permission={IS_SIGNED}
+        />
+        <PrivateRoute path={LOBBY} component={Lobby} permission={IS_IN_ROOM} />
 
         <GameContextProvider>
-          <Route path={GAME} component={Game} permission={IS_PLAYING} />
+          <PrivateRoute path={GAME} component={Game} permission={IS_PLAYING} />
         </GameContextProvider>
 
         <Redirect to="/" />
