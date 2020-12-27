@@ -7,7 +7,7 @@
 
 
 #### What's Dat is a canvas based online multi-player game built with React and Firebase.
-
+#### What's Dat은 친구들과 함께 즐길 수 있는 웹 드로잉 게임입니다
 
 <h3 align="left">Languages and Tools:</h3>
 <p align="left"> 
