@@ -2,16 +2,15 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/database";
-// FIXME
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-//   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-//   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-//   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-//   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-//   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-//   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-// };
+
+// 유저가 로그아웃 했을때
+// 1. Room에서 접종 했을때 > 로그아웃 한 유저, 멤버리스트에서 삭제
+// 마지막 유저였다면 방 자체를 삭제
+// 2. Game에서 접종 했을때 > 방 삭제시키고 모달로 안내창 띄워주기
+
+// 1. function에 snapshot 걸어두고
+// Client. user가 방에 입장할 시 roomId를 Update함(joinRoom, createRoom)
+// Functions. disconnect시 roomId로 Room을 찾아서 PlayerList에서 삭제함
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRLiQKZrFAy1vuNLRPYVUYEKT962gKW5c",
@@ -24,7 +23,6 @@ const firebaseConfig = {
 };
 
 const app = firebase.initializeApp(firebaseConfig);
-// const app = firebase.initializeApp();
 
 export const auth = app.auth();
 export const firestore = app.firestore();
@@ -34,5 +32,3 @@ export const facebookProvider = new firebase.auth.FacebookAuthProvider();
 export const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
 export default app;
-
-// TODO : 권한 설정

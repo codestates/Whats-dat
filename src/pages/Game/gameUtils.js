@@ -1,3 +1,5 @@
+import { useAuth } from "../../contexts/UserContext";
+
 export const getPreviousRoundData = (gameLog, currentUser, currentRound) => {
   const { playOrder } = gameLog;
   const myOrder = playOrder.indexOf(currentUser.uid);
@@ -105,30 +107,38 @@ export const createUserGameResult = (gameLog, targetUserId, roomInfo) => {
 };
 
 export const createGameResultList = (gameLog, roomInfo) => {
+  const { currentUser } = useAuth();
   const { playOrder } = gameLog;
   const resultList = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const player of playOrder) {
     const playerResult = createUserGameResult(gameLog, player, roomInfo);
-    resultList.push(playerResult);
+    if (player === currentUser.uid) {
+      resultList.unshift(playerResult);
+    } else {
+      resultList.push(playerResult);
+    }
   }
+
   return resultList;
 };
 
 export const mapProgressPlayers = (playOrder, players) => {
-  return playOrder.map((orderId) => {
-    const playerData = players.filter((player) => {
-      if (orderId === player.user_id) {
-        return true;
-      }
-      return false;
-    });
-
+  const { currentUser } = useAuth();
+  let myIndex;
+  let playOrderResult = playOrder.map((orderId, i) => {
+    if (orderId === currentUser.uid) {
+      myIndex = i;
+    }
+    const playerData = players.find((player) => orderId === player.user_id);
     return {
       user_id: orderId,
-      nickname: playerData[0].nickname,
-      avatar: playerData[0].avatar,
+      nickname: playerData.nickname,
+      avatar: playerData.avatar,
     };
   });
+  const firstOrder = playOrderResult.splice(myIndex, playOrder.length);
+  playOrderResult = firstOrder.concat(playOrderResult);
+  return playOrderResult;
 };
 export default createGameResultList;

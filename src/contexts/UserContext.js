@@ -51,6 +51,7 @@ const UserContextProvider = ({ children }) => {
       nickname: "",
       avatar: "",
       avatarColor: "",
+      roomId: "",
       score: 0,
     });
   };
@@ -95,7 +96,7 @@ const UserContextProvider = ({ children }) => {
           setUserGameProfile(currentUserGameProfile);
         })
         .catch((err) => {
-          throw new Error(err.message); // TODO Error Handling needs to be transferred to UI Element
+          throw new Error(err.message);
         });
 
       const usersRef = firestore.collection("users");

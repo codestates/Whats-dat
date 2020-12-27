@@ -26,20 +26,25 @@ const RoomContextProvider = ({ children }) => {
     setPersistentCurrentRoomCode,
   ] = useLocalStorage("roomCode", "");
 
-  const createRoom = (values, roomUid) => {
+  const createRoom = async (values, roomUid) => {
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    return firestore
+    await firestore
       .collection("roomDev")
       .doc(roomUid)
       .set({
         roomUid,
         ...values,
         created_at: timestamp,
-      })
-      .then(() => {
-        setIsInRoom(true);
-        setPersistentCurrentRoomCode(roomUid);
       });
+
+    await firestore.collection("users").doc(currentUser.uid).update({
+      roomId: roomUid,
+    });
+
+    setIsInRoom(true);
+    setPersistentCurrentRoomCode(roomUid);
+
+    // Client. user가 방에 입장할 시 roomId를 Update함(joinRoom, createRoom)
   };
 
   const updateRoomSetting = (values, roomUid) => {
@@ -149,25 +154,19 @@ const RoomContextProvider = ({ children }) => {
       const roomDoc = await roomRef.get();
       const roomData = roomDoc.data();
 
-      if (!roomData) {
-        throw new Error("Deleted Room");
-      }
+      if (!roomData) throw new Error("Deleted Room");
 
       const currentJoinedUsers = roomData.players.map(
         (player) => player.user_id
       );
 
-      if (currentJoinedUsers.includes(currentUser.uid)) {
+      if (currentJoinedUsers.includes(currentUser.uid))
         throw new Error("Already Joined User");
-      }
 
-      if (roomData.players.length >= roomData.settings.max_players) {
+      if (roomData.players.length >= roomData.settings.max_players)
         throw new Error("Full Room");
-      }
 
-      if (roomData.is_started) {
-        throw new Error("Already Playing");
-      }
+      if (roomData.is_started) throw new Error("Already Playing");
 
       const modifiedPlayersData = [];
       modifiedPlayersData.push(...roomData.players, {
@@ -178,6 +177,10 @@ const RoomContextProvider = ({ children }) => {
 
       await roomRef.update({ players: [...modifiedPlayersData] });
       setIsInRoom(true);
+
+      await firestore.collection("users").doc(currentUser.uid).update({
+        roomId: roomCode,
+      });
 
       // TODO: 완료시 getJoinedRoomInfo 동기 실행
       return getJoinedRoomInfo(code);
@@ -229,30 +232,36 @@ const RoomContextProvider = ({ children }) => {
 
   const cleanRoomData = (code) => {
     const roomRef = firestore.collection("roomDev").doc(`${code}`);
-
-    roomRef.delete().then(() => {});
+    roomRef.delete();
   };
 
   // TODO check
-  const leaveRoom = (code, userid) => {
+  const leaveRoom = async (code) => {
     const newPlayerList = [];
     setPersistentCurrentRoomCode("");
 
     currentJoinedRoom.players.forEach((player) => {
-      if (player.user_id !== userid) {
+      if (player.user_id !== currentUser.uid) {
         newPlayerList.push(player);
       }
     });
 
     const roomHost = { host: currentJoinedRoom.host };
-    if (currentJoinedRoom.host === userid) {
-      if (newPlayerList.length >= 1) {
-        roomHost.host = newPlayerList[0].user_id;
-      } else {
+    if (currentJoinedRoom.host === currentUser.uid) {
+      if (!newPlayerList.length) {
         cleanRoomData(code);
         return;
       }
+      roomHost.host = newPlayerList[0].user_id;
     }
+
+    // collection user에서 roomId 지우기
+    const userRef = firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUser.uid);
+
+    await userRef.update({ roomId: "" });
 
     // eslint-disable-next-line consistent-return
     return firestore

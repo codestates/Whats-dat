@@ -8,6 +8,8 @@ import { useRoom } from "../../contexts/RoomContext";
 import { useAuth } from "../../contexts/UserContext";
 import WaitingModal from "../../components/templates/waitingModal/waitingModal";
 import DisconnectMessageModal from "../../components/templates/disconnectMessageModal/disconnectMessageModal";
+import Box from "../../components/atoms/box/box";
+import TextLink from "../../components/atoms/link/link";
 
 import wordList from "./fakeWordDB";
 
@@ -26,7 +28,6 @@ const index = () => {
   const { currentJoinedRoom, setIsGameStarted } = useRoom();
   const { currentUser } = useAuth();
 
-  // TODO: 실시간 데이터 연결
   const [isAllConnect] = useState(true);
   const { nickname, avatar, uid } = currentUser;
   const [totalRound, setTotalRound] = useState(0);
@@ -78,7 +79,8 @@ const index = () => {
     if (!gameLog || !currentJoinedRoom) return;
 
     if (gameLog.rounds) {
-      setCurrentRound(Object.keys(gameLog.rounds).length - 1);
+      if (gameLog.rounds !== currentRound)
+        setCurrentRound(Object.keys(gameLog.rounds).length - 1);
     }
     if (
       Object.keys(gameLog.rounds[Object.keys(gameLog.rounds).length - 1])
@@ -87,7 +89,7 @@ const index = () => {
       setIsSubmit(false);
     }
 
-    if (gameLog.status === "closed") {
+    if (gameLog.status === "closed" || gameLog.status === "destroy") {
       setIsGameStarted(false);
       setIsSubmit(false);
     }
@@ -100,6 +102,17 @@ const index = () => {
       return null;
     }
 
+    if (gameLog && gameLog.status === "destroy") {
+      return (
+        <Box>
+          😭 Ooops! Your friend just left this game..
+          <TextLink href="/lobby" colors="red">
+            Return to the lobby
+          </TextLink>
+        </Box>
+      );
+    }
+
     if (gameLog && gameLog.status === "closed") {
       const listItemData = createGameResultList(gameLog, currentJoinedRoom);
       return <GameResults listItemData={listItemData} />;
@@ -110,7 +123,6 @@ const index = () => {
     }
 
     if (currentRound % 2 === 1) {
-      // TODO: 캔버스 터치시 스크롤 이벤트 방지
       return (
         <Drawing
           onSubmit={onSubmit}

@@ -8,4 +8,5 @@ export default {
   NEWGAME: "/new-game",
   LOBBY: "/lobby",
   GAME: "/game",
+  HOWTOPLAY: "/how-to-play",
 };

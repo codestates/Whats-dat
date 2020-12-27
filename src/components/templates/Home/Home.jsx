@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import RoutePath from "../../../utils/RoutePath";
 import Title from "../../atoms/title/title";
 
 import {
@@ -27,7 +28,7 @@ const Home = () => {
         <Link to="/register">
           <SignUpButton text="Sign Up" color="secondary" bold />
         </Link>
-        <HomeLink colors="white" textShadow="sm" href="/">
+        <HomeLink colors="white" textShadow="sm" href={RoutePath.HOWTOPLAY}>
           HOW TO PLAY
         </HomeLink>
       </HomeContainer>

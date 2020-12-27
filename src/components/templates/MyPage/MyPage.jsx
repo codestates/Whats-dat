@@ -14,11 +14,11 @@ import ButtonList from "../../modules/ButtonList/buttonList";
 
 const MyPage = ({ userGameProfile, method, handleClose }) => {
   const items = [
-    {
-      text: "Leaderboard",
-      color: "secondary",
-      link: "/leaderboard",
-    },
+    // {
+    //   text: "Leaderboard",
+    //   color: "secondary",
+    //   link: "/leaderboard",
+    // },
     {
       text: "Setting",
       color: "secondary",
@@ -50,8 +50,8 @@ const MyPage = ({ userGameProfile, method, handleClose }) => {
           <ProfileCard
             avatar={userGameProfile.avatar || "AVATAR_KIWI"}
             color={userGameProfile.avatarColor || "green"}
-            rank={123}
-            AllUsers={1234}
+            // rank={123}
+            // AllUsers={1234}
             name={userGameProfile.nickname}
           />
         </HeaderContainer>

@@ -18,12 +18,12 @@ const ProfileCard = ({ name, avatar, rank, AllUsers, color }) => {
         size="xl"
         className="profile_name"
       />
-      <Paragraph
+      {/* <Paragraph
         text={`${rank}/${AllUsers}`}
         color="grey"
         weight="bold"
         className="profile_rank"
-      />
+      /> */}
     </ProfileCardBox>
   );
 };

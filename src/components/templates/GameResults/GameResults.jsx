@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import propTypes from "prop-types";
 import ResponsiveContainer from "../../modules/responsiveContainer/responsiveContainer";
@@ -18,6 +18,9 @@ const GameResults = ({ listItemData }) => {
   const [currentGameListIndex, setCurrentGameListIndex] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   const history = useHistory();
+  const itemList = useMemo(() => {
+    return listItemData;
+  }, []);
 
   const setNewSlide = (i) => {
     setCurrentGameListIndex(i);
@@ -33,7 +36,7 @@ const GameResults = ({ listItemData }) => {
           </CloseButton>
           <div className="col-container">
             <Paragraph
-              text={listItemData[currentGameListIndex][0].username}
+              text={itemList[currentGameListIndex][0].username}
               color="darkGrey"
               size="base"
               marginBottom="sm"
@@ -46,7 +49,7 @@ const GameResults = ({ listItemData }) => {
               boxShadow="shadowMd"
             >
               <Paragraph
-                text={listItemData[currentGameListIndex][0].start_word}
+                text={itemList[currentGameListIndex][0].start_word}
                 color="white"
                 size="lg"
               />
@@ -54,7 +57,7 @@ const GameResults = ({ listItemData }) => {
           </div>
           <SliderContainer>
             <Slider
-              slideItems={listItemData[currentGameListIndex]}
+              slideItems={itemList[currentGameListIndex]}
               slideWidth={30}
               variant="gameResultsPagination"
               currentSlide={currentSlide}
@@ -64,7 +67,7 @@ const GameResults = ({ listItemData }) => {
           <Container size={30} className="gameResults__btnContainer">
             <List
               listItemName="GameResultItem"
-              listItemData={listItemData}
+              listItemData={itemList}
               onClick={setNewSlide}
             />
           </Container>
